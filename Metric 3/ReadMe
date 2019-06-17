@@ -18,3 +18,14 @@ PITest dependecy in pom file:
              </execution>
           </executions>
        </plugin>
+
+And , we have observed the mutation score for the projects chosen are shown as below:
+
+Apache Commons Math             79%
+Apache Commons Lang		86%	
+JFreeChart			33%
+Apache Commons dbUtils	        51%
+Apache Commons Collections	42%
+
+
+
