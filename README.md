@@ -51,4 +51,3 @@ The Commons DbUtils library is a small set of classes designed to make working w
 Release - 1.7<br>
 Size : 8280 LOC<br>
 Tracking URL:  http://issues.apache.org/jira/browse/DBUTILS<br>
-
