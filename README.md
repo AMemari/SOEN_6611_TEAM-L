@@ -40,15 +40,19 @@ Release - 3_8<br>
 Size : 90700 LOC<br>
 Tracking URL: http://issues.apache.org/jira/browse/LANG<br>
 
-# Apache Commons IO :<br>
-Commons-IO contains utility classes, stream implementations, file filters, file comparators and endian classes.<br>
-Release - 2.6<br>
-Size : 33900 LOC<br>
-Tracking URL:  http://issues.apache.org/jira/browse/IO<br>
+# Apache Commons Collections :<br>
+The Java Collections Framework was a major addition in JDK 1.2. It added many powerful data structures that accelerate development of most significant Java applications. Since that time it has become the recognised standard for collection handling in Java.<br>
+Release - 4.3<br>
+Size : 121108 LOC<br>
+Tracking URL:   http://issues.apache.org/jira/browse/COLLECTIONS<br>
 
 # Apache Commons DbUtils :<br>
 The Commons DbUtils library is a small set of classes designed to make working with JDBC easier. JDBC resource cleanup code is mundane, error prone work so these classes abstract out all of the cleanup tasks from your code leaving you with what you really wanted to do with JDBC in the first place: query and update data.<br>
 Release - 1.7<br>
 Size : 8280 LOC<br>
 Tracking URL:  http://issues.apache.org/jira/browse/DBUTILS<br>
+
+
+
+
 
