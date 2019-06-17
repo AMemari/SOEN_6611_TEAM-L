@@ -1,0 +1,293 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Component/s,Due Date,Votes,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment
+After version Commons-lang3.4 DateFormatUtils has a bug,LANG-1462,13237655,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,,,elunlng,elunlng,05/Jun/19 06:49,05/Jun/19 06:49,08/Jun/19 23:13,,3.5,3.6,3.7,3.8,3.8.1,3.9,,lang.time.*,,0,"The code is as follows ：
+
+Calendar cale = Calendar.getInstance();
+ System.out.println(""Old time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+ cale.setTimeZone(TimeZone.getTimeZone(""JST""));
+ System.out.println(""New time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+
+ 
+
+The results of commons-lang3 3.4：
+
+Old time is 20190605144536
+New time is 20190605154536
+
+ 
+
+The results of the version after commons-lang3 3.4:
+
+Old time is 20190605144536
+New time is 20190605144536
+
+ 
+
+We found that the time zone setting was invalidated when it was formatted
+
+ ",,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,2019-06-05 06:49:22.0,,,,,,0|z03fgg:,9223372036854775807,,,,,,,,,,,,
+Restore BundleSymbolicName / regression in version 3.8.0,LANG-1419,13183486,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,Fixed,chtompki,hugo.hirsch,hugo.hirsch,06/Sep/18 19:33,27/Sep/18 13:26,08/Jun/19 23:13,19/Sep/18 15:19,3.8,,,,,,3.8.1,General,,0,"In contrast to version 3.7.0 the BundleSymbolicName changed erroneously in 3.8.0 to:
+{code:java}
+org.apache.commons.commons-lang3{code}
+ 
+
+As this breaks existing installations the change should be reverted and a new version with OSGi support should be released.
+h2. v3.8.0 - MetaData
+{code:java}
+Automatic-Module-Name                    org.apache.commons.lang3               
+
+Bnd-LastModified                         1534383412565                           
+
+Build-Jdk                                1.8.0_172                              
+
+Built-By                                 chtompki                               
+
+Bundle-Description                       Apache Commons Lang, a package of Java utility classes for the  classes that are in java.lang's hierarchy, or are considered to be so  standard as to justify existence in java.lang.
+
+Bundle-DocURL                            http://commons.apache.org/proper/commons-lang/
+
+Bundle-License                           https://www.apache.org/licenses/LICENSE-2.0.txt
+
+Bundle-ManifestVersion                   2                                      
+
+Bundle-Name                              Apache Commons Lang                    
+
+Bundle-SymbolicName                      org.apache.commons.commons-lang3       
+
+Bundle-Vendor                            The Apache Software Foundation         
+
+Bundle-Version                           3.8.0                                  
+
+Created-By                               Apache Maven Bundle Plugin             
+
+Export-Package                           org.apache.commons.lang3;version=""3.8"",org.apache.commons.lang3.arch;version=""3.8"",org.apache.commons.lang3.builder;version=""3.8"",org.apache.commons.lang3.concurrent;version=""3.8"",org.apache.commons.lang3.event;version=""3.8"",org.apache.commons.lang3.exception;version=""3.8"",org.apache.commons.lang3.math;version=""3.8"",org.apache.commons.lang3.mutable;version=""3.8"",org.apache.commons.lang3.reflect;version=""3.8"",org.apache.commons.lang3.text;version=""3.8"",org.apache.commons.lang3.text.translate;version=""3.8"",org.apache.commons.lang3.time;version=""3.8"",org.apache.commons.lang3.tuple;version=""3.8""
+
+Implementation-Title                     Apache Commons Lang                    
+
+Implementation-URL                       http://commons.apache.org/proper/commons-lang/
+
+Implementation-Vendor                    The Apache Software Foundation         
+
+Implementation-Vendor-Id                 org.apache.commons                     
+
+Implementation-Version                   3.8                                    
+
+Include-Resource                         META-INF/NOTICE.txt=NOTICE.txt,META-INF/LICENSE.txt=LICENSE.txt
+
+Manifest-Version                         1.0                                    
+
+Require-Capability                       osgi.ee;filter:=""(&(osgi.ee=JavaSE)(version=1.7))""
+
+Specification-Title                      Apache Commons Lang                    
+
+Specification-Vendor                     The Apache Software Foundation         
+
+Specification-Version                    3.8                                    
+
+Tool                                     Bnd-3.5.0.201709291849{code}
+h2. v3.7.0 - MetaData
+{code:java}
+Archiver-Version                         Plexus Archiver                        
+
+Automatic-Module-Name                    org.apache.commons.lang3               
+
+Bnd-LastModified                         1509819256170                          
+
+Build-Jdk                                1.7.0_80                               
+
+Built-By                                 ggregory                               
+
+Bundle-Description                       Apache Commons Lang, a package of Java utility classes for the  classes that are in java.lang's hierarchy, or are considered to be so  standard as to justify existence in java.lang.
+
+Bundle-DocURL                            http://commons.apache.org/proper/commons-lang/
+
+Bundle-License                           https://www.apache.org/licenses/LICENSE-2.0.txt
+
+Bundle-ManifestVersion                   2                                      
+
+Bundle-Name                              Apache Commons Lang                    
+
+Bundle-SymbolicName                      org.apache.commons.lang3               
+
+Bundle-Vendor                            The Apache Software Foundation         
+
+Bundle-Version                           3.7.0                                  
+
+Created-By                               Apache Maven Bundle Plugin             
+
+Export-Package                           org.apache.commons.lang3;version=""3.7"",org.apache.commons.lang3.arch;version=""3.7"",org.apache.commons.lang3.builder;version=""3.7"",org.apache.commons.lang3.concurrent;version=""3.7"",org.apache.commons.lang3.event;version=""3.7"",org.apache.commons.lang3.exception;version=""3.7"",org.apache.commons.lang3.math;version=""3.7"",org.apache.commons.lang3.mutable;version=""3.7"",org.apache.commons.lang3.reflect;version=""3.7"",org.apache.commons.lang3.text;version=""3.7"",org.apache.commons.lang3.text.translate;version=""3.7"",org.apache.commons.lang3.time;version=""3.7"",org.apache.commons.lang3.tuple;version=""3.7""
+
+Implementation-Title                     Apache Commons Lang                    
+
+Implementation-URL                       http://commons.apache.org/proper/commons-lang/
+
+Implementation-Vendor                    The Apache Software Foundation         
+
+Implementation-Vendor-Id                 org.apache.commons                     
+
+Implementation-Version                   3.7                                    
+
+Include-Resource                         META-INF/LICENSE.txt=LICENSE.txt,META-INF/NOTICE.txt=NOTICE.txt
+
+Manifest-Version                         1.0                                    
+
+Require-Capability                       osgi.ee;filter:=""(&(osgi.ee=JavaSE)(version=1.7))""
+
+Specification-Title                      Apache Commons Lang                    
+
+Specification-Vendor                     The Apache Software Foundation         
+
+Specification-Version                    3.7                                     
+
+Tool                                     Bnd-3.0.0.201509101326             {code}
+ 
+
+Thanks :)",,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-09-19 15:19:22.988,,,false,,,,,,,,,,,,9223372036854775807,,,Thu Sep 27 13:26:16 UTC 2018,,,,,,0|i3xtgf:,9223372036854775807,,,,,,,,,"07/Sep/18 19:55;hugo.hirsch;I tried mingling with the bnd-plugin configuration but it didn't help to correct the META-data:
+{code:java}
+diff --git a/pom.xml b/pom.xml
+index ff00abca..9ac95673 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -666,6 +666,14 @@
+             <skip>false</skip>
+           </configuration>
+         </plugin>
++        <plugin>
++          <groupId>org.apache.felix</groupId>
++          <artifactId>maven-bundle-plugin</artifactId>
++          <version>3.5.0</version>
++          <configuration>
++            <Bundle-SymbolicName>org.apache.commons.lang3</Bundle-SymbolicName>
++          </configuration>
++        </plugin>
+       </plugins>
+     </pluginManagement>
+     <plugins>
+@@ -742,8 +750,14 @@
+           <excludeFilterFile>${basedir}/spotbugs-exclude-filter.xml</excludeFilterFile>
+         </configuration>
+       </plugin>
++      <plugin>
++        <groupId>org.apache.felix</groupId>
++        <artifactId>maven-bundle-plugin</artifactId>
++        <configuration>
++          <Bundle-SymbolicName>org.apache.commons.lang3</Bundle-SymbolicName>
++        </configuration>
++      </plugin>
+     </plugins>
+-
+   </build>
+
+   <reporting>{code}",19/Sep/18 15:19;chtompki;In tag LANG_3_8_1_RC1: https://github.com/apache/commons-lang/blob/LANG_3_8_1_RC1/pom.xml#L574,25/Sep/18 00:07;chtompki;3.8.1 released.,27/Sep/18 13:26;hugo.hirsch;Thanks for rolling out v3.8.1 which fixed our OSGi setup again.
+Incorrect Javadoc for StringUtils.isAnyBlank(null),LANG-1418,13183306,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,Veshtard,Veshtard,06/Sep/18 06:36,16/Mar/19 13:59,08/Jun/19 23:13,,3.8,,,,,,,lang.*,,0,"As of [https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/StringUtils.html#isAnyBlank-java.lang.CharSequence...-] isAnyBlank((String) null) -> true
+
+But test isAnyBlank((String) null) -> false.
+
+As the result incorrect description for the other methods that used isAnyBlank",,,,,,,,,,06/Sep/18 06:35;Veshtard;apache-common.isAnyBlank(null).png;https://issues.apache.org/jira/secure/attachment/12938603/apache-common.isAnyBlank%28null%29.png,1.0,,,,,,,,,,,,,,,,,,,2018-10-20 05:10:11.345,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Mar 16 13:57:58 UTC 2019,,,,,,0|i3xsd3:,9223372036854775807,,,,,,,,,"20/Oct/18 05:10;oleg.chubaryov;How does this test pass? 
+
+{{public class StringUtilsEmptyBlankTest {...}}
+
+{{    @Test}}
+{{    public void testIsAnyBlank() {}}
+
+{{        assertTrue(StringUtils.isAnyBlank((String) null));}}
+
+...
+
+Most likely bug in Intellij IDEA.","16/Mar/19 13:57;ph26;Refactor Extract Method and Evaluate Expression to call the extracted method produces result = true.
+
+So it looks like the javaDoc is correct after all, and that it is just a bug in IntelliJ IDEA Evaluate Expression. I suspect it is passing null as the array of a variable number of String arguments instead of as the only String in a variable argument list. When the call is extracted as a method, javac evaluates it as expected.",,
+TypeUtils.isAssignable returns wrong result for GenericArrayType and ParameterizedType comparison,LANG-1420,13184815,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,gofraser,gofraser,13/Sep/18 08:05,09/Dec/18 00:49,08/Jun/19 23:13,,3.7,3.8,,,,,,lang.reflect.*,,0,"TypeUtils.isAssignable returns a wrong result when checking whether a ParameterizedType is assignable to a GenericArrayType that has the same ParameterizedType as component type.
+
+For example:
+{code:java}
+ParameterizedType componentType = TypeUtils.parameterize(java.lang.reflect.Constructor.class, java.awt.Insets.class);
+GenericArrayType arrayType = TypeUtils.genericArrayType(componentType);{code}
+
+In this case,
+{code:java}
+TypeUtils.isAssignable(arrayType, componentType) {code}
+returns true, but this should be false (the component type should not be assignable to the array type - the Java compiler complains about this).
+
+ 
+
+It seem that the problem is that the method:
+{code:java}
+private static boolean isAssignable(final Type type, final ParameterizedType toParameterizedType, final Map<TypeVariable<?>, Type> typeVarAssigns){code}
+only compares the type parameters, since method getTypeArguments retrieves the component type using getGenericComponentType. There seems to be no check whether an array type is being assigned to a non-array in the first place.",,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-12-08 01:01:34.709,,,false,,,,,,,,,,,,9223372036854775807,,,Sun Dec 09 00:49:34 UTC 2018,,,,,,0|i3y1kv:,9223372036854775807,,,,,,,,,"08/Dec/18 01:01;rosti-il;Adding following check into the suspected method fixes it:
+
+{code}        if (type instanceof GenericArrayType) {
+            return false;
+        }{code}
+
+Is it the right fix and should this check also be added into other private {{isAssignable()}} methods where the second parameter isn't {{GenericArrayType}} ?","09/Dec/18 00:49;ggregory;Hi [~gofraser],
+
+Thank you for your report. Feel free to provide a PR on GitHub. Ideally, it should come with a unit test that fails without changes to the main code tree.
+
+Gary",,
+ExceptionUtils#getRootCause(Throwable t)  does not work as documented in javadoc,LANG-1430,13210166,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,,fverhoef,fverhoef,17/Jan/19 14:24,17/Jan/19 14:26,08/Jun/19 23:13,,3.8,3.8.1,,,,,,lang.exception.*,,0,"In version 3.8 the following bugfix was introduced:
+
+LANG-1364: ExceptionUtils#getRootCause(Throwable t) should return t if no lower level cause exists Thanks to Zheng Xie.
+
+In general I agree with the consistency it brings, but now the javadocs is not agreeing with the way it actually works.
+
+ 
+
+ 
+{code:java}
+/**
+168 * <p>Introspects the <code>Throwable</code> to obtain the root cause.</p>
+169 *
+170 * <p>This method walks through the exception chain to the last element,
+171 * ""root"" of the tree, using {@link Throwable#getCause()}, and
+172 * returns that exception.</p>
+173 *
+174 * <p>From version 2.2, this method handles recursive cause structures
+175 * that might otherwise cause infinite loops. If the throwable parameter
+176 * has a cause of itself, then null will be returned. If the throwable
+177 * parameter cause chain loops, the last element in the chain before the
+178 * loop is returned.</p>
+179 *
+180 * @param throwable the throwable to get the root cause for, may be null
+181 * @return the root cause of the <code>Throwable</code>,
+182 * <code>null</code> if null throwable input
+183 */
+
+{code}
+ 
+
+ 
+
+The sentence at line 175/176 should be something like:
+{code:java}
+If the throwable parameter has a cause of itself, then itself will be returned.{code}
+As the method will not return null, but itself instead, as of the fix LANG-1364",,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Thu Jan 17 14:26:27 UTC 2019,,,,,,0|yi0140:,9223372036854775807,,,,,,,,,"17/Jan/19 14:26;fverhoef;Caused me some work to figure out, as suddenly with version 3.8.1 our code was not working anymore, as the contract had changed.",,,
