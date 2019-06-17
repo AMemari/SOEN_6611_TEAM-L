@@ -1,8 +1,58 @@
-Metric 1(Statement Coverage), 2(Branch Coverage) and 4(McCabe Complexity) can be calculated by using a code coverage tool like JaCoCo.<br>
-Process to measure the metrics:<br>
-Step 1: Check if EclEmma plugin is installed in Eclipse. If not, go to Help-> Eclipse Marketplace-> Search for EclEmma-> Install->               Restart Eclipse<br> 
-Step 2: Import the maven project to Eclipse. File-> Import -> Existing Maven projects.<br>
-Step 3: Add JaCoCo dependency to pom file of the Maven porject.<br>
-Step 4: Run the porject as Maven Install and wait for the JaCoCo report to be generated. Code coverage report is generated in HTML, XML           and CSV format.<br> 
+# SOEN_6611_TEAM_L
+                                                                                                            
+# Team Information<br>
+# Team L <br>
+
+STUDENT NAME                 STUDENT ID         EMAIL ID<br>
+Sahaja Gottipati            - 40093560        - sahajagottipati@gmail.com<br>
+Rajasekhar Reddy Guntaka    - 40094479        - rajasekhar.grr@gmail.com<br>
+Sai Santhosh Sathwik Ganta  - 40091433        - sathwik.g@hotmail.com<br>
+Sai Charan Duduka           - 40103928        - charan140494@gmail.com<br>
+Koteswara Rao Kothamasu     - 40070848        -  rao.kothamasu@ymail.com<br>
+
+
+# Metrics<br>
+Metric 1: Statement Coverage <br>
+Metric 2: Branch Coverage<br>
+Metric 3: Test Suite Effectiveness <br>
+Metric 4: McCabe Complexity Metric<br>
+Metric 5: Maintainability Index<br>
+Metric 6: Post release defect density<br>
+
+# Open Source Systems<br>
+
+
+# Apache Commons Math : <br>
+Commons Math is a library of lightweight, self-contained mathematics and statistics components addressing the most common problems not available in the Java programming language or Commons Lang.<br>
+Release - 3_5<br>
+Size : 186,000 LOC<br>
+Tracking URL: http://issues.apache.org/jira/browse/MATH<br>
+
+# JFreeChart :<br>
+JFreeChart is a chart library for the Java platform that supports a wide range of charts including pie charts (2D and 3D), bar charts (horizontal and vertical, regular or stacked, with optional 3D-effects), line charts, XY plots, scatter plots, time series charts, high/low/open/close charts, candlestick plots, Gantt charts, Pareto charts, combination charts, and more. It is suitable for use in applications, applets, servlets, and JSP.<br>
+Release - 1.5.0<br>
+Size : 317,000 LOC <br>
+Tracking URL:https://github.com/jfree/jfreechart/issues<br>
+
+# Apache Commons Lang :<br>
+Commons Lang, a package of Java utility classes for the classes that are in java.lang's hierarchy, or are considered to be so standard as to justify existence in java.lang.<br>
+Release - 3_8<br>
+Size : 90700 LOC<br>
+Tracking URL: http://issues.apache.org/jira/browse/LANG<br>
+
+# Apache Commons Collections :<br>
+The Java Collections Framework was a major addition in JDK 1.2. It added many powerful data structures that accelerate development of most significant Java applications. Since that time it has become the recognised standard for collection handling in Java.<br>
+Release - 4.3<br>
+Size : 121108 LOC<br>
+Tracking URL:   http://issues.apache.org/jira/browse/COLLECTIONS<br>
+
+# Apache Commons DbUtils :<br>
+The Commons DbUtils library is a small set of classes designed to make working with JDBC easier. JDBC resource cleanup code is mundane, error prone work so these classes abstract out all of the cleanup tasks from your code leaving you with what you really wanted to do with JDBC in the first place: query and update data.<br>
+Release - 1.7<br>
+Size : 8280 LOC<br>
+Tracking URL:  http://issues.apache.org/jira/browse/DBUTILS<br>
+
+
+
 
 
