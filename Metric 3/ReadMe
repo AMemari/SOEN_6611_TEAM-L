@@ -1,0 +1,31 @@
+Metric 3(Mutation Score):
+For measuring metric 3 we do PITest. Mutation score is defined as percentage of killed mutants by total number of mutants.
+
+Mutation Score= (killed mutants/total number of mutants)*100
+
+PITest dependecy in pom file:
+       <plugin>
+          <groupId>org.pitest</groupId>
+          <artifactId>pitest-maven</artifactId>
+          <version>${pitest.version}</version>
+          <executions>
+             <execution>
+               <id>pit-report</id>
+               <phase>test</phase>
+               <goals>
+                  <goal>mutationCoverage</goal>
+               </goals>
+             </execution>
+          </executions>
+       </plugin>
+
+And , we have observed the mutation score for the projects chosen are shown as below:
+
+Apache Commons Math             79%
+Apache Commons Lang		86%	
+JFreeChart			33%
+Apache Commons dbUtils	        51%
+Apache Commons Collections	42%
+
+
+
