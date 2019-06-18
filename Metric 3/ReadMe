@@ -7,7 +7,7 @@ PITest dependecy in pom file:
        <plugin>
           <groupId>org.pitest</groupId>
           <artifactId>pitest-maven</artifactId>
-          <version>${pitest.version}</version>
+          <version>$1.4.8</version>
           <executions>
              <execution>
                <id>pit-report</id>
