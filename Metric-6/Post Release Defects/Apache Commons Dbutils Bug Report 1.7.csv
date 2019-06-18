@@ -1,0 +1,91 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Fix Version/s,Due Date,Votes,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Duplicate),Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment
+Thread safety problem in BeanProcessor,DBUTILS-140,13174022,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Duplicate,,vzhilin,vzhilin,24/Jul/18 07:24,22/Aug/18 04:20,08/Jun/19 23:38,22/Aug/18 04:10,1.7,2.0,,1,,,,"Sometimes Exception occurs when method QueryRunner.query() is called with BeanHandler. 
+{code:java}
+// works fine with N = 1
+int N = 8;
+ExecutorService execs = Executors.newFixedThreadPool(N);
+Runnable task = () -> {
+    try {
+        Data bean = runner.query(""select id from test_table"", new BeanHandler<Data>(Data.class));
+        System.out.println(""result: "" + bean);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+};
+
+for (int i = 0; i < N; i++) {
+    execs.submit(task);
+}
+{code}
+Full code is attached: dbutils-bug-test.zip 
+{code:java}
+java.util.NoSuchElementException
+at sun.misc.CompoundEnumeration.nextElement(CompoundEnumeration.java:59)
+at java.util.ServiceLoader$LazyIterator.hasNextService(ServiceLoader.java:357)
+at java.util.ServiceLoader$LazyIterator.hasNext(ServiceLoader.java:393)
+at java.util.ServiceLoader$1.hasNext(ServiceLoader.java:474)
+at org.apache.commons.dbutils.BeanProcessor.callSetter(BeanProcessor.java:300)
+at org.apache.commons.dbutils.BeanProcessor.populateBean(BeanProcessor.java:275)
+at org.apache.commons.dbutils.BeanProcessor.populateBean(BeanProcessor.java:239)
+at org.apache.commons.dbutils.BeanProcessor.toBean(BeanProcessor.java:154)
+at org.apache.commons.dbutils.BasicRowProcessor.toBean(BasicRowProcessor.java:123)
+at org.apache.commons.dbutils.handlers.BeanHandler.handle(BeanHandler.java:80)
+at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:388)
+at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:347)
+at EntryPoint$1.run(EntryPoint.java:26){code}
+ 
+
+Seems like there is a race when propertyHandlers field in BeanProcessor is accessing from multiple threads. Iterating ServiceLoader is not thread-safe.
+
+ ",jdk1.8.0_171,,,,,,,,,DBUTILS-135,24/Jul/18 06:54;vzhilin;dbutils-bug-test.zip;https://issues.apache.org/jira/secure/attachment/12932849/dbutils-bug-test.zip,1.0,,,,,,,,,,,,,,,,,,,2018-08-22 01:39:36.771,,,false,,,,,,,,,,,,9223372036854775807,,,Wed Aug 22 04:20:30 UTC 2018,,,,,,0|i3w7lr:,9223372036854775807,,,,,,,,,22/Aug/18 01:39;yokotaso;Is this issue resolved with DBUTILS-135?,22/Aug/18 04:20;vzhilin;The issue was solved. Close as duplicate.,,,
+CaseInsensitiveHashMap cannot be accessed by subclasses of BasicRowProcessor; add org.apache.commons.dbutils.BasicRowProcessor.createCaseInsensitiveHashMap(int),DBUTILS-136,13126068,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,ggregory,mhall,mhall,19/Dec/17 23:58,24/Dec/17 19:06,08/Jun/19 23:40,24/Dec/17 19:06,1.7,2.0,,0,easyfix,patch,usability,"This visibility restriction on {{CaseInsensitiveHashMap}} is too strict for no good reason:
+
+{{private static class CaseInsensitiveHashMap extends LinkedHashMap<String, Object>}}
+
+This should be specified as:
+
+{{protected static class CaseInsensitiveHashMap extends LinkedHashMap<String, Object>}}
+
+Otherwise it's painful to override or re-implement methods such as {{public Map<String, Object> toMap(ResultSet rs) throws SQLException}}.
+
+Patch available at https://github.com/megahall/dbutils/tree/megahall/DBUTILS-136 .",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-12-22 21:10:04.852,,,false,,,,,,,,,,,,9223372036854775807,,,Sun Dec 24 19:06:46 UTC 2017,,,,,,0|i3o3en:,9223372036854775807,,,,,,,,,20/Dec/17 00:15;mhall;Patch available at https://github.com/megahall/dbutils/tree/megahall/DBUTILS-136 .,"22/Dec/17 21:10;ggregory;Note: Apache Commons Collection contains {{org.apache.commons.collections4.map.CaseInsensitiveMap<K, V>}}. 
+
+I'm not crazy about making some private guts effectively public.","22/Dec/17 23:33;mhall;That one doesn't have identical behavior to the one inside of the implementation. 
+
+Matthew Hall
+
+
+","24/Dec/17 16:35;ggregory;Instead of making this class public how about, adding a factory method {{createCaseInsensitiveMap(int size))}} that returns a JRE Map?
+
+Gary","24/Dec/17 19:06;ggregory;I added the {{protected}} method {{org.apache.commons.dbutils.BasicRowProcessor.createCaseInsensitiveHashMap(int)}}.
+
+Please verify and close."
+Inefficient allocation of Maps in org.apache.commons.dbutils.BasicRowProcessor.toMap(ResultSet),DBUTILS-137,13127034,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,ggregory,ggregory,ggregory,24/Dec/17 16:45,24/Dec/17 19:01,08/Jun/19 23:40,24/Dec/17 19:01,1.7,2.0,,0,,,,"In the method {{org.apache.commons.dbutils.BasicRowProcessor.toMap(ResultSet)}}, Maps (specifically our own {{CaseInsensitiveHashMap}}) are allocated but the column count is NOT taken into account to size the map. This will either over-allocate the map for narrow results or the map will have to be resized for wider results.
+
+The fix will use the column count to allocate an exactly sized map.",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Sun Dec 24 19:01:27 UTC 2017,,,,,,0|i3o9cn:,9223372036854775807,,,,,,,,,24/Dec/17 19:01;ggregory;In Git master.,,,,
+"org.apache.commons.dbutils.QueryRunner.query(Connection, boolean, String, ResultSetHandler<T>, Object...) Exception in closing statement leave connections open",DBUTILS-138,13156937,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Minor,Fixed,,satollo,satollo,03/May/18 18:15,04/May/18 18:53,08/Jun/19 23:40,04/May/18 16:24,1.7,,,0,connectionloss,,,"On class QueryRunner starting at line 393 (see the snippet below) if the statement close attempt results in an exception, the connection is not closed correctly. I was not able to intercept the exception since it happens in a production environment with SQL Server 2012, Java 8 and original MS drivers, but the effect is the connection pool fills up and finally starts to log abandoned connections opened by QueryRunner.
+{code:java}
+        } finally {
+            try {
+                close(rs);
+            } finally {
+                close(stmt);
+                if (closeConn) {
+                    close(conn);
+                }
+            }
+        }
+{code}
+
+This is in the private method {{org.apache.commons.dbutils.QueryRunner.query(Connection, boolean, String, ResultSetHandler<T>, Object...)}}.
+
+This private method is called by:
+
+- org.apache.commons.dbutils.QueryRunner.query(Connection, String, Object, ResultSetHandler<T>)
+- org.apache.commons.dbutils.QueryRunner.query(Connection, String, Object[], ResultSetHandler<T>)
+- org.apache.commons.dbutils.QueryRunner.query(Connection, String, ResultSetHandler<T>, Object...)
+- org.apache.commons.dbutils.QueryRunner.query(Connection, String, ResultSetHandler<T>)
+- org.apache.commons.dbutils.QueryRunner.query(String, Object, ResultSetHandler<T>)
+- org.apache.commons.dbutils.QueryRunner.query(String, Object[], ResultSetHandler<T>)
+- org.apache.commons.dbutils.QueryRunner.query(String, ResultSetHandler<T>, Object...)
+- org.apache.commons.dbutils.QueryRunner.query(String, ResultSetHandler<T>)","SQL Server 2012, Java 8, MS JDBC Driver 4.",,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-05-04 16:24:44.467,,,false,,,,,,,,,,,,9223372036854775807,,,Fri May 04 18:53:28 UTC 2018,,,,,,0|i3tbcv:,9223372036854775807,,,,,,,,,04/May/18 16:24;ggregory;Fixed in git master. Please verify and close. You can build the code or point your Maven POM to the 2.0-SNAPSHOT version.,"04/May/18 18:53;satollo;Perfect, thank you.",,,

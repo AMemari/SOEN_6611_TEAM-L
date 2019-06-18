@@ -1,0 +1,9 @@
+The post-release Defect Density is a metric which we can compare across the different versions of the projects as well as various projects. The post-release Defect Density is basically used to indicate the Product Quality. The total number of source lines of code are used by the calculation of the post-release Defect Density. 
+A formula to measure Defect Density:
+
+Defect Density = Defect count/size of the release(SLOC)
+
+•  Defect Count is the total number of post-release defects
+•  SLOC are the total number of  source lines of code
+
+
