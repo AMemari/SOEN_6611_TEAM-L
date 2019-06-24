@@ -6,4 +6,9 @@ Defect Density = Defect count/size of the release(SLOC)
 •  Defect Count is the total number of post-release defects
 •  SLOC are the total number of  source lines of code
 
+Here, there are 3 folders as follows.
 
+No of Defects : This records the total number of defects that we have found for the each version of each project.There is one excel file for each project having the 6 sheets for each version in it.
+SLOC : This records the total source line of code for the each 6 version of each project.For SLOC we have used LOCMetric application to 
+calculate SLOC and screenshots were provided for each version.
+Post Release Defect Density :This folder contains the files of calculated Post-Release Defect Density value for the each project
