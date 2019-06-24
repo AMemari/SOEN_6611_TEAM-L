@@ -1,0 +1,360 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Fix Version/s,Due Date,Votes,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Duplicate),Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Flags),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+Can't execute subquery when use parameters,DBUTILS-128,12962955,Bug,Open,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Blocker,,,inthink,inthink,27/Apr/16 09:42,20/Apr/17 01:23,08/Jun/19 23:41,,1.5,1.6,,,0,bug,oracle,subquery,"Oracle Database: 
+```
+SQL> desc dept
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTNO                                    NOT NULL NUMBER(2)
+ DNAME                                              VARCHAR2(14)
+ LOC                                                VARCHAR2(13)
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+````
+
+SQL
+```
+select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?
+```
+
+Java
+```
+String sql=""select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?"";
+
+Emp e=(Emp) qr.query(sql,  new BeanHandler(Emp.class),7902);
+```
+
+ERROR: 
+```
+java.sql.SQLException: ORA-00904: ""EMP"":  invalid identifier
+ Query: select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=? Parameters: [7902]
+	at org.apache.commons.dbutils.AbstractQueryRunner.rethrow(AbstractQueryRunner.java:392)
+	at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:351)
+	at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:289)
+```
+
+driver: ojdbc7.jar
+
+When execute on database or use pure JDBC, It's correct.
+Please fixed.","Database: Oracle
+
+SQL: select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?
+",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-05-06 00:52:49.024,,,false,,,,,Important,,,,,,,,9223372036854775807,,,Fri May 06 02:57:33 UTC 2016,,,,,,0|i2wt9b:,9223372036854775807,,,,,,,,,06/May/16 00:52;ggregory;Can you please provide the DML for the tabkes and a unit test for working and failure use vases?,"06/May/16 02:57;inthink;*After my test, an error occurs when using ojdbc7.jar*
+
+h2. Environment:
+- ORACLE12C
+- ojdbc7.jar
+
+h2. SQL Script:
+
+{code:title=SQL.sql|borderStyle=solid}
+CREATE TABLE DEPT
+(
+  DEPTNO NUMBER(2) NOT NULL PRIMARY KEY,
+  DNAME VARCHAR2(14 BYTE) NULL ,
+  LOC VARCHAR2(13 BYTE) NULL 
+);
+
+
+INSERT INTO DEPT VALUES (10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO DEPT VALUES (20, 'RESEARCH', 'DALLAS');
+INSERT INTO DEPT VALUES (30, 'SALES', 'CHICAGO');
+INSERT INTO DEPT VALUES (40, 'OPERATIONS', 'BOSTON');
+
+
+CREATE TABLE EMP
+( 
+  EMPNO NUMBER(4,0) PRIMARY KEY,
+  ENAME VARCHAR2(10),
+  JOB VARCHAR2(9),
+  MGR NUMBER(4,0),
+  HIREDATE DATE,
+  SAL NUMBER(7,2),
+  COMM NUMBER(7,2),
+  DEPTNO NUMBER(2,0)
+);
+
+
+INSERT INTO EMP VALUES (7369, 'SMITH', 'CLERK', 7902, TO_DATE('19801218000000', 'YYYYMMDDHH24MISS'), 1200, NULL, 20);
+INSERT INTO EMP VALUES (7499, 'ALLEN', 'SALESMAN', 7698, TO_DATE('19810220000000', 'YYYYMMDDHH24MISS'), 1900, 300, 30);
+INSERT INTO EMP VALUES (7521, 'WARD', 'SALESMAN', 7698, TO_DATE('19810222000000', 'YYYYMMDDHH24MISS'), 1550, 500, 30);
+INSERT INTO EMP VALUES (7566, 'JONES', 'MANAGER', 7839, TO_DATE('19810402000000', 'YYYYMMDDHH24MISS'), 3275, NULL, 20);
+INSERT INTO EMP VALUES (7654, 'MARTIN', 'SALESMAN', 7698, TO_DATE('19810928000000', 'YYYYMMDDHH24MISS'), 1550, 1400, 30);
+INSERT INTO EMP VALUES (7698, 'BLAKE', 'MANAGER', 7839, TO_DATE('19810501000000', 'YYYYMMDDHH24MISS'), 3150, NULL, 30);
+INSERT INTO EMP VALUES (7782, 'CLARK', 'MANAGER', 7839, TO_DATE('19810609000000', 'YYYYMMDDHH24MISS'), 3150, NULL, 10);
+INSERT INTO EMP VALUES (7788, 'SCOTT', 'ANALYST', 7566, TO_DATE('19870419000000', 'YYYYMMDDHH24MISS'), 3300, NULL, 20);
+INSERT INTO EMP VALUES (7839, 'KING', 'PRESIDENT', NULL, TO_DATE('19811117000000', 'YYYYMMDDHH24MISS'), 5700, NULL, 10);
+INSERT INTO EMP VALUES (7844, 'TURNER', 'SALESMAN', 7698, TO_DATE('19810908000000', 'YYYYMMDDHH24MISS'), 1800, 0, 30);
+INSERT INTO EMP VALUES (7876, 'ADAMS', 'CLERK', 7788, TO_DATE('19870523000000', 'YYYYMMDDHH24MISS'), 1400, NULL, 20);
+INSERT INTO EMP VALUES (7900, 'JAMES', 'CLERK', 7698, TO_DATE('19811203000000', 'YYYYMMDDHH24MISS'), 1250, NULL, 30);
+INSERT INTO EMP VALUES (7902, 'FORD', 'ANALYST', 7566, TO_DATE('19811203000000', 'YYYYMMDDHH24MISS'), 3300, NULL, 20);
+INSERT INTO EMP VALUES (7934, 'MILLER', 'CLERK', 7782, TO_DATE('19820123000000', 'YYYYMMDDHH24MISS'), 2000, NULL, 10);
+
+commit;
+{code}
+
+
+h2. Java JUnit Test Case
+{code:title=Bar.java|borderStyle=solid}
+import static org.junit.Assert.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.junit.Test;
+import com.cpy.ems.entity.Emp;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+
+public class DBUtilsSubqueryTest {
+
+	// C3P0
+	ComboPooledDataSource ds = new ComboPooledDataSource();
+	
+	String sql=""select ""
+			+ ""		e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,""
+			+ ""		(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname ""
+			+ ""from ""
+			+ ""		emp e,dept d ""
+			+ ""where ""
+			+ ""		e.deptno=d.deptno ""
+			+ ""		and e.empno=?"";
+	
+	int empno = 7902;
+	
+	@Test
+	public void testJDBC() throws SQLException {
+		// Use JDBC, It's correct!
+		Connection con=ds.getConnection();
+		PreparedStatement pstmt=con.prepareStatement(sql);
+		pstmt.setObject(1, empno);
+		pstmt.executeQuery();
+		con.close();
+		
+	}
+	
+	@Test // ERRORS
+	public void testDBUtils() throws SQLException {
+		// Use DBUtils, when use params it's incorrect
+		// Exception: java.sql.SQLException: ORA-00904: ""EMP"": invalid identifier
+		QueryRunner qr=new QueryRunner(ds);
+		//qr.query(sql2, rsh, params)
+		qr.query(sql, new BeanHandler<Emp>(Emp.class),empno);
+	}
+
+	@Test
+	public void testDBUtils2() throws SQLException {
+		// Use JDBC, do not use params, It's correct!
+		String sql2=""select ""
+				+ ""		e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,""
+				+ ""		(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname ""
+				+ ""from ""
+				+ ""		emp e,dept d ""
+				+ ""where ""
+				+ ""		e.deptno=d.deptno ""
+				+ ""		and e.empno=7902"";
+		QueryRunner qr=new QueryRunner(ds);
+		//qr.query(sql2, rsh)
+		qr.query(sql2, new BeanHandler<Emp>(Emp.class));
+	}
+}
+{code}",,,,,,,,,,,,,,,,,
+ON DUPLICATE KEY clause can cause NPE with QueryRunner.insert,DBUTILS-133,13036044,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Not A Bug,,dougstevens,dougstevens,19/Jan/17 01:30,20/Jan/17 16:07,08/Jun/19 23:41,20/Jan/17 16:07,1.6,,,,0,,,,"Using QueryRunner.insert with an ON DUPLICATE KEY clause in the query may cause a NullPointerException, presumably when there is no new row and therefore no new row id to return. Here is an example. The NPE is reported on the line with 'id = query.insert('. Have seen other examples of the same behavior.
+
+{code:java}
+        long id = 0;
+        try {
+            QueryRunner qry = new QueryRunner(myDataSource);
+            id = qry.insert(
+                    ""INSERT INTO VinDecodeCache (License, State, Vin, Make, Model, Trim, Engine, Year, ""
+                            + ""BaseId, MakeId, ModelId, TrimId, EngineId, CreateDate) ""
+                            + ""VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE ""
+                            + ""Vin = ?, Make = ?, Model = ?, Trim = ?, Engine = ?, Year = ?, ""
+                            + ""BaseId = ?, MakeId = ?, ModelId = ?, TrimId = ?, EngineId = ?, CreateDate = ?"",
+                    new ScalarHandler<Long>(), license, state, vin, make, model, trim, engine, year, baseId, makeId,
+                    modelId, trimId, engineId, now, vin, make, model, trim, engine, year, baseId, makeId, modelId,
+                    trimId, engineId, new Date());
+        } catch (Exception e) {
+            LOG.error(""Unexpected error caching vin decode data"", e);
+            id = 0;
+        }
+        return id;
+{code}","Java 8, Mysql (mysql.mysql-connector-java.version = 5.1.40)",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-01-20 12:42:46.007,,,false,,,,,,,,,,,,,9223372036854775807,,,Fri Jan 20 16:07:52 UTC 2017,,,,,,0|i38wjj:,9223372036854775807,,,,,,,,,20/Jan/17 12:42;michael-o;Can you show the stacktrace?,"20/Jan/17 15:49;dougstevens;Unfortunately the stack trace ends at my line of code. I've verified that the data source is valid and that none of the input parameters in this case are null (not that that should matter). I can probably dig up another example if you want (different code, different query). In that case I didn't require the returned id so I've changed the code to use update() instead of insert() and haven't seen further errors, but the error rate is low enough that I can't be sure that is a fix. However, if it is related to a missing return id in the case of update vs. insert as I suspect then I think the switch to using update() vs. insert() would cause the issue to go away in that case. 
+
+Here is the full slf4j logger (logback) output with the stack trace:
+
+2017-01-17 19:23:37.417 ERROR [http-nio-8080-exec-4] [104.235.172.141] [] [996] [vpq5e86nlvnl] c.w.service.common.types.VinDecode - Unexpected error caching vin decode datajava.lang.NullPointerException: null	at com.wrench.service.common.types.VinDecode.create(VinDecode.java:175)	at com.wrench.service.common.util.VehicleUtils.lookupVehicle(VehicleUtils.java:147)	at com.wrench.service.user.impl.LookupVehicleImpl.lookupVehicle(LookupVehicleImpl.java:58)	at com.wrench.service.user.UserManagementImpl.lookupVehicle(UserManagementImpl.java:139)	at com.wrench.service.user.UserManagementClient.lookupVehicle(UserManagementClient.java:240)	at com.wrench.service.user.UserManagement.lookupVehicle(UserManagement.java:884)	at sun.reflect.GeneratedMethodAccessor2516.invoke(Unknown Source)	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)	at java.lang.reflect.Method.invoke(Method.java:498)	at com.sun.jersey.spi.container.JavaMethodInvokerFactory$1.invoke(JavaMethodInvokerFactory.java:60)	at com.sun.jersey.server.impl.model.method.dispatch.AbstractResourceMethodDispatchProvider$ResponseOutInvoker._dispatch(AbstractResourceMethodDispatchProvider.java:205)	at com.sun.jersey.server.impl.model.method.dispatch.ResourceJavaMethodDispatcher.dispatch(ResourceJavaMethodDispatcher.java:75)	at com.sun.jersey.server.impl.uri.rules.HttpMethodRule.accept(HttpMethodRule.java:302)	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)	at com.sun.jersey.server.impl.uri.rules.ResourceClassRule.accept(ResourceClassRule.java:108)	at com.sun.jersey.server.impl.uri.rules.RightHandPathRule.accept(RightHandPathRule.java:147)	at com.sun.jersey.server.impl.uri.rules.RootResourceClassesRule.accept(RootResourceClassesRule.java:84)	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1542)	at com.sun.jersey.server.impl.application.WebApplicationImpl._handleRequest(WebApplicationImpl.java:1473)	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1419)	at com.sun.jersey.server.impl.application.WebApplicationImpl.handleRequest(WebApplicationImpl.java:1409)	at com.sun.jersey.spi.container.servlet.WebComponent.service(WebComponent.java:409)	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:558)	at com.sun.jersey.spi.container.servlet.ServletContainer.service(ServletContainer.java:733)	at javax.servlet.http.HttpServlet.service(HttpServlet.java:729)	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:292)	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)	at com.wrench.service.common.filter.LoggingContextFilter.doFilter(LoggingContextFilter.java:86)	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)	at com.wrench.service.common.filter.BasicAuthenticationFilter.doFilter(BasicAuthenticationFilter.java:66)	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212)	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:106)	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:502)	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141)	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)	at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:616)	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88)	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:509)	at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1104)	at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:684)	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1520)	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1476)	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)	at java.lang.Thread.run(Thread.java:745)","20/Jan/17 15:51;dougstevens;I've updated the issue with the stack trace and some further notes.
+
+On Fri, Jan 20, 2017 at 4:43 AM Michael Osipov (JIRA) <jira@apache.org>
+
+","20/Jan/17 16:05;dougstevens;I think I may know what the issue is. I believe it is an auto-boxing NPE. That is, insert() is returning a Long. In the case of a duplicate key update vs. a new row insert the Long value returned is null. My code is assigning that to a long, the conversion is automatic and is probably causing the NPE.
+
+I'll adjust my code accordingly to see if the issue goes away. Will take a couple of weeks to be sure but I am pretty confident that is the issue.
+
+Thanks for asking for the stack trace... forced me to think a little more carefully about my line of code.",20/Jan/17 16:07;dougstevens;Error is in client code. Return data type being converted transparently byt the client (auto-boxing) from Long to long. When return value is null conversion fails with an NPE. ,,,,,,,,,,,,,,
+getParameterMetaData  Exception,DBUTILS-122,12758808,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,,dingli,dingli,02/Dec/14 01:53,15/Dec/14 18:45,08/Jun/19 23:41,15/Dec/14 18:45,1.5,1.6,,,0,,,,"using ojdbc6.jar to connect to Oracle,  we get ""ORA-00942 table or view not exist"" exception.  after dive into dbutils code, we found  the exception is throw from  
+org.apache.commons.dbcp.DelegatingPreparedStatement.getParameterMetaData
+
+this is a oracle bug , but dbutils should ignore it and continue processing
+
+in the AbstractQueryRunner.java
+
+method :  fillStatement
+
+if (!pmdKnownBroken) {
+            pmd = stmt.getParameterMetaData();
+            int stmtCount = pmd.getParameterCount();
+            int paramsCount = params == null ? 0 : params.length;
+
+            if (stmtCount != paramsCount) {
+                throw new SQLException(""Wrong number of parameters: expected ""
+                        + stmtCount + "", was given "" + paramsCount);
+            }
+        }
+
+the code should catch the exception and set pmdKnownBroken to true and continue
+
+
+another suggestion:
+can the AbstractQueryRunner provide a method to set pmdKnownBroken in addtion to constructor ?","Windows, JDK6",,,,,,,,,DBUTILS-117,,,0.0,,,,,,,,,,,,,,,,,,,2014-12-15 18:41:40.774,,,false,,,,,,,,,,,,,9223372036854775807,,,Mon Dec 15 18:41:40 UTC 2014,,,,,,0|i22y7r:,9223372036854775807,,,,,,,,,"15/Dec/14 18:41;sebb;As noted, this is an Oracle bug.
+
+It does not make sense for DBUTILS to allow for this, as it would potentially mask other errors.
+
+The proper solution is for Oracle to fix the bug.
+
+A work-round is to create the class specifying that pmd is known to be broken.",,,,,,,,,,,,,,,,,,
+Using Oracle OJDBC7 gives ORA-00933,DBUTILS-125,12824402,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Minor,Invalid,,emrecio,emrecio,27/Apr/15 19:48,27/Jan/16 20:20,08/Jun/19 23:41,27/Jan/16 20:20,1.6,,,,1,,,,"Attempting to run an sql query with the latest version of the drivers, it fails with ERROR (JavaApplication33.java:107) - ORA-00933: SQL command not properly ended.
+
+However, if I revert to the 11 version of the driver, the query works fine. Is there a setting that I am missing between the two versions?",JDBC driver version is 12.1.0.1.0,,,,,,,,,,07/May/15 14:46;emrecio;JavaApplication35NoDbUtils.tar.bz2;https://issues.apache.org/jira/secure/attachment/12731188/JavaApplication35NoDbUtils.tar.bz2,07/May/15 14:46;emrecio;JavaApplication35WithDbUtils.tar.bz2;https://issues.apache.org/jira/secure/attachment/12731189/JavaApplication35WithDbUtils.tar.bz2,2.0,,,,,,,,,,,,,,,,,,,2015-04-27 20:18:06.293,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed Jan 27 19:33:52 UTC 2016,,,,,,0|i2dtrz:,9223372036854775807,,,,,,,,,"27/Apr/15 20:18;michael-o;Did you check the changelog between these two versions? Make sure that you reproduce the issue with OJDBC7 for 11g and 12c.
+
+If you think you can provide a minimal working example against some builtin view, I can test it at work.","29/Apr/15 15:32;emrecio;So I ran a test. It seems to be something wrong with the 12.x driver. Since I got no where putting the query into the application, I created the complex query as a view on the server. I figured that this would at least work around the problem. However, it seems like there are still problems with the 12.x instant client... The driver version is in the paragraph/snippets. See my testing below:
+
+ojdbc6.jar:
+
+DEBUG (JavaApplication33.java:91) - Got query runner: org.apache.commons.dbutils.QueryRunner@114b6c2
+JDBC driver version is >>>>> 11.2.0.2.0 <<<<<
+DEBUG (JavaApplication33.java:104) - Exec Query
+ERROR (JavaApplication33.java:110) - ORA-00904: ""barcode"": invalid identifier
+ Query:  SELECT DISTINCT *  FROM schema1.reader_vw WHERE user_id = ? OR barcode = ?  Parameters: [xx1, xx1]
+
+
+DEBUG (JavaApplication33.java:91) - Got query runner: org.apache.commons.dbutils.QueryRunner@1d016c9
+JDBC driver version is >>>>> 12.1.0.2.0 <<<<<
+DEBUG (JavaApplication33.java:104) - Exec Query
+ERROR (JavaApplication33.java:110) - ORA-00942: table or view does not exist
+ Query:  SELECT DISTINCT *  FROM schema1.reader_vw WHERE user_id = ? OR barcode = ?  Parameters: [xx1, xx1]
+
+##############################
+ojdbc7.jar (7 not available for v11.x):
+
+DEBUG (JavaApplication33.java:91) - Got query runner: org.apache.commons.dbutils.QueryRunner@d1993a
+JDBC driver version is >>>>> 12.1.0.2.0 <<<<<
+DEBUG (JavaApplication33.java:104) - Exec Query
+ERROR (JavaApplication33.java:110) - ORA-00942: table or view does not exist
+ Query:  SELECT DISTINCT *  FROM schema1.reader_vw WHERE user_id = ? OR barcode = ?  Parameters: [xx1, xx1]
+
+##############################
+After correcting the query, with ojdbc6:
+
+DEBUG (JavaApplication33.java:89) - Got query runner: org.apache.commons.dbutils.QueryRunner@114b6c2
+JDBC driver version is >>>>> 11.2.0.2.0 <<<<<
+DEBUG (JavaApplication33.java:102) - Exec Query
+DEBUG (EPerson.java:47) - EPerson()
+DEBUG (JavaApplication33.java:106) - xx1|IF88RAN|John Smith|null|Medical|D1381072|Infrastructure|D138108F
+
+DEBUG (JavaApplication33.java:89) - Got query runner: org.apache.commons.dbutils.QueryRunner@1d016c9
+JDBC driver version is >>>>> 12.1.0.2.0 <<<<<
+DEBUG (JavaApplication33.java:102) - Exec Query
+ERROR (JavaApplication33.java:108) - ORA-00942: table or view does not exist
+Query:  SELECT DISTINCT *  FROM schema1.reader_vw WHERE user_id = ? OR barcode_id = ?  Parameters: [xx1, xx1]","29/Apr/15 16:21;emrecio;Well, I can confirm that the version 12 drivers work fine against the database (using Netbeans builtin db browser), but not with dbutils, so I am at a loss. I did an lsof grep'ed for any ojdbc and the only thing that was open was ojdbc7.jar from the instantclient 12.","29/Apr/15 16:34;michael-o;Are you able to reproduce the issue with plain JDBC calls? Yes, I know that is pain in the ass but still.","29/Apr/15 16:55;emrecio;Using dbutils, it fails with v12 drivers, while working with v11 drivers. (both ojdbc6 and 7.jar)
+
+Doing it the old fashioned way it works with v11 and v12 drivers.
+
+// old fashioned way
+            Connection conn = null;
+            Properties connectionProps = new Properties();
+            connectionProps.put(""user"", ""myuser"");
+            connectionProps.put(""password"", ""mypassword"");
+            conn = DriverManager.getConnection(""jdbc:oracle:thin:@server:1521/foo"", connectionProps);
+            _log.debug(""Got conn: ""+conn.toString());
+            DatabaseMetaData meta = conn.getMetaData();
+            _log.warn(""JDBC driver version is "" + meta.getDriverVersion());
+            String ePersonSql1 = "" SELECT DISTINCT *  FROM schema1.reader_vw WHERE user_id = 'xx1' OR barcode = 'xx1'  "";
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(ePersonSql1);
+            while(rs.next()) {
+                _log.debug(""GOT DATA: ""+
+                        rs.getString(1) + ""|"" +
+                        rs.getString(2) + ""|"" +
+                        rs.getString(3) + ""|"" +
+                        rs.getString(4) + ""|"" +
+                        rs.getString(5) + ""|"" +
+                        rs.getString(6) + ""|"" +
+                        rs.getString(7)
+                );
+            }",29/Apr/15 18:25;michael-o;This isn't equivalent. DbUtils does a prepared statement. Here you did a regular one.,"29/Apr/15 18:36;emrecio;Modified the sql statement to use parameter ""?""'s and changed the code to:
+
+            pstmt = conn.prepareStatement(ePersonSql1);
+            pstmt.setString(1, ""xx1"");
+            pstmt.setString(2, ""xx1"");
+            ResultSet rs = pstmt.executeQuery();
+
+Same problem. Is there  a way that I can turn on verbose debugging in the dbutils library?","29/Apr/15 18:53;michael-o;What database version do you use? If you can prepare a minimal working example for me, I will retry this at work. I have 11.2g at hand here.","29/Apr/15 19:08;emrecio;Oracle Database 11g Enterprise Edition Release 11.2.0.3.0 - 64bit Production
+","30/Apr/15 11:51;emrecio;Some background on troubleshooting i've done:
+
+I am accessing a view and/or tables as other schemas (users). My intended account is read-only, but I have used other accounts in troubleshooting.
+
+The url is of the format: ""jdbc:oracle:thin:@mydbserver.example.com:1521/MYTNSDB""
+
+I am doing a ds.setUser() and ds.setPassword()
+
+I have changed my username to the same user/schema as the table... to no avail.
+
+I have added the username before the ""@"" to no avail.
+
+I have made sure that the views and tables are accessible via SQLDeveloper (from Oracle) from both users. Notably, they use the v11 driver for their app. I will be testing later today with dropping in the v12 driver in the app itself to see (confirm) dbutils issue or native java issue.
+
+The original query used COALESCE() which gave the ORA-00933, but now, since I created the view on the server (using the exact same query, so there's nothing wrong with it) I am doing a ""select distinct *"" which is giving the ORA-00942 (table or view does not exist). Note that, as noted previously, using the native JDBC calls work fine, and data is returned as expected.
+
+All of this works with the v11 drivers, but not the v12 drivers.
+",01/May/15 13:19;emrecio;Just wondering if anyone has had a chance to confirm this issue? ,"01/May/15 13:38;michael-o;No, this won't happen before next week since I won't have access to the system.",07/May/15 11:10;emrecio;Bump?,"07/May/15 12:00;michael-o;Yes, can you kindly create a sample project with runs a) a query with DbUtils and b) one without bundles with thoses drivers. I will replay it here.","09/May/15 08:06;michael-o;Great, I'll hvae a look.",13/May/15 11:01;michael-o;Just checked your sample. Can you reproduce this with exsiting tables in Oracle or provide create table statements to reproduce it? Otherwise I cannot replay the issue.,"12/Oct/15 17:18;sharon;we see the exact same issue with oracle 11g when using 12 driver 
+Any update on this issue?","27/Jan/16 19:07;Peter Gibbons;It is not a DBUtils bug, definitely. It is a bug in the ojdbc7.jar Oracle JDBC Driver in the PreparedStatement.getParameterMetaData method.
+
+Please see http://stackoverflow.com/a/35033943/3371541
+
+In my case, it was failing when doing an UPDATE on any column which name starts with F, H or O .... and I am not kidding, after trying several queries those column names are misspelled or simply disappear from the query.
+
+The reason same query works in SQL Developer and not in DBUtils is because the QueryRunner.update method (for example) uses internally the PreparedStatement.getParameterMetaData while the other tool will probably use other kind of method to map parameters with values in the prepared statement.",27/Jan/16 19:33;michael-o;Closing as not a bug?
+Correct errors in BeanMapHandler JavaDoc,DBUTILS-119,12728605,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Trivial,Fixed,britter,eakerma,eakerma,21/Jul/14 16:03,21/Jul/14 16:14,08/Jun/19 23:41,21/Jul/14 16:14,1.6,,1.7,,0,documentation,,,"The text:
+ ResultSetHandler<Map<Long, Person>> h = new BeanMapdHandler<Long, Person>(Person.class, ""id"");
+ Map&ltLong, Person> found = queryRunner.query(""select id, name, age from person"", h);
+ Person jane = found.get(1L); // jane's id is 1
+ String janesName = jane.getName();
+ Integer janesAge = jane.getAge();
+
+Corrections:
+- ""BeanMapdHandler"" to ""BeanMapHandler""
+- ""Map&ltLong"" to ""Map<Long""
+",,300,300,,0%,300,300,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-07-21 16:07:23.964,,,false,,,,,,,,,,,,,406680,,,Mon Jul 21 16:14:57 UTC 2014,,,,,,0|i1xzdz:,406700,,,,,,,,,21/Jul/14 16:07;ggregory;Patches welcome! ;-),"21/Jul/14 16:14;britter;The description almost contained the patch ;)
+
+{code}
+bene@Benedikts-MacBook-Pro:~/workspace/apache/commons/dbutils$ svn ci -m ""DBUTILS-119: Correct errors in BeanMapHandler JavaDoc. Thanks to Michael Akerman""
+Sending        src/changes/changes.xml
+Sending        src/main/java/org/apache/commons/dbutils/handlers/BeanMapHandler.java
+Transmitting file data ..
+Committed revision 1612335.
+{code}
+
+Thanks!",,,,,,,,,,,,,,,,,

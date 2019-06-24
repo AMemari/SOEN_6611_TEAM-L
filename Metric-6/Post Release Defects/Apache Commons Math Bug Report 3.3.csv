@@ -1,0 +1,1637 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Fix Version/s,Due Date,Votes,Labels,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Reference),Outward issue link (Reference),Attachment,Attachment,Attachment,Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+implementation of smallest enclosing ball algorithm sometime fails,MATH-1096,12692129,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Blocker,Fixed,luc,luc,luc,29/Jan/14 20:28,02/Feb/14 20:55,08/Jun/19 22:40,02/Feb/14 20:54,3.3,,,,,,0,,,,,"The algorithm for finding the smallest ball is designed in such a way the radius should be strictly increasing at each iteration.
+
+In some cases, it is not true and one iteration has a smaller ball. In most cases, there is no consequence, there is just one or two more iterations. However, in rare cases discovered while testing 3D, this generates an infinite loop.
+
+Some very short offending cases have already been identified and added to the test suite. These cases are currently deactivated in the main repository while I am already working on them. The test cases are
+
+* WelzlEncloser2DTest.testReducingBall
+* WelzlEncloser2DTest.testLargeSamples
+* WelzlEncloser3DTest.testInfiniteLoop
+* WelzlEncloser3DTest.testLargeSamples",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,370720,,,Sun Feb 02 20:54:58 UTC 2014,,,,,,0|i1rw67:,371031,,,,,,,,,02/Feb/14 20:54;luc;Fixed in subversion repository as of r1563712.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+OLSMultipleLinearRegression STILL needs a way to specify non-zero singularity threshold when instantiating QRDecomposition,MATH-1167,12754736,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Critical,Fixed,,neilireson,neilireson,12/Nov/14 11:06,26/Dec/14 19:50,08/Jun/19 22:40,12/Nov/14 11:22,3.3,,,3.4,,,0,,,,,"A fix was made for this issue in MATH-1110 for the newSampleData method but not for the newXSampleData method.
+
+It's a simple change to propagate the threshold to QRDecomposition:
+237c237
+<         qr = new QRDecomposition(getX());
+---
+>         qr = new QRDecomposition(getX(), threshold);","jdk1.7_71, OSX 10.10",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-11-12 11:22:27.25,,,false,,,,,,,,,,,,9223372036854775807,,,Wed Nov 12 11:22:27 UTC 2014,,,,,,0|i22a07:,9223372036854775807,,,,,,,,,"12/Nov/14 11:22;erans;Fixed in commit 301ad592142079d36f4d33f5309c103c7f4f5dfb
+Thanks for the report and patch.
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+problem with the rotation,MATH-1157,12746377,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Critical,Not A Problem,,cesFrank,cesFrank,07/Oct/14 11:27,07/Oct/14 14:19,08/Jun/19 22:40,07/Oct/14 14:19,3.3,,,3.4,,,0,newbie,,,,"Hello,
+
+this is my problem:
+
+myAngle = 0.3490658503988659
+
+The angle is created with FastMath.toRadians(20).
+
+myRotation = new Rotation(RotationOrder.XYZ, 0, 0, myAngle);
+
+if I use this on my Vector3D myVector = new Vector3D(4,4,4) with myRotation.applyInverseTo(myVector) I'm get the result
+
+x = 5.1268510564463075
+y = 2.390689909840958
+z = 3.999999999999999 (using the .getX() getY() and getZ() functions)
+
+Im working with double values, but after the rotation just around the axis z, the z value of my vector shouldn't have changed, but it does. Maybe it is not a bug but a wrong result after a simple rotation, or did I use the rotation in a wrong way?
+
+Best regards
+
+Frank","Windows 7, Eclipse, Java SE 1.7",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-10-07 12:48:33.13,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Oct 07 14:19:19 UTC 2014,,,,,,0|i20vn3:,9223372036854775807,,,,,,,,,"07/Oct/14 12:48;luc;I don't think it is a real problem.
+What happens here is simply floating point accuracy which is not absolute.
+Under the hood, the Rotation class does not use matrices but a more efficient way based on quaternions. This implies that the rotation you define has the following components: q0 = 0.984807753012208, q1 = 0, q2 = 0, q3 = -0.17364817766693033. The expression computing .applyInverseTo is a combination of q0, q1, q2, q3 and your vector x, y, z. The z component is:
+
+(-2 q0 q2) x + (2 q0 q1) y + (2 q0 q0 - 1) z + 2 q3 s
+
+where s = q1 x + q2 y + q3 z
+
+In your case, q1 and q2 are 0, and floating points multiplications and additions involving 0 are exact, so in your specific case, (and only in this specific case)  the z component is (2 (q0^2 + q3^2)  - 1) z. As a rotation quaternion is normalized, this should be equal to z since q1 and q2 are 0. however, the floating point numbers q0 and q3 are not perfect, and the multiplicative factor for z is not exactly 1 but is rather 1-epsilon where epsilon is the gap between 1 and the primitive double number just below 1. This means that the values q0 and q3 were already computed to the full accuracy of the computer. I have checked them using our Dfp high accuracy numbers class, and in fact the error in q0 is about 3.905e-17 and the error in q3 is about -1.767e-17, so it is not possible to have better values for q0 and q3, we are already at the limit of the primitive double.
+
+Do you agree with this explanation? Can we solve the issue as ""Not A Problem""?
+","07/Oct/14 14:19;cesFrank;Thanks for your fast and detailed answer. I'll mark the issue as ""Not A Problem"".
+
+Best regards and greetings",,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+BOBYQA incorrect indexing,MATH-1137,12726791,Bug,Open,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,,,essence,essence,11/Jul/14 11:47,18/Apr/17 15:22,08/Jun/19 22:40,,3.3,,,4.0,,,0,,,,,,,,,,,,,,,MATH-1282,MATH-1375,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-07-11 12:19:31.929,,,false,,,,,,,,,,,,404898,,,Sun Oct 05 19:08:25 UTC 2014,,,,,,0|i1xolr:,404936,,,,,,,,,"11/Jul/14 11:52;essence;I don't know my way around here...
+
+I commented in Math-621 about what I think is incorrect indexing, and it seems to still be incorrect.
+
+Line 530 of BOBYQA has
+{code}
+  double curv = modelSecondDerivativesValues.getEntry((j + j * j) / 2);
+{code}
+but I think it should be
+{code}
+  double curv = modelSecondDerivativesValues.getEntry((j + 1 +  (j+1)*(j+1)) / 2-1);
+{code}
+The original Fortran is
+{code}
+              CURV=HQ((J+J*J)/2)
+{code}
+So a change from 1 to 0 indexing should translate into the above.","11/Jul/14 12:19;erans;Could you provide a unit test for that section of the code?
+","11/Jul/14 13:40;goodwin@essence-property.com;I have never done a unit test in my life! I wouldn't know how to do it.
+
+To be honest, the only way I would check (in addition to reading) would 
+be to run the original Fortran and the Java and compare the two results.
+
+I read the code very carefully, and walk through it, and make some notes 
+on pencil and paper, and walk through it again.
+
+I have been using the corrected version for some years without any 
+problems. I am only going back to this issue because I am doing an 
+overall upgrade to 3.3. I have been using a corrected pre release 
+version of BOBYQA previously.
+
+I wrote a lot more on the original MATH-621 (or was it 612?).
+
+It may interest you to know I did a conversion of L-BFGS-B from Fortran 
+to Java, but it is a mess (I think you will understand why it is a 
+mess....).
+
+","11/Jul/14 14:41;erans;bq. I have never done a unit test in my life! I wouldn't know how to do it.
+
+A unit test is nothing more than a ""use-case"", IOW a mini-application demonstrating that the code behaves as expected. The unit test should fail with the current code, and pass with the proposed correction.
+Currently, no tests in CM exercise the block where the line is located... :(
+Thus, we need a set of initial conditions such that the algorithm will
+# enter this block
+# behave differently with each of the alternatives
+","11/Jul/14 14:51;essence;I know, I was being provocative, my bible of testing is Myers Art of Software Testing. The purpose of testing is to find errors, not to pass tests.
+
+The problem is I don't know what the expected behaviour is. I also struggle to see where this bit of code fits into the algorithm and where it is described in Powell's paper.
+
+If I knew this was to do with matrix diagonal elements, and if I knew that all diagonal elements are expected to be positive, and if I knew how to get the code to go through this path, then maybe there is a chance of a test.
+
+Do you have any idea where this code is described in the BOBYQA paper? Or is it part of NEWUOA, or is it some line search function?
+
+I can verify I have run BOBYQA hundreds of times on lots of problems, but have no idea whether this bit of code has ever been exercised.","11/Jul/14 17:02;erans;bq. The purpose of testing is to find errors, not to pass tests.
+
+If there is no test to leave a trace of something that has been changed, then that thing can be changed again later without anyone noticing.
+
+bq. Do you have any idea where this code is described in the BOBYQA paper?
+
+No.
+One goal of CM is that the _implementation_ should be documented (or self-documenting).
+IMO, we'd be better off if the algorithm were reimplemented from scratch (as was already discussed on the MATH-621 page).
+
+bq. I can verify I have run BOBYQA hundreds of times on lots of problems, but have no idea whether this bit of code has ever been exercised.
+
+That would be quite easy, if you can easily rerun those codes. You'd just have to uncomment line 538, and the code will throw an exception if it ever enters the block.
+","11/Jul/14 17:36;essence;Easy enough to say, but it is now in commercial production code....
+
+I have spent a few hours trying to understand the Powell paper and see where the code is described, but I haven't made much progress. I think it is to do with adjusting RHO, equations 6.8 - 6.11.
+
+Implement from scratch from the paper? You must be joking!!! Have you tried to read the paper? [I think you must have because you did the original conversion?]
+
+To be honest, we can talk about unit tests and test cases for ever, but can't you just read the code and confirm by manual inspection it is incorrect? That is one of the messages of Myers - most bugs are found by reading.
+
+I think I found this bug by visual inspection rather than any particular problem/symptom.
+
+If the original code had (J + J*J)/2 and looped around J from 1 to N, then with a 0 index we have
+
+(J+1 + (J+1)*(J+1))/2 -1 = (J+J*J)/2 + J
+
+with a loop around J from 0 to (N-1). It is dimensioned to 
+
+new ArrayRealVector(dimension * (dimension + 1) / 2);
+
+so when J = N-1 we are looking at the element
+
+(N + N*N)/2 -1 
+
+which seems pretty sensible to me, it is the last element of the array, which is of course the last diagonal of the triangular system.
+
+It's obvious, surely? It was just something missed in the original conversion, you don't have a test case for every single conversion. Myers also said testing is a matter of economics - in this case the economics and common sense says just fix it, it is obviously wrong.
+
+Another mental check you can do is to check there are no array bound exceptions. You don't need to write any code, just test by hand and visually. Do a walk through.
+
+Is there an apache rule 'for every bug correction there shalt be an individual specific test case'? I think we can all agree BOBYQA is one of the most complex classes in apache, and there was some debate whether it should be released or not. So some 'rules' need to be treated with some common sense.
+
+But the reality is it is very useful to me, at least, and I use it in production commercial code, and never had a problem.","11/Jul/14 17:59;essence;ps. Gilles, way back in Aug 2011 you said the lines
+
+{code}
+                   if (newPoint.getEntry(j) == lowerDifference.getEntry(j)) {
+                        bdtest = work1.getEntry(j);
+                    }
+                    if (newPoint.getEntry(j) == upperDifference.getEntry(j)) {
+                        bdtest = -work1.getEntry(j);
+                    }
+{code}
+
+are never entered, and if that is still true, then bdtest = bdtol and so the line in question is also never executed!
+
+Note also the C++ version has (J + J*J)/2, so IMHO that is also incorrect.
+
+In my experience with my L-BFGS-B conversion, the trickiest part was dealing with parameter v. value argument passing and what happened when an argument was changed inside a subroutine. Java and Fortran are very different. It took me days with detailed comparisons of outputs to trace and correct bugs. A good check would be to look at all places where methods change values of arguments.....this is all part of Java 101 which I haven't yet taken =}. bdtest is a primitive, so I think it's OK to change it and then check against bdtol. If bdtest was a Double, I think it would be different.","11/Jul/14 18:04;essence;pps. it seems that a script was used at least initially to do the 1 to 0 indexing changes, and that would explain why the relevant line wasn't picked up, the script probably didn't implement that kind of change. It just shows even if you use an automatic script, you still have to go through line by line to check it. Indeed, a script can be dangerous as it may give a false sense of security....","11/Jul/14 18:09;essence;my last comment (today)!
+
+The C++ version was created by running f2c, so presumably that converter also had difficulties with that line. Not surprising, really, I'm not sure how an automatic converter could do that kind of thing, it needs to understand what is happening both syntactically and semantically. Semantics is for humans.","12/Jul/14 13:02;erans;bq. Easy enough to say, but it is now in commercial production code....
+
+The issue is whether you'd have some saved copy of your development codes which you could rerun with the version of the code that can ""crash"". We don't ask for the complete source code of your applications.
+
+This is a way to help us improve the quality of Commons Math.
+
+Another approach would be to get in touch with an expert who could provide rationale for the obscure bits of Powell's code.
+As you seem quite knowledgeable in using such algorithms (and a fan of this one in particular), you are the best candidate for this job. ;-)
+
+A third approach to help users would be to describe a typical use-case where BOBYQA outperforms all the other algorithms implemented in Commons Math. This could provide incentives for improving the situation to people interested in performance.
+I must stress again that the CM's implementation is currently in a state with _a lot of room for improvement_, by which I specifically mean here: performance-wise (see discussion in MATH-621).
+
+bq. Implement from scratch from the paper? You must be joking!!! Have you tried to read the paper?
+
+I tried. I was hoping to find direct relationships between the mathematical structures described in the paper and the data structures in the Fortran implementation. Unfortunately, the reference code is overwhelmed by loops, low-level fiddling with indices, global variables, (disguised) gotos, and what not that so much obscures the essence of the computation that I did not bother to go further in that direction. See also the discussion with Dietmar on MATH-621.
+
+bq. It's obvious, surely? It was just something missed in the original conversion, you don't have a test case for every single conversion.
+
+Because the code came with a long list of unit tests, we had the impression that it was relatively safe to include it, despite the code itself broke all the expectations required to be part of Commons Math (a.o. documentation and maintainability).
+
+Personally, I do not want to have to read that code (again). Much less try and guess what this or that block's purpose was supposed to be.
+
+bq. Is there an apache rule 'for every bug correction there shalt be an individual specific test case'?
+
+I think there is. It's not always applied. But following the ""commit"" log, you can see that it's often the case, fortunately; thanks to dedicated developers!
+
+Concerning this specific issue, I propose that you post to the ""dev"" ML, asking for the change to be performed based on the arguments you've submitted here. If there is no objection there, I'll commit the correction.
+","12/Jul/14 15:54;essence;Nothing ever crashed, and I don't even know whether that bit of code is ever exercised, but I will take up the challenge and see if I can make some tests with difficult functions (e.g. Rosenbrook).
+
+I met Prof Powell many decades ago (I am aged 60, which is probably 3x the age of the average contributor to Apache) and he never claimed to be a good programmer.
+
+http://iridia.ulb.ac.be/IridiaTrSeries/link/IridiaTr2010-010.pdf
+
+I have looked at the NLopt C version and have little confidence in it....particularly the rescue code, which seems to not be there in the apache java version (probably a good thing).
+
+One other thing I noticed in Apache is line 1710 and 1744 where there is
+{code}
+  final int ih = nfx * (nfx + 1) / 2 - 1;
+{code}
+
+so 1 is subtracted.
+
+All I am doing in my suggested correction of
+{code}
+  double curv = modelSecondDerivativesValues.getEntry ((j + 1 + (j +1) * (j+ 1)) / 2 - 1);
+{code}
+
+is to do the same subtraction of 1 and adjust because j starts from 0.
+
+How do I post to the ""dev"" ML?
+
+","12/Jul/14 17:29;essence;I made a test program by applying bobyqa to a 100 dimensional rosenbrock function. The bit of code under discussion was never executed. indeed, the IF statement a few lines above was never true
+
+{code}
+          dnorm = FastMath.min(deltaOne, deltaTwo);
+            if (dnorm < HALF * rho) {
+                ntrits = -1;
+                // Computing 2nd power
+ {code}
+
+so I am scratching my head trying to work out how to force this bit of code to execute!
+
+I tried with various trust region sizes.","15/Jul/14 11:07;erans;bq. Nothing ever crashed, and I don't even know whether that bit of code is ever exercised, but I will take up the challenge and see if I can make some tests with difficult functions (e.g. Rosenbrook).
+
+Just to make sure that we mean the same thing: By ""crash"", I mean that you should use a _modified_ version of CM, where the ""throw"" statement is not commented out in that block. If a code code raises this exception, we can use it to further examine the behaviour of the block (by commenting out the ""throw"" and fiddling with the parameters).
+
+bq. the rescue code, which seems to not be there in the apache java version (probably a good thing).
+
+The ""rescue"" method was removed in revision 1158448. There was a discussion about this on the MATH-621 page.
+
+
+bq. How do I post to the ""dev"" ML?
+
+See this page:
+http://commons.apache.org/proper/commons-math/mail-lists.html
+
+You should subscribe to the ""dev"" ML.
+Then when you post, please add a ""\[Math\]"" prefix to the subject line (because the ML is shared for all ""Apache Commons"" projects).
+","15/Jul/14 12:02;essence;How do I find out what tests have already been done? I'm a bit worried this bit of code is never executed in my tests. Has a detailed comparison been done between the Fortran and Java on a range of test problems? I know machine precision is a problem, but has there been any attempt to compare the paths the tests go through? I spent many hours comparing the results at all stages between Fortran and java versions of L-BFGS-D, so I know how painful the process is.
+
+I am less concerned about the line we have been discussing here, than I am about other bugs which we are not discussing and have not yet been found!
+
+You can often have optimisation algorithms which have bugs but still find the minimum, albeit inefficiently.","15/Jul/14 12:25;essence;OK, I think I have found the test code (in the test directory!).
+
+But my question is - with these tests (which include Rosenbrock) was there a comparison between Java and the Fortran to see if the code reproduced the same results at each stage, not just the final result? Was it checked to see if they both went through the same path?
+
+If not, this is some testing work which I can contribute, it is important to me the code works optimally.
+
+Much more useful than unit tests, particularly as the code does not exactly use nice units!","15/Jul/14 15:15;erans;bq. I am less concerned about the line we have been discussing here, than I am about other bugs which we are not discussing and have not yet been found!
+bq. You can often have optimisation algorithms which have bugs but still find the minimum, albeit inefficiently.
+
+A general point worth raising on the ""dev"" ML!
+
+bq. \[...\] was there a comparison between Java and the Fortran to see if the code reproduced the same results at each stage, not just the final result?
+
+Dietmar could probably answer. He might still read the ""dev"" ML, so better to ask there.
+IIRC, the tolerances in the unit/validation tests are so stringent that even seemingly innocuous changes made some tests fail; hence it is unlikely that different paths would not trigger a failure. Although this might reassure you, it is a liability in the way to the refactoring (see MATH-621).
+","15/Jul/14 15:28;essence;As far as I can see, the tests only test the final value. They don't test how many functions evaluations there have been, or what paths have been followed.
+
+It is very easy to have bugs which do not alter the final solution, but which change the behaviour and efficiency.
+
+If nobody else has, I will have to allocate some time and do side to side comparisons of Java and Fortran versions.
+
+The first step may be to see if the Fortran version goes through the steps which the Java does not....","15/Jul/14 15:51;essence;Good news!
+
+The test example provided by Prof Powell DOES go through this bit of code. Now I have to use his same example test, and see if the Java also goes through it. If it does not, again, good news, I've found a bug!
+
+[to those of you who think finding bugs is bad news, read Myers. The bug is there whether you find it or not, so it's best to find it. Finding bugs is a success, the aim of testing is to find bugs.]","15/Jul/14 16:45;erans;bq. They don't test \[...\] what paths have been followed.
+
+For coverage (i.e. code paths explore by the unit tests) we have the following report:
+http://commons.apache.org/proper/commons-math/jacoco/org.apache.commons.math3.optimization.direct/BOBYQAOptimizer.html
+
+bq. They don't test how many functions evaluations there have been
+
+Unless I'm mistaken, it would be easy to change the ""maxEvalutations"" parameter in ""doTest"".
+You are welcome to try it if you have the used by the original code.","15/Jul/14 17:36;essence;I'm making some progress.
+
+With the test problems provided by Powell in his Fortran, the Java does go through the relevant lines - but the behaviour between Java and Fortran is different, so I think it will be good to trace in both cases the paths.
+
+Just checking the fact that branches are covered in tests is not enough - they have to be covered in the same way in the same order for Fortran and Java.
+
+Not sure what nationality you are, ever seen the sketch by Morecombe and Wise and Andre Previn?","16/Jul/14 11:05;erans;bq. the behaviour between Java and Fortran is different
+
+An example?
+
+bq. \[ branches\] have to be covered in the same way in the same order for Fortran and Java.
+
+I recall that some statements seemed to rely on the finite precision of floating-point arithmetic.
+If that's the case, I don't think that the goal should be to mimic this (fragile) behaviour. And if we don't, then the code paths might start to differ.
+Finding the same optimum, within some reasonable tolerance, and with about the same number of evaluations seems (IMHO) sufficient.
+
+Again, you should raise this point on the ""dev"" ML to gather more opinions.
+
+bq. ever seen the sketch by Morecombe and Wise and Andre Previn?
+
+:)
+Thanks for the reference. I knew the relevant excerpt but did not know its origin.
+","16/Jul/14 23:50;essence;My suspicion is being directed towards 
+
+trustRegionCenterInterpolationPointIndex
+
+In some cases this seems to be zero based, in others 1 based.
+
+I was looking at the values of k in the loop and the values of the test at about line 790. The skipped k values were not consistent between Fortran and Java, even when knew was set the same at line 790....
+
+Also KOPT v KNEW looks suspicious - the Fortran has a test against KOPT in ALTMOV, whereas the java has a test against knew...
+
+This is what I mean about the long hard slog comparing Java and Fortran. Unit tests are for lazy people!","17/Jul/14 12:49;essence;This is now drawing to a close...
+
+The good news is that I managed to reproduce the Fortran behaviour until close to convergence, when rounding errors start to become more important. I compare the values of all the function evaluations until close to convergence, and the paths.
+
+I altered some comparison statements between doubles, as sometimes two numbers almost identical were being compared and the rounding errors caused changes in logic (as you know).
+
+I did a few changes of initialisation of indices, Fortran set them to zero, I set them to minus one, this may have an effect.
+
+So, in short:
+
+- I am now pretty confident my Java version works as it should
+
+- I still couldn't get the Fortran to exercise the lines which started all this (although the Java does), so I'm not much further on whether my fix is confirmed correct or not.
+
+Some time soon I will try to put this to bed. It is very time consuming. But also, I have provided a further visual check of quite a lot of the code, so that can't be a bad thing.","17/Jul/14 15:17;erans;bq. I did a few changes of initialisation of indices, Fortran set them to zero, I set them to minus one, this may have an effect.
+
+The effect of raising an exception (if the index is not set to a proper value before use), you mean?
+
+bq. I am now pretty confident my Java version works as it should
+
+Anything that should be updated in our version?
+
+bq. I still couldn't get the Fortran to exercise the lines which started all this (although the Java does)
+
+I don't understand; our current version does not exercise that section of the code.
+
+bq. I have provided a further visual check of quite a lot of the code, so that can't be a bad thing.
+
+No, but how shall we keep a record of what is correct (and whose logic should be maintained), what is probably not correct and what is undecided yet? If we leave it at that, CM users and developers won't benefit from your review...
+","17/Jul/14 16:27;essence;I have changed very, very little.
+
+The current tests may not exercise that code, but the tests provided by Powell in his Fortran, when implemented in Java, do exercise it (but not when implemented in Fortran, so far...). At the very least, we should add the Powell tests to the set of tests (see below).
+
+Changes:
+
+Line 403 initialise trustRegionCenterInterpolationPointIndex to -1
+
+Line 420 initialise knew to -1
+
+Line 894 set knew to -1
+
+Line 1137 change to if (knew > -1)   (of course, this has no effect, but is more consistent and readable because -1 means 'not set')
+
+Of course, -1 is just a Fortran workaround to mean 'null' or NA or whatever. I would suggest using Integer.NaN, but there isn't such a thing, which is strange....So -1 will have to do. But we ought to make a static final integer to take the place of '-1', so it is more readable.
+
+I don't know whether the above changes had any effect, but they are certainly a better and more consistent  translation of the Fortran. Line 1117 already set knew to -1, but in other places it was set to 0 (as per the Fortran), which is incorrect because knew is a zero based index. This was dangerous practice.
+
+I also did changes to make double comparisons more consistent with the Fortran. This was so I could compare as closely as possible to the Fortran, and these changes were necessary (but not sufficient) to do this. I can see, longer term, value in making it as close as possible, and ideally the same changes would be done to the Fortran. In this way, we can do a head to head comparison between Java and Fortran. They start deviating as they converge to the solution, and the higher the dimensions and the number of interpolation points used, the more quickly they deviate. But I still like the idea of trying to make them as close as possible.
+
+The things I changed were:
+
+Line 787  if ((temp * den - scaden) > scaden * 1.0e-10)
+Line 915 if ((temp * den - scaden) > scaden * 1.0e-10)
+Line 1403 if ((predsq - presav)> presav * 1.0e-10)
+
+No doubt there are others, but this was enough for the moment.
+
+Now, there is no reason to believe that in general these will behave the same as the Fortran, so really the Fortran should have the same changes, and then we have a closer correspondence between java and Fortran which we can use for future testing.
+
+Does that make sense?
+
+When I tested, I ran the Fortran and Java side by side, output a host of diagnostics, used the debugger extensively, and gradually convinced myself that, with the above changes, they were doing the same thing. I now need to go to specsavers. I still don't know what country you are based in.
+
+The Powell test example looks like a good test, and it almost certainly covers branches which the existing tests did not. I have, of course, the java code for my test environment.
+
+Now, I have never participated in open source, I don't know what the procedure is, I don't know your role, bla bla bla. But it would be nice to get my changes into Apache. What is the best way to do this? Of course, I want somebody else (you?) to examine my changes and review them. Also, all the existing tests need to be re run and results compared.
+
+I run my own self employed business, I have spent maybe $6000 USD on this per my day rates. I don't have an employer (or taxpayer) who can absorb these costs.
+
+Also, of course, not to forget my original bug correction!
+
+What is the best way forward?
+
+","18/Jul/14 10:49;erans;bq. really the Fortran should have the same changes, and then we have a closer correspondence between java and Fortran which we can use for future testing.
+bq. Does that make sense?
+
+Yes and no.
+
+From a testing perspective, it certainly does; undoubtedly, it helps to try and reproduce the output of a trusted source.
+But from a design perspective, this option is completely at odds with the goal of a ""state-of-the-art"" Java (implying OO) code: At some point the codebases should diverge, and the unit tests suite will provide the (relative) confidence that the CM code does what is expected.
+
+bq. I still don't know what country you are based in.
+
+Belgium. I'm a European. ;)
+
+bq. The Powell test example looks like a good test, and it almost certainly covers branches which the existing tests did not.
+
+I don't know the ""Powell test example"". Dietmar Wolz did the port to Java and brought along most of the tests which we currently have for this code. Unless I'm mistaken, they were part of the Fortran test suite.
+If you happen to have more tests, they would certainly be a useful addition, especially if they cover still uncovered areas.
+
+bq. Now, I have never participated in open source, I don't know what the procedure is, I don't know your role, bla bla bla. But it would be nice to get my changes into Apache. What is the best way to do this?
+
+Unfortunately, I still don't know what is _the_ best way.
+In fact the best way will surely vary from one developer to another!
+
+To start somewhere:
+
+* http://www.apache.org/foundation/getinvolved.html
+* http://commons.apache.org/patches.html
+
+Then, as I suggested several times, you _should_ subscribe to the Commons projects' ""dev"" ML, and summarize there your proposal for proceding with the issue (and provide the link to this page - it's not necessary to copy everything that was said here).
+
+bq. I have spent maybe $6000 USD on this per my day rates.
+
+It doesn't tell whether you spent an awful lot of of time or if you are very well paid. :)
+
+From the project's point-of-view, we are all individual volunteers, hopefully driven by the common ideal of providing reasonably well-designed codes that implement standard mathematical algorithms. Unfortunately, not many people get paid for that altruistic goal. Of course, some developers naturally contribute more to codes which they also use, and contributors usually get back more than they put in, either by their contribution being maintained by a larger group or by simply using CM (i.e. the contributions made by other people).
+","05/Oct/14 18:34;psteitz;Is there a patch in progress here?  At least unit test showing something failing?  Otherwise, we should close this.","05/Oct/14 18:49;goodwin@essence-property.com;I am 99% sure that my suggested corrections are correct, but this issue is not amenable to unit tests. I have done various tests, and none of them so far go through the relevant lines of code, so I can't check whether my changes work or not, nor their effect.
+
+That is the nature of complex code like this.
+
+I can't even find where in the original paper the relevant code relates to.
+
+So this is a case of testing by reading the code, not testing by unit tests.
+
+I have retained my personal copy of the code which contains the corrections, and cannot afford any more time on this.
+
+All I can ask is for others to look through my suggested changes and check them by reading them.","05/Oct/14 18:50;goodwin@essence-property.com;ps. another way of looking at it is that if none of the tests ever goes through the relevant code, there isn't much harm or risk in implementing the changes!",05/Oct/14 19:08;psteitz;Can you attach a patch with your suggested changes?
+QRDecomposition decompose and performHouseholderReflection methods ignore matrix parameters,MATH-1191,12766653,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,psteitz,psteitz,10/Jan/15 16:09,18/Apr/15 09:28,08/Jun/19 22:40,10/Apr/15 19:46,3.3,,,3.5,4.0,,0,,,,,"The protected decompose and performHouseholderReflection methods in QRDecomposition act on the qr matrix set by the constructor, not whatever matrix is supplied as actual parameter.  For 3.x, the javadoc should be updated to indicate that the actual parameter is ignored. For 4.0, the parameters should be removed.  Alternatively, implementations could be changed to act on the arguments.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2015-04-10 19:46:02.026,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Apr 18 09:28:23 UTC 2015,,,,,,0|i24887:,9223372036854775807,,,,,,,,,"10/Apr/15 19:46;luc;Fixed in git repository, for both 3.5 and 4.0.
+Instead of removing the parameters, they are now properly used. It does not really change anything since the parameter passed was already the same matrix.",18/Apr/15 09:28;luc;Closing resolved issue as 3.5 has been released.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Cost in least-squares fitting,MATH-1206,12777885,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,erans,erans,erans,26/Feb/15 13:55,09/Apr/15 12:39,08/Jun/19 22:40,09/Apr/15 12:39,3.3,3.4,3.4.1,4.0,,,0,,,,,"In {{org.apache.commons.math4.fitting.leastsquares.AbstractEvaluation}}, the value returned by the ""getCost"" method is not consistent with the definition of ""cost"" in a least-squares problem: It is the sum of the squares of the residuals, but the method returns the square-root of that quantity.",,,,,,,,,,,,26/Feb/15 15:47;erans;MATH-1206.patch;https://issues.apache.org/jira/secure/attachment/12701100/MATH-1206.patch,26/Feb/15 14:52;erans;MATH-1206.patch;https://issues.apache.org/jira/secure/attachment/12701078/MATH-1206.patch,,,,2.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Thu Apr 09 12:39:52 UTC 2015,,,,,,0|i263fj:,9223372036854775807,,,,,,,,,"26/Feb/15 14:52;erans;The (attached) patch causes many tests to now fail:
+
+{noformat}
+Failed tests: 
+  GaussianCurveFitterTest.testFit01:188 expected:<3496978.1837704973> but was:<3496976.3496594895>
+  GaussianCurveFitterTest.testFit04:262 expected:<233003.2967252038> but was:<233002.8643516898>
+  GaussianCurveFitterTest.testFit05:275 expected:<283863.81929180305> but was:<283863.7943168686>
+  GaussianCurveFitterTest.testFit06:288 expected:<285250.66754309234> but was:<285250.6769121677>
+  GaussianCurveFitterTest.testFit07:301 expected:<3514384.729342235> but was:<3514384.6669300473>
+  GaussianCurveFitterTest.testMath519:347 expected:<53.1572792> but was:<26.0>
+  GaussianCurveFitterTest.testMath798:375 expected:<420.8397296167364> but was:<420.8397358396097>
+  GaussianCurveFitterTest.testWithMaxIterations1:204 expected:<3496978.1837704973> but was:<3496978.800406003>
+  GaussianCurveFitterTest.testWithStartPoint:229 expected:<3496978.1837704973> but was:<3496978.800406003>
+  HarmonicCurveFitterTest.testNoError:57 expected:<0.2> but was:<0.1999955548978442>
+  PolynomialCurveFitterTest.testFit:56 best != coeff
+ Elements at index 0 differ.  expected = 12.9 observed = -1.0E-20
+ Elements at index 1 differ.  expected = -3.4 observed = 3.0E15
+ Elements at index 2 differ.  expected = 2.1 observed = -5.0E25
+  SimpleCurveFitterTest.testPolynomialFit:57 best != coeff
+ Elements at index 0 differ.  expected = 12.9 observed = -1.0E20
+ Elements at index 1 differ.  expected = -3.4 observed = 3.0E15
+ Elements at index 2 differ.  expected = 2.1 observed = -5.0E25
+  EvaluationTest.testComputeCost:175 Kirby2 expected:<3.9050739624> but was:<15.249602651743004>
+  EvaluationTest.testComputeSigma:206 Kirby2, parameter #0 expected:<0.087989634338> but was:<0.17387860547376632>
+  LevenbergMarquardtOptimizerTest.testControlParameters:116->checkEstimate:155 null
+  MinpackTest.testMinpackBard:180->minpackTest:524 expected:<-1.58848033259565E8> but was:<-2.281145030247444E16>
+  MinpackTest.testMinpackBox3Dimensional:327->minpackTest:523 expected:<0.0> but was:<0.0030343448521943407>
+  MinpackTest.testMinpackBrownAlmostLinear:407->minpackTest:523 expected:<0.0> but was:<0.003621421870604769>
+  MinpackTest.testMinpackBrownDennis:343->minpackTest:523 expected:<292.954288244866> but was:<292.9544389375816>
+  MinpackTest.testMinpackChebyquad:374->minpackTest:523 expected:<1.88424820499347> but was:<1.18088726698391731E18>
+  MinpackTest.testMinpackFreudensteinRoth:152->minpackTest:524 expected:<11.4124844654993> but was:<11.412121480926384>
+  MinpackTest.testMinpackHelicalValley:132->minpackTest:523 expected:<0.0> but was:<6.274776288270002E-4>
+  MinpackTest.testMinpackKowalikOsborne:196->minpackTest:523 expected:<0.017535837721129> but was:<0.03846867874661756>
+  MinpackTest.testMinpackOsborne1:476->minpackTest:523 expected:<0.00739249260904843> but was:<0.007723842649443106>
+  MinpackTest.testMinpackOsborne2:487->minpackTest:523 expected:<0.20034404483314> but was:<0.23226823584082015>
+  MinpackTest.testMinpackPowellSingular:142->minpackTest:523 expected:<0.0> but was:<0.003097797251086307>
+  MinpackTest.testMinpackRosenbrok:122->minpackTest:523 expected:<0.0> but was:<0.1732616669375091>
+  MinpackTest.testMinpackWatson:266->minpackTest:523 expected:<0.0011831145921242> but was:<0.0033222964745821893>
+{noformat}
+","26/Feb/15 15:20;erans;That was to be expected, since the ""cost"" is used to control parts of the the Levenberg-Marquardt algorithm.
+Now, we must determine _what_ quantity is used inside the algorithm. Was the implementation correct in using the square-root of the chi-square?
+If so we can solve the issue by adding a new method ""getChiSquare()"" rather than change the meaning of ""getCost()"" (even though it can be confusing to use ""cost"" to mean the _square-root_ of the objective function).
+","26/Feb/15 15:47;erans;This patch does not modify the semantics of the current code, it only adds a new ""getChiSquare()"" method that returns the value of the objective functon (defined as ""the sum of the squares of the residuals"").
+
+OK to apply?
+","26/Feb/15 18:00;erans;I also suggest that we add a
+{code}
+double getReducedChiSquare(int numFittedParameters);
+{code}
+method to the {{Evaluation}} interface.
+",09/Apr/15 12:39;erans;Methods added in commit 0a499402d707bc8cf775d7f9b3840780a7401f7d,,,,,,,,,,,,,,,,,,,,,,,,,,
+unsafe initialization in DummyStepInterpolator,MATH-1149,12736040,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,mjkim0324,mjkim0324,22/Aug/14 11:35,26/Dec/14 19:50,08/Jun/19 22:40,13/Sep/14 15:37,3.3,,,3.4,,,0,,,,,"{code:title=DummyStepInterpolator.java|borderStyle=solid}
+  public DummyStepInterpolator(final DummyStepInterpolator interpolator) {
+    super(interpolator);
+    currentDerivative = interpolator.currentDerivative.clone();
+  }
+   @Override
+  protected StepInterpolator doCopy() {
+    return new DummyStepInterpolator(this);
+  }
+{code}
+
+A constructor in DummyStepInterpolator dereferences a field of the parameter, but a NullPointerException can occur during a call to doCopy().
+
+{code:title=Test.java|borderStyle=solid}
+public void test1() throws Throwable {
+  DummyStepInterpolator var0 = new DummyStepInterpolator();
+  var0.copy();
+}
+{code}
+
+Here in Test.java, a NPE occurs because copy() calls doCopy() which calls  DummyStepInterpolator(final DummyStepInterpolator) that passes var0 as an argument.
+
+I think this constructor should have a null check for  interpolator.currentDerivative like NordsieckStepInterpolator does.
+
+{code:title=NordsieckStepInterpolator.java|borderStyle=solid}
+    public NordsieckStepInterpolator(final NordsieckStepInterpolator interpolator) {
+        super(interpolator);
+        scalingH      = interpolator.scalingH;
+        referenceTime = interpolator.referenceTime;
+        if (interpolator.scaled != null) {
+            scaled = interpolator.scaled.clone();
+        }
+        if (interpolator.nordsieck != null) {
+            nordsieck = new Array2DRowRealMatrix(interpolator.nordsieck.getDataRef(), true);
+        }
+        if (interpolator.stateVariation != null) {
+            stateVariation = interpolator.stateVariation.clone();
+        }
+    }
+
+    @Override
+    protected StepInterpolator doCopy() {
+        return new NordsieckStepInterpolator(this);
+    }
+{code}
+",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-09-13 15:37:03.005,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Sep 13 15:37:03 UTC 2014,,,,,,0|i1z86f:,9223372036854775807,,,,,,,,,"13/Sep/14 15:37;tn;Fixed in r1624752.
+
+Thanks for the report!",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Statistical tests in stat.inference package are very slow due to implicit RandomGenerator initialization,MATH-1154,12746013,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,Otmar Ertl,Otmar Ertl,05/Oct/14 19:34,26/Dec/14 19:50,08/Jun/19 22:40,15/Dec/14 20:22,3.3,,,3.4,,,0,,,,,"Some statistical tests defined in the stat.inference package (e.g. BinomialTest or ChiSquareTest) are unnecessarily very slow (up to a factor 20 slower than necessary). The reason is the implicit slow initialization of a default (Well19937c) random generator instance each time a test is performed. The affected tests create some distribution instance in order to use some methods defined therein. However, they do not use any method for random generation. Nevertheless a random number generator instance is automatically created when creating a distribution instance, which is the reason for the serious slowdown. The problem is related to MATH-1124.
+
+There are following solutions:
+1) Fix the affected statistical tests by passing a light-weight RandomGenerator implementation (or even null) to the constructor of the distribution.
+2) Or use for all distributions a RandomGenerator implementation that uses lazy initialization to generate the Well19937c instance as late as possible. This would also solve MATH-1124.
+
+I will attach a patch proposal together with a performance test, that will demonstrate the speed up after a fix.",,,,,,,,,,,,06/Oct/14 21:30;tn;MATH-1154.patch;https://issues.apache.org/jira/secure/attachment/12673201/MATH-1154.patch,05/Oct/14 19:40;Otmar Ertl;math3.patch;https://issues.apache.org/jira/secure/attachment/12673016/math3.patch,,,,2.0,,,,,,,,,,,,,,,,,,,2014-10-05 20:06:14.769,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Dec 15 20:22:08 UTC 2014,,,,,,0|i20tfb:,9223372036854775807,,,,,,,,,"05/Oct/14 19:40;Otmar Ertl;This patch demonstrates a fix using lazy initialization of default random number generator instances. Furthermore a test is included which gave following results before
+{noformat}
+statistical tests performance test (calls per timed block: 100000, timed blocks: 100, time unit: ms)
+           name      time/call      std error total time      ratio      difference
+binomial test 1 1.38289492e-02 1.71975630e-04 1.3829e+05 1.0000e+00  0.00000000e+00
+binomial test 2 1.38270752e-02 1.61613547e-04 1.3827e+05 9.9986e-01 -1.87395300e+01
+chi square test 2.67553017e-02 2.29903602e-04 2.6755e+05 1.9347e+00  1.29263525e+05
+{noformat}
+and after
+{noformat}
+statistical tests performance test (calls per timed block: 100000, timed blocks: 100, time unit: ms)
+           name      time/call      std error total time      ratio      difference
+binomial test 1 7.26630369e-04 5.87472596e-05 7.2663e+03 1.0000e+00  0.00000000e+00
+binomial test 2 7.27780967e-04 2.44728991e-05 7.2778e+03 1.0016e+00  1.15059780e+01
+chi square test 5.21210430e-04 3.14044354e-05 5.2121e+03 7.1730e-01 -2.05419939e+03
+{noformat}
+the fix. A speedup up to a factor of 20 can be seen.","05/Oct/14 20:06;tn;The lazy initialization of the random generator makes sense imho.
+
+I wonder if it would not also be a good idea to refactor the WellXXX random generators. Right now, every time we instantiate one of these a lot of computations are performed although most of them are always the same regardless of the chosen seed. I think it would be better to have a static data object for each WellXXX generator type containined the fields of the abstract base class, and this has to be initialized only once. This would also safe quite some memory. The only fields that need to be stored for each instance are the index and v fields.","06/Oct/14 21:30;tn;I have attached a proposed patch to address the issue in the following way:
+
+ * the patch updates all inference tests to create distributions with a null rng, which avoid additional overhead as we will not sample from the created distributions
+
+ * re-open MATH-1124 and discuss on the mailinglist if we go for the proposed change of a lazy initialization for the distributions or change the default rng from WellXXX to something else
+
+ * create an additional ticket to address potential performance improvements for the WellXXX rngs, can not be done before 4.0 though.","07/Oct/14 11:07;erans;bq. the patch updates all inference tests to create distributions with a null rng, which avoid additional overhead [...]
+
+Doesn't the OP's patch avoid the overhead?
+It looks like the performance table above provides good ground to accept the change.
+
+I'd just suggest to replace class ""DefaultRandomGenerator"" with a (static) method defined in ""RandomGeneratorFactory"".
+
+","07/Oct/14 12:43;tn;The reason why I did not want to apply the OP's patch straight away was because of the comment in MATH-1124: lazy initialization was discouraged.
+
+My patch should improve the situation for the inference tests while it does not require any changes to the distribution / random objects for now.","07/Oct/14 13:27;erans;bq. lazy initialization was discouraged
+
+AFAICT, lazy initialization of the distribution's RNG was considered an unnecessary complication (of the distributions classes).
+
+The patch seems to provide an elegant solution. It could be construed that the distribution's RNG is still _not_ lazily initialized, it's the underlying
+implementation that is.
+An ""average"" user who trusts the provided default will gain in all cases, and a ""power"" user (like you) can still force a ""null"" RNG for cases where he knows that no sampling will be requested.
+","07/Oct/14 13:35;tn;I like the solution myself, thats why I am doing what I have outlined before:
+
+ * use a null rng in places where I know that no sampling will be used (and which is hidden to users anyway), namley in the inference tests
+ * re-open MATH-1124 to discuss the addition of lazy rng initialization in the distribution classes so that other users can also benefit from it (and may not be as advanced to know details about the use of a rng and when one can provide a null instance)","07/Oct/14 13:46;erans;bq. to discuss the addition of lazy rng initialization 
+
+That was the most important point in my previous comment.
+The solution provided here was not among the alternatives sketched in MATH-1224, and should be discussed on its own merit.
+Strictly speaking there won't be a lazy initialization in the distribution class.
+In fact, the proposal is actually to change the default RNG (from a concrete RNG to a delegating one). In practice, the issue is only a performance improvement, not a change in the distribution's code.
+","07/Oct/14 14:07;tn;It is just hiding the aspect of the lazy initialization to another object, which is neat, but it is still lazy initialization, so not much difference to the original proposal imho.
+But we do not need to discuss this here, please post a message to the ml to get opinions.","07/Oct/14 14:19;erans;Otmar,
+
+Could you open another issue where you could propose part of the patch here as a new feature (the forwarding and lazily initialized RNG)?
+That feature might not be used to fix the issue reported here, but could be included in CM even before asking the question about whether to use it as a default argument to the distributions.
+","07/Oct/14 14:28;tn;why do you constantly ignore me, and oppose everything I do or say?
+
+There is already an existing issue (re-opened already) which was even linked by the OP and that outlines the problem at hand.","07/Oct/14 15:02;erans;bq. why do you constantly ignore me, and oppose everything I do or say?
+
+Aren't you reversing the situation?
+
+Apart from your patch with ""null"" RNGs, the other considerations (about MATH-1224, about improving WellXXX RNGs) are related neither to the issue nor to the feature proposed to solve it.
+It is (IMHO) clearer to separate concerns:
+# Is the lazily initialized RNG a useful feature? \[Should be another issue (feature request).\]
+# Is this issue (about tests) to be solved by initializing the RNG with ""null""? \[A possible fix for this issue.\]
+# Is the default RNG (in a distribution instance) going to be a lazily-initialized RNG implementation? \[Another possible fix for this issue (if and once the feature exists in CM).\]
+# Is the default concrete RNG instance to be changed (from WellXxx to ...)? \[Unrelated.\]
+# Is the implementation of WellXxx to be improved? \[Not directly related.\]
+# Is the implementation of other RNG (which use insecure constructs) to be improved? \[My addition of yet another similarly unrelated issue.\]
+
+I'm proposing to tidy up things and process them in order, and you keep ignoring the suggestion.
+If you and the OP want to resolve _this_ issue, then there is only one alternative at present: Your fix. Please apply it and let's move on to the other suggestions.
+
+","07/Oct/14 15:19;tn;Well, I know it is pointless to discuss anything with you as you will never acknowledge anything else than your POV.
+
+{quote}
+I'm proposing to tidy up things and process them in order, and you keep ignoring the suggestion.
+If you and the OP want to resolve this issue, then there is only one alternative at present: Your fix. Please apply it and let's move on to the other suggestions.
+{quote}
+
+but I can not leave this statement as is, how do I ignore anything or do not process things in a reasonable way?
+
+I did the following:
+
+ * attach a clean patch so solve the original issue at hand that does not require additional changes (open for discussion, I did not apply it)
+ * create a separate issue to address the potential performance improvements for existing rngs
+ * re-open the original issue that was referred to by the OP and suggested to discuss the potential solutions (as currently attached to this issue) on the ml
+
+I mean, seriously, I am fed up with discussions like this.","07/Oct/14 15:52;psteitz;I agree that the root issue really is MATH-1124.  When we decided to move sampling into the distributions we created the need for distribution instances to have access to a PRNG.  When we decided we wanted everything to be final we forced ourselves into the MATH-1124 state, where the only way to avoid potentially expensive PRNG initialization when creating distribution instances that may never use sampling is the smelly workaround to null out the (final) PRNG at instance construction time.  Thomas' patch looks fine to me and unless and until we change one of the decisions above (relax final obsession or pull sampling back out), we should use the workaround in the unit tests (as the patch does) and try to reduce the initialization cost of the default or find a better workaround (reopening MATH-1124).   The OPs patch adds complexity, IMO, without really addressing the core problem, which I think we should address in MATH-1124.  So I am +1 to applying Thomas' patch, resolving this issue and moving back to MATH-1124.","08/Oct/14 11:03;Otmar Ertl;I agree with Phil that my proposed patch does not address the core problem, which is definitely MATH-1124. The patch was thought as a short-term fix, which improves the performance essentially with minimal invasive code changes. Once the root issue is solved, both patches proposed here (mine and Thomas') will become obsolete anyway. The question is when will MATH-1124 be resolved? In the case it is fixed for the next release, none of both patches need to be applied. If not, it makes sense to apply one of both patches for the short-term. The question remains, do you only want a speed up of the statistical tests (Thomas' patch) or also of the distribution classes (my patch) ? ","08/Oct/14 11:16;erans;\@Thomas:
+
+bq. I mean, seriously, I am fed up with discussions like this.
+
+Same here (because it takes at least two to discuss).
+You did what you did, then ignored my suggestions, then rephrased your comments to look like a confrontation rather than a different proposal to handle _this_ issue (which you did not even consider).  Please learn how to read:  In my *first* comment, I gave my opinion on the part of Otmar's patch that provides a new feature (delegating RNG), and in my *second* comment, I indirectly acknowledged that your patch was fine to fix _this_ issue. I only advocated to not mix different (IMHO) things here (thus, implicitly agreeing, again, that other issues should be better discussed on the ML).
+Rather than repeating what you did, you could have made a mental ""diff"" with what I actually wrote, and you'd have perhaps seen that there wasn't such a big difference.  At the very least, none that warranted this outburst of resentment.
+
+\@Phil:
+
+bq. the root issue really is MATH-1124
+
+I don't think so, as I've explained above. Unless I'm mistaken, Otmar's proposal allows to keep all fileds ""final"" in the distribution classes:  From their perspective, the RNG is a black box, and whether an implementation uses lazy initialization (thus whether _its_ fields are ""final"" or not) is totally irrelevant.
+
+bq. try to reduce the initialization cost of the default
+
+That's what Otmar's proposal (i.e. the new ""LazyInitRNG"") does.
+
+bq. The OPs patch adds complexity, IMO, without really addressing the core problem
+
+Then I don't know what the ""core problem"" is.
+
+bq. moving back to MATH-1124
+
+That issue is named ""Instances of AbstractRealDistribution require a random generator"", and you yourself put an end to it by making clear that the statement is false.
+As said by you (on MATH-1224), and by Thomas (and me) here, this issue is fixed by setting the RNG argument to ""null"". Why do you call that a ""smelly workaround"" whereas it's a quite clear and legitimate assessement on the caller's part?
+Do we talk about ""aesthetics""? Then, I can certainly agree that (depending on the type of regular usage one is used to) it might look ugly to often call a constructor with a ""null"" argument.
+I vaguely recall that we discarded a more flexible separation of concerns (through inheritance and/or additional interfaces) as unnecessarily complex. On the other hand, I recall clearly that everyone agreed that ""sampling"" was part of the concept of a distribution.
+
+I do not deny that there is a link with Otmar's proposal, but only in the sense that his new feature would satisfy users with ""mixed"" needs (and do not want to use separate instances for when they need sampling and when they don't).
+","08/Oct/14 11:25;erans;Otmar,
+
+As you've seen, this forum is not for discussions or design decisions, and certainly not for propagating disparaging comments about contributors... ;)
+
+If one thinks of removing the ""sample"" method from the distribution classes, this won't happen in a 3.x release.
+I'm still at a loss with what the ""core problem"" and ""root issue"" are; thus please start a thread on the ""dev"" ML describing them.
+","08/Oct/14 12:37;tn;@Gilles: well, I apologize for my public outburst, but it does not change my opinion on the discussion culture, and I will not further comment on it.",13/Oct/14 15:59;psteitz;Applied Thomas' patch in commit a3fdeb4da91d8aef50f40a3f9906494593ce2eca.  Still todo to resolve (for 3.x): update javadoc on distribution class constructors to recommend passing null RandomGenerator when sampling is not going to be used.,15/Dec/14 15:52;tn;I will take care of the javadoc changes.,15/Dec/14 20:22;tn;Added javadoc in commit 809f0f89cb53548a7d0a9f9f52c4b36f60c7b6c0 to all distributions.,,,,,,,,,,
+LevenbergMarquardtOptimizer does not allow to change current point during optimization,MATH-1144,12733235,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Implemented,,omovchan,omovchan,11/Aug/14 13:35,26/Dec/14 19:50,08/Jun/19 22:40,03/Nov/14 11:19,3.3,,,3.4,,,0,fitting,,,,"It's a regression to commons-math v2.0.
+
+Our software uses LevenbergMarquardtOptimizer for surface fitting by sampled points. Our parameterization of the surface we are fitting may be unconstrained, for example it is enough to have only 4 variables to represent cylinder axis and origin (using euler angles and origin distance), but to simplify derivative computation we instead use 6 parameter representation (vector + point). To make sure that the we constrain our search to valid vectors and origins, we need to renormalize and update surface parameters on every step of optimization.
+
+Please see this article for details of 3d surface fitting and parameter normalization:
+http://nvlpubs.nist.gov/nistpubs/jres/103/6/j36sha.pdf
+
+Attached surface_fitting_tests.zip package with 2 unit tests that reproduce this problem.
+Contents of package:
+1) simple - simple single file test that tests only in/out side effect of patched library
+2) full - complex test that fits cylinder using sampled points (uses cylinder, fit, utils sources)
+3) lib - contains commons-math3 jar libraries: v3.3 and v3.3A1 (patched). There are also library sources.
+4) patch - contains SVN patch file
+
+To reproduce:
+Run SurfaceFitterFullTest.java and SurfaceFitterSimpleTest.java tests with commons-math3-3.3.jar OR commons-math3-3.3A1.jar libraries.
+",,,,,,,,,,,,11/Aug/14 13:40;omovchan;LevenbergMarquardtOptimizer.java.patch;https://issues.apache.org/jira/secure/attachment/12660986/LevenbergMarquardtOptimizer.java.patch,15/Oct/14 20:41;erans;MATH-1144.patch;https://issues.apache.org/jira/secure/attachment/12675101/MATH-1144.patch,16/Oct/14 12:56;omovchan;SurfaceFitterSimpleTest.java;https://issues.apache.org/jira/secure/attachment/12675274/SurfaceFitterSimpleTest.java,20/Aug/14 09:57;omovchan;surface_fitting_tests.zip.001;https://issues.apache.org/jira/secure/attachment/12663095/surface_fitting_tests.zip.001,20/Aug/14 09:57;omovchan;surface_fitting_tests.zip.002;https://issues.apache.org/jira/secure/attachment/12663096/surface_fitting_tests.zip.002,5.0,,,,,,,,,,,,,,,,,,,2014-08-14 11:04:36.468,,,false,,,,,,,,,,,,411263,,,Mon Nov 03 11:19:25 UTC 2014,,,,,,0|i1yr6f:,411255,,,,,,,,,"11/Aug/14 13:40;omovchan;Added patch that fixes this regression in behavior.
+
+We pass current point by reference to evaluator. So that we allow IN/OUT side effect for current point value.","14/Aug/14 11:04;erans;It seems that you were using an unspecified and undocumented side-effect of the implementation.
+The new statements (which your patch would revert) specifically intends to forbid IN/OUT arguments (i.e. it's not a bug).
+
+Do you implement a custom ""Evaluation"" class?
+
+IMO, the feature which you need should be implemented in a proper way, and requires a discussion on the ""dev"" ML.
+","14/Aug/14 11:36;omovchan;No, we use LocalLeastSquaresProblem class with default implementation for evaluation. We use default implementation for Evaluation interface too. 
+
+In any case, it would be nice to have an enhancement that allows to renormalize input points. It's very hard to implement the surface fitting algorithm without normalization of parameters on every step (or maybe impossible).","14/Aug/14 12:43;erans;I don't understand what is going on.
+At line 403 in ""LeastSquaresFactory.java"", a defensive copy is performed; so, whether a reallocation is performed or not within ""LevenbergMarquardtOptimizer"" should not matter (and should not have a side-effect).
+
+It would be useful if you could provide a minimal example that shows the problem and how your patch works around it.
+
+Also, please start a discussion on the ""dev"" ML, perhaps with a pseudo-code showing what should be accessible to the user for the purpose of renormalizing the parameters.
+","14/Aug/14 13:09;omovchan;I can try to clarify the problem using pieces of code and my comments.
+
+What is ""dev"" ML and where can I find it?","14/Aug/14 14:45;erans;bq. I can try to clarify the problem using pieces of code and my comments.
+
+What would be more readily useful is a unit test.
+
+bq.  What is ""dev"" ML and where can I find it?
+
+http://commons.apache.org/proper/commons-math/mail-lists.html
+
+Please subscribe to the ""developers"" ML of the Commons project.
+Then you should post with a prefix of ""[Math]"" in the subject line because the ML is shared with many other ""Commons"" components.
+",15/Aug/14 11:56;omovchan;I am working on the unit test now. I will try to factor out the fitting code from our software.,"20/Aug/14 09:57;omovchan;Added surface_fitting_tests.zip package that is split into 2 parts.
+It contains SurfaceFitterFullTest.java and SurfaceFitterSimpleTest.java unit tests that reproduce the problem.","13/Oct/14 17:59;erans;Here is a patch based on the conclusion of the discussion held on the ""dev"" ML: a user-defined {{ParameterValidator}} can be passed to the {{LeastSquaresProblem}}.
+Could you please test it with your problem and let us know if it solves your issue?
+","15/Oct/14 17:01;omovchan;Hi Gilles,
+I have applied and tested your patch. My unit tests failed. Unfortunately the patch is incomplete.
+
+There are 2 conditions in normalization approach:
+- point should be normalized before evaluation
+- the updated point should be returned to optimizer
+
+Your changes made the normalization explicit now and normalized point is returned inside Evaluation object. But ""currentPoint"" vector is not updated in LevenbergMarquardtOptimizer.optimize():
+
+        Evaluation current = problem.evaluate(new ArrayRealVector(currentPoint)); // <= currentPoint is not updated
+        double[] currentResiduals = current.getResiduals().toArray();
+        double currentCost = current.getCost();",15/Oct/14 17:06;omovchan;Probably we can validate currentPoint before passing it to problem.evaluate().,"15/Oct/14 20:41;erans;Thanks for the feedback.
+
+bq. Probably we can validate currentPoint before passing it to problem.evaluate().
+
+It seems that this would go against the latest design (and require to pass the {{ParameterValidator}} to each optimizer).
+
+In the new version of the patch, I've added statements that update the point to be used by the optimizer (retrieving it from the current {{Evaluation}} instance).
+Let me know how it goes with this one.
+
+In the unit test I've created, it does not change anything (wrt the previous patch), unfortunately; probably it is too trivial.   Could you provide a simple unit test that we can put in the CM test suite?
+","16/Oct/14 12:59;omovchan;I verified the latest patch and it works fine now.
+
+I attached SurfaceFitterSimpleTest.java unit test that checks one step of optimization. This test depends only on commons-math3 classes.","16/Oct/14 14:26;erans;bq I verified the latest patch and it works fine now.
+
+Great.
+
+bq. I attached SurfaceFitterSimpleTest.java unit test that checks one step of optimization.
+
+Actually, I had meant something that would demonstrate the usefulness (in terms of preformance and/or accuracy) of the ""validator"" feature.
+\[My trivial test already showed that the point can be changed, but it is contrived since it replaces it with the optimum found without validator.\]
+",16/Oct/14 14:43;omovchan;surface_fitting_tests.zip package that is attached to this jira contains SurfaceFitterFullTest.java test. This unit test verifies the fitting of 3d cylinder and validator can be used there. But that's not very simple unit test.,"03/Nov/14 11:19;erans;Implemented in:
+http://git-wip-us.apache.org/repos/asf/commons-math/commit/321fd029
+",,,,,,,,,,,,,,,
+contains(Region<S> region) method of AbstractRegion throws NullPointerException exception ,MATH-1162,12752726,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,gun,gun,04/Nov/14 14:34,26/Dec/14 19:50,08/Jun/19 22:40,23/Nov/14 20:53,3.3,,,3.4,,,0,,,,,"the contains call on org.apache.commons.math3.geometry.partitioning.AbstractRegion throws an exception in the sample below:
+
+{noformat}
+import org.apache.commons.math3.geometry.partitioning.Region;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D;
+import org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet;
+
+class Test {
+    public static void main(String[] args) {
+	Region<Euclidean2D> p = new PolygonsSet( 1.0e-10, new Vector2D(4.267199999996532, -11.928637756014894),
+	                                                  new Vector2D(4.267200000026445, -14.12360595809307), 
+	                                                  new Vector2D(9.144000000273694, -14.12360595809307), 
+	                                                  new Vector2D(9.144000000233383, -11.928637756020067));
+
+	Region<Euclidean2D> w = new PolygonsSet( 1.0e-10,  new Vector2D(2.56735636510452512E-9, -11.933116461089332),
+	                                                   new Vector2D(2.56735636510452512E-9, -12.393225665247766), 
+	                                                   new Vector2D(2.56735636510452512E-9, -27.785625665247778), 
+	                                                   new Vector2D(4.267200000030211, -27.785625665247778), 
+	                                                   new Vector2D(4.267200000030211, -11.933116461089332));
+
+	p.contains(w);
+    }
+}
+{noformat}
+
+the exception thrown is:
+
+{noformat}
+Exception in thread ""main"" java.lang.NullPointerException
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:263)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:267)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.isEmpty(AbstractRegion.java:251)
+        at org.apache.commons.math3.geometry.partitioning.AbstractRegion.contains(AbstractRegion.java:295)
+        at Test.main(test.java:19)
+{noformat} 
+",tested on windows 8 and heroku,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-11-05 19:51:29.484,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Dec 09 20:54:37 UTC 2014,,,,,,0|i21y0f:,9223372036854775807,,,,,,,,,"05/Nov/14 19:51;luc;I confirm the bug.
+A first analysis shows that the problems is due to BSPTree.chopOffPlus(hyperplane), which may replace the cut hyperplane with null despite preserving two sub-trees. We end up with a node that should be a leaf node but has children. I guess the same problem could occur in the similar chopOffMinus(hyperplane) method too.
+
+I'm looking at it.
+
+Reducing hyperplane thickness allow the test to pass, but I would not really recommend it, as too small thickness may create numerical problems elsewhere.","05/Nov/14 22:01;gun;hi Luc,
+
+thanks for looking into this. I'm going to mention another issue that I'm seeing that might be related since you mentioned BSPTree. here it is.... the following throws a different exception:
+
+{noformat}
+import org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+class Test {
+    public static void main(String[] args) {
+		new PolygonsSet(1.0E-10,
+					    new Vector2D(-76.8095991248, -15.087601999),
+					    new Vector2D(-76.8095991245, -18.288001999), 
+					    new Vector2D(-10.0583778834, -18.2880019979), 
+					    new Vector2D(-10.0583778835, -15.0876019979),
+					    new Vector2D(-54.8639991264, -15.0876019984));
+
+    }
+}
+{noformat}
+
+the exception I get is
+{noformat}
+Exception in thread ""main"" java.lang.NullPointerException
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.fitToCell(BSPTree.java:301)
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.insertCut(BSPTree.java:159)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:333)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.verticesToTree(PolygonsSet.java:309)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.<init>(PolygonsSet.java:156)
+        at Test.main(test.java:6)
+{noformat}
+
+","12/Nov/14 20:47;luc;I've made some progress in the analysis. The error is not in the chopOffPlus/chopOffMinus methods but it occurs earlier in the BSP tree merging phase. Debugging this is unfortunately quite hard. I hope I'll understand what happens in the nexxt few days.
+
+I don't think the second problem is similar to the first one you reported. Could you open a separate JIRA issue for it?
+
+",13/Nov/14 22:11;gun;I'll do that. thank you,"23/Nov/14 20:53;luc;The issue has been fixed in the git repository (see commit 046e3a2).
+
+Thanks for the report.",09/Dec/14 20:54;gun;thanks again for fixing this Luc. we've verified the fix on our end and integrated the update. ,,,,,,,,,,,,,,,,,,,,,,,,,
+2.0 equal to -2.0,MATH-1127,12721089,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,luc,luc,13/Jun/14 11:38,26/Dec/14 19:50,08/Jun/19 22:40,13/Jun/14 14:21,3.3,,,3.4,,,0,,,,,"The following test fails:
+
+{code}
+    @Test
+    public void testMath1127() {
+        Assert.assertFalse(Precision.equals(2.0, -2.0, 1));
+    }
+{code}
+","Linux, Java 5",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,399287,,,Fri Jun 13 14:21:15 UTC 2014,,,,,,0|i1wqkf:,399397,,,,,,,,,"13/Jun/14 14:21;luc;Fixed in subversion repository as of r1602438.
+
+This was a fun one!",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Some thin rectangles are not handled properly as PolygonsSet,MATH-1174,12758986,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,luc,luc,02/Dec/14 21:04,26/Dec/14 19:50,08/Jun/19 22:40,02/Dec/14 21:22,3.3,,,3.4,,,0,,,,,"If the width of a rectangle is smaller than the close point tolerances, some weird effects appear when vertices are extracted. Typically the size will be set to infinity and barycenter will be forced at origin.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Dec 02 21:22:26 UTC 2014,,,,,,0|i22zan:,9223372036854775807,,,,,,,,,"02/Dec/14 21:22;luc;Fixed in git repository (see commit e6aae3a).
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+MonotoneChain handling of collinear points drops low points in a near-column,MATH-1148,12735440,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,gmarceau,gmarceau,20/Aug/14 16:17,26/Dec/14 19:50,08/Jun/19 22:40,29/Sep/14 16:28,3.3,,,3.4,,,0,,,,,"This code
+{code}
+val points = List(
+  new Vector2D(
+    16.078200000000184,
+    -36.52519999989808
+  ),
+  new Vector2D(
+    19.164300000000186,
+    -36.52519999989808
+  ),
+  new Vector2D(
+    19.1643,
+    -25.28136477910407
+  ),
+  new Vector2D(
+    19.1643,
+    -17.678400000004157
+  )
+)
+new hull.MonotoneChain().generate(points.asJava)
+{code}
+
+results in the exception:
+{code}
+org.apache.commons.math3.exception.ConvergenceException: illegal state: convergence failed
+	at org.apache.commons.math3.geometry.euclidean.twod.hull.AbstractConvexHullGenerator2D.generate(AbstractConvexHullGenerator2D.java:106)
+	at org.apache.commons.math3.geometry.euclidean.twod.hull.MonotoneChain.generate(MonotoneChain.java:50)
+	at .<init>(<console>:13)
+	at .<clinit>(<console>)
+	at .<init>(<console>:11)
+	at .<clinit>(<console>)
+	at $print(<console>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at scala.tools.nsc.interpreter.IMain$ReadEvalPrint.call(IMain.scala:704)
+	at scala.tools.nsc.interpreter.IMain$Request$$anonfun$14.apply(IMain.scala:920)
+	at scala.tools.nsc.interpreter.Line$$anonfun$1.apply$mcV$sp(Line.scala:43)
+	at scala.tools.nsc.io.package$$anon$2.run(package.scala:25)
+	at java.lang.Thread.run(Thread.java:662)
+{code}
+
+This will be tricky to fix. Not only is the point (19.164300000000186, -36.52519999989808) is being dropped incorrectly, but any point dropped in one hull risks creating a kink when combined with the other hull.
+
+",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-08-20 20:46:32.75,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Sep 29 16:28:42 UTC 2014,,,,,,0|i1z4x3:,9223372036854775807,,,,,,,,,"20/Aug/14 16:55;gmarceau;Inversely, points in a column that should be dropped will sometimes be kept instead if `includeCollinearPoints = true` and `tolerance=0`.
+
+This input: 
+{code}
+[{0; -29.959696875}, {0; -31.621809375}, {0; -28.435696875}, {0; -33.145809375}, {3.048; -33.145809375}, {3.048; -31.621809375}, {3.048; -29.959696875}, {4.572; -33.145809375}, {4.572; -28.435696875}]
+{code}
+computes this upper hull:
+{code}
+[{4.572; -28.435696875}, {0; -28.435696875}, {0; -31.621809375}, {0; -29.959696875}]
+{code}
+which retrogrades at the end.
+","20/Aug/14 20:46;tn;We do not yet check if a collinear point leads to a concave section of the lower/upper hull.
+
+So far the assumption was that a collinear sequence of points will be like this: A - B - C, thus never creating a concave section.
+In your example it is like this (A and B currently part of the hull): C - A - B, thus the next point is collinear in the other direction.
+
+This case is indeed tricky to handle. The best way would be to check if the point C is in the same direction as B, if not, we need to backtrack (i.e. remove points) on the hull until it is convex again.","29/Sep/14 16:28;tn;Fixed in commit 4080feff61e8dc1cd4af2361990c33c9f1014147.
+
+The problem could be solved by taking the tolerance factor for collinear points into account when sorting the input which is the first necessary step for the Monotone chain algorithm.
+
+Then the construction of the upper/lower hull works correctly.
+
+I also improved the isConvex method in ConvexHull2D which actually did not work reliable in the presence of collinear points.
+
+Thanks for the report, please let us know if you encounter any other problems.",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Integer overflows MannWhitneyUTest#mannWhitneyU,MATH-1145,12733315,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,aconbere,aconbere,11/Aug/14 18:33,26/Dec/14 19:50,08/Jun/19 22:40,13/Sep/14 15:47,3.3,3.4,,3.4,,,0,,,,,"In the calculation of MannWhitneyUTest#mannWhitneyU there are two instances where the lengths of the input arrays are multiplied together. Because Array#length is an integer this means that the effective maximum size of your dataset until reaching overflow is Math.sqrt(Integer.MAX_VALUE).
+
+The following is a link to a diff, with a test the exposes the issue, and a fix (casting lengths up into doubles before multiplying).
+
+https://gist.github.com/aconbere/4fef56e5182e510aceb3",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-09-13 15:47:12.764,,,false,,,,,,,,,,,,411343,,,Sat Sep 13 15:47:12 UTC 2014,,,,,,0|i1yro7:,411335,,,,,,,,,"13/Sep/14 15:47;tn;Fixed in r1624756.
+
+Changed the calculation to long as this should be sufficient and is already done like this in other places.
+
+Thanks for the report and patch!",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"Kolmogorov-Smirnov Tests takes 'forever' on 10,000 item dataset",MATH-1131,12723580,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,ysb33r,ysb33r,25/Jun/14 08:12,26/Dec/14 19:50,08/Jun/19 22:40,19/Sep/14 16:23,3.3,,,3.4,,,2,,,,,"I have code simplified to the following:
+
+    KolmogorovSmirnovTest kst = new KolmogorovSmirnovTest();
+    NormalDistribution nd = new NormalDistribution(mean,stddev);
+    kst.kolmogorovSmirnovTest(nd,dataset)
+
+I find that for my dataset of 10,000 items, the call to kolmogorovSmirnovTest takes 'forever'. It has not returned after nearly 15minutes and in one my my tests has gone over 150MB in  memory usage. ",Java 8,,,,,,,,,,,25/Jun/14 08:14;ysb33r;1.txt;https://issues.apache.org/jira/secure/attachment/12652357/1.txt,27/Jun/14 07:48;tn;MATH-1131.patch;https://issues.apache.org/jira/secure/attachment/12652776/MATH-1131.patch,25/Jun/14 08:15;ysb33r;ReproduceKsIssue.groovy;https://issues.apache.org/jira/secure/attachment/12652359/ReproduceKsIssue.groovy,25/Jun/14 08:14;ysb33r;ReproduceKsIssue.java;https://issues.apache.org/jira/secure/attachment/12652358/ReproduceKsIssue.java,,4.0,,,,,,,,,,,,,,,,,,,2014-06-25 16:37:43.222,,,false,,,,,,,,,,,,401765,,,Sat Sep 13 15:59:58 UTC 2014,,,,,,0|i1x5jz:,401834,,,,,,,,,25/Jun/14 08:14;ysb33r;Dataset that was used.,25/Jun/14 08:14;ysb33r;Example Java code to reproduce issue,25/Jun/14 08:15;ysb33r;Example Groovy code that also reproduces the issue,25/Jun/14 09:38;ysb33r;See the code examples for the specific _mean_ & _stddev_ that was used.,25/Jun/14 16:37;psteitz;Thanks for reporting this and providing the code and data.  I suspect the problem is in the matrix exponentiation done in the roundedK method.  Anyone interested in patching this should start by looking at the reference in the class javadoc (and other sources) to identify optimizations that can be done for large samples.,"25/Jun/14 18:14;tn;I did briefly debug the example and indeed the calculation hangs when calling roundedK, or more precisely in createH.
+
+There powers of BigFraction objects are created with really big numerators and denominators. Some of the calculations later on take then forever because of this, e.g. when internally calculating the gcd.
+
+Looking at the implementation from the referenced paper, there the H values are computed with double precision. Was there a specific reason to use BigFraction in our implementation? Is there a specific need for that level of accuracy for the Kolmogorov-Smirnov Test? The other inference tests do not seem to be so stringent.
+
+It looks like there is no easy way to limit the maxDenominator when calling multiply() as it is possible when creating a BigFraction object.
+","25/Jun/14 18:43;ysb33r;This section of code in createH might be part of the problem. A quick test on my macbook shows that the most of 36 minutes are spent inside there for d=0.029357223978016822, n=9999. (I specifically tried 9,999 as it was one less than 10,000).
+
+{code:java}
+for (int i = 0; i < m; ++i) {
+  for (int j = 0; j < i + 1; ++j) {
+    if (i - j + 1 > 0) {
+ 	for (int g = 2; g <= i - j + 1; ++g) {
+   	  Hdata[i][j] = Hdata[i][j].divide(g);
+ 	}
+    }
+  }
+}
+
+{code}
+","25/Jun/14 20:43;ysb33r;[~phil@steitz.com] said on the ML:
+
+bq. Sorry for responding to the list but I have only mobile atm .  IIRC the roundedK method should not be creating matrices of BigFractions, but rather using doubles.
+
+I did a quick hack on the test code I used for createH earlier to use double instead and the speed improvement as expected is immense - down from 36min to 9min. I cannot comment on whether the change in precision is significant, but not was not the point of the test.
+
+","26/Jun/14 13:15;tn;My previous comment wrt performance of matrix.power\(n\) was wrong.
+This is not the limiting factor when using a BlockRealMatrix as the number of actual matrix multiplications is only log\(n\).
+
+The problem when using so large samples is that the matrix elements quickly grow and lead to NaN computations. The reference code does a special trick when computing power\(n\):
+
+ * after every multiplication check if the center element is > 1e140 and if so divide the whole matrix by this factor.
+ * update the factor each time it is applied to the matrix
+ * after computing power\(n\), the factor is applied in a reverse manner on the element to be returned.","27/Jun/14 07:48;tn;Attached a patch that uses doubles to evaluate H for the rounded case.
+
+This allows to evaluate the test up a N of ~700, for larger datasets overflow happens when calculating H.power\(n\).
+
+We need to decide if we want to implement the same trick as in the reference implementation from the paper.","28/Jun/14 21:38;psteitz;I think the patch definitely improves things, so +1 to commit that for now.  I am not sure that the Marsaglia-Tsang method is best for large n, though.  It might be best to either a) just use the Kolmogorov approximation or b) use what Simard-L'Ecuyer ([2] in the class javadoc) refer to as the Pelz-Good method for large n (or more precisely large n*d).  I think R does a).  The two-sample tests do a).","28/Jun/14 22:55;psteitz;A few of comments not directly related to the performance issue, but likely relevant to the OP and anyone using KolmogorovSmirnovTest to evaluate the null hypothesis that a sample comes from a normal (Gaussian) distribution:
+
+1. The KS test using parameters estimated from the data is in general not the best test to use to test normality.  We do not currently implement the Lillifors or other tests.  Patches welcome :)  (Discuss first on the mailing list, then open separate tickets for these if interested.)
+2.  *No* classical frequentist test really works for large samples.  KS, Liilifors, Shapiro-Wilks et al are uniformly too powerful to be meaningful for samples even as small as 5000 observations.  See, e.g. [1].
+3.  An interesting alternative for large samples is [2].   Here again, patches welcome.  A similar approach implementable using Commons Math version 3.x would be to bin the data in standard deviation units and then apply a G-test with expected counts computed using quantiles of the normal distribution.
+
+[1] http://www.statisticalmisses.nl/index.php/frequently-asked-questions/77-what-is-wrong-with-tests-of-normality
+[2] https://ideals.illinois.edu/bitstream/handle/2142/29878/largesamplenorma93171bera.pdf","04/Jul/14 14:19;tn;The implementation of R is a 1:1 copy of the code from the Marsaglia-Tsang paper, including the 1e140 trick.","04/Jul/14 14:28;tn;Committed patch in r1607864.
+
+Need to decide what to do with large samples. I would be more confident with the Pelz method though.","04/Jul/14 20:28;psteitz;Thomas
+bq. The implementation of R is a 1:1 copy of the code from the Marsaglia-Tsang paper, including the 1e140 trick.
+Yes, but from the R code (what calls the C code) and online docs it looks to me like R only does this for n < 100.  Beyond that, it looks like the ks sum is used.  I agree though that based on Lecuyer-Simard's analysis, the Pelz method would be better, with ""exact"" computations as we have now for <n, d> up to the bounds they suggest.  I will implement this if there are no objections.
+","04/Jul/14 21:04;tn;Ok great and thanks for the info, as I did only look at the c source code in the R project.
+
+I am happy to review your code and have no objections.",26/Jul/14 20:56;psteitz;Pelz-Good implemented in r1613723.  ,31/Jul/14 13:43;psteitz;OK to resolve this?,"01/Aug/14 15:45;ysb33r;Before closing, it would be good to have a note in the javadoc to indicate over which value of N samples, performance will become an issue. It will prevent users like me from falling into a pit :)","01/Aug/14 18:41;psteitz;@Schaik:  have you tested with the latest code in trunk?  I would not expect the current code to degrade for large n, unless ""exact"" is specified and that already has a warning label.",01/Aug/14 19:19;ysb33r;[~phil@steitz.com] Not yet. But I can try on Monday.,"13/Sep/14 15:59;tn;Code looks good.
+
+The original problem is also solved, thus I think we can close the issue.",,,,,,,,,
+NPE in BSPTree#fitToCell(),MATH-1123,12714765,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,arcadien,arcadien,16/May/14 13:33,26/Dec/14 19:50,08/Jun/19 22:40,19/May/14 15:06,3.3,,,3.4,,,0,,,,,"Hello, 
+I faced a NPE using  BSPTree#fitToCell() from the SVN trunk. I fixed the problem using a small patch I will attach to the ticket.
+",Win32_64,,,,,,,,,,,19/May/14 13:18;arcadien;ConvexHullTest.java;https://issues.apache.org/jira/secure/attachment/12645550/ConvexHullTest.java,19/May/14 15:41;tn;convex.png;https://issues.apache.org/jira/secure/attachment/12645569/convex.png,,,,2.0,,,,,,,,,,,,,,,,,,,2014-05-19 10:36:37.733,,,false,,,,,,,,,,,,393078,,,Tue May 20 07:24:58 UTC 2014,,,,,,0|i1vosn:,393245,,,,,,,,,"16/May/14 13:37;arcadien;Patch :
+### Eclipse Workspace Patch 1.0
+#P com.pollentech.maths.stats
+Index: apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java
+===================================================================
+--- apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java	(revision 1595194)
++++ apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java	(working copy)
+@@ -300,6 +300,9 @@
+             } else {
+                 s = s.split(tree.parent.cut.getHyperplane()).getMinus();
+             }
++            if (s == null){
++                return s;
++            }
+         }
+         return s;
+     }
+","19/May/14 09:57;arcadien;Eclipse Workspace Patch 1.0
+#P com.pollentech.maths.stats
+Index: apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java
+===================================================================
+apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java (revision 1595194)
++++ apacheMaths/src/main/java/org/apache/commons/math3/geometry/partitioning/BSPTree.java (working copy)
+@@ -300,6 +300,9 @@
+} else { s = s.split(tree.parent.cut.getHyperplane()).getMinus(); }
++ if (s == null)
+{ + return s; + }
+}
+return s;
+}","19/May/14 10:36;luc;Could you explain in which situation you encounter the exception?
+
+The fitToCell method is a private one and should be called only in controlled case where the error should not occur. So rather if you encounter this, it is an indication something wrong already occurs before the call, and I guess it should be fixed too.
+
+The best way would be to have a small reproducible test case that we could add as a non-regression unit test once the problem is fixed.",19/May/14 13:18;arcadien;Test case for ConvexHull2D which triggers a NPE in BSPTree#fitToCell().,"19/May/14 13:20;arcadien;Hello Luc,
+Thanks for your reply. I just added a test case with the original data i used to trigger the NPE.
+
+regards,
+
+Aurelien Labrosse","19/May/14 15:06;luc;Fixed in subversion repository as of r1595924.
+
+The problem was triggered as several points from the convex hull were aligned when the convec region was built. As such convex regions can also be built directly by users from regular public API, the place you fixed it was appropriate. So I simply moved the test as a stop condition in the loop, but it was quite good as is.
+
+Thanks for the report and for the patch.","19/May/14 15:21;tn;Is the convex hull in this example correctly constructed, or is this something we have to further investigate?
+
+From the code I see that collinear points on the hull shall be included.","19/May/14 15:41;tn;Ok, I quickly analyzed it using the example application, and the resulting convex hull looks correct.
+
+The red line is the convex hull, while the blue line is the enclosing ball (see the attached screenshot convex.png)","19/May/14 16:43;luc;Yes, the hull is correct and I agree colinear point can be included. It was the BSPTree built from these points that triggered a problem.
+As users could have chosen to build a convex region directly from these points, it was really at BSP level that such points should be handled properly.
+
+We had already encountered this problem previously, but I failed to fix it. The previous cases were due to numerical noise, as the original point were not exactly aligned. However, exactly aligned point do occur and should be accepted. This new use case is really interesting since it does trigger the problem with exact integer coordinates. I have added it as a junit test in the general abstract test for all convex hull algorithms as it seemed interesting even for hull themselves, even if they were not really involved this time.","19/May/14 21:18;tn;Ok thanks for the update. I slightly changed the unit test to use the proper generator.
+
+Regarding the collinear points: they are correctly added as specified by the flag in the constructor. If only a minimal hull shall be constructed, the collinear points are not included. I thought this might be a useful distinction.
+
+Unfortunately, these collinear points were quite tricky to handle for the other algorithms that I implemented and could not get it to work reliably. Otoh, other libraries also seem to have chosen MonotoneChain as primary algorithm for convex hulls as it seems to be the most robust in this regard.","20/May/14 07:24;arcadien;Thomas, Luc,
+
+Thanks for your quick replies and actions. I'll continue using your excellent library, and try to help as much as i can.
+
+regards,
+
+Aurelien Labrosse",,,,,,,,,,,,,,,,,,,,
+class Mean returns incorrect result after processing an Infinity value,MATH-1146,12734473,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,psteitz,cogen,cogen,15/Aug/14 18:03,26/Dec/14 19:50,08/Jun/19 22:40,16/Dec/14 23:53,3.3,,,3.4,,,0,,,,,"1. Create a Mean object.
+2. call increment() with Double.POSITIVE_INFINITY.
+3. Call getResult(). Result is INFINITY as expected.
+4. call increment() with 0.
+5. Call getResult(). Result is NaN; not INFINITY as expected.
+
+This is apparently due to the ""optimization"" for calculating mean described in the javadoc. Rather than accumulating a sum, it maintains a running mean value using the formula ""m = m + (new value - m) / (number of observations)"", which unlike the ""definition way"", fails after an infinity.
+
+I was using Mean within a SummaryStatistics. Other statistics also seem to be affected; for example, the standard deviation also incorrectly gives NaN rather than Infinity. I don't know if that's due to the error in Mean or if the other stats classes have similar bugs.",,,,,,,,,,,,16/Aug/14 01:40;erans;MATH-1146.patch;https://issues.apache.org/jira/secure/attachment/12662218/MATH-1146.patch,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-08-16 01:40:37.38,,,false,,,,,,,,,,,,412413,,,Tue Dec 16 23:53:56 UTC 2014,,,,,,0|i1yy4n:,412400,,,,,,,,,"16/Aug/14 01:40;erans;Here is a tentative patch which I thought would solve the problem.
+However, it makes another unit test fail.
+
+{noformat}
+Tests run: 5, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec <<< FAILURE! - in org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest                                                                                                                                                      
+testAggregateSpecialValues(org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest)  Time elapsed: 0.001 sec  <<< FAILURE!                  
+java.lang.AssertionError: expected:<Infinity> but was:<NaN>                                                                                                  
+        at org.junit.Assert.fail(Assert.java:88)                                                                                                             
+        at org.junit.Assert.failNotEquals(Assert.java:743)                                                                                                   
+        at org.junit.Assert.assertEquals(Assert.java:494)                                                                                                    
+        at org.apache.commons.math3.TestUtils.assertEquals(TestUtils.java:55)                                                                                
+        at org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest.assertEquals(AggregateSummaryStatisticsTest.java:236)                    
+        at org.apache.commons.math3.stat.descriptive.AggregateSummaryStatisticsTest.testAggregateSpecialValues(AggregateSummaryStatisticsTest.java:222)      
+{noformat}","16/Aug/14 01:53;psteitz;I am leaning toward improving the javadoc to be clear about what happens with infinities (if possible to do consistently).  The updating formulas and setup are designed for fast, accurate computations and I want to make sure we do not add a performance hit for users with standard (non NaN, non-Inf) data so we can return meaningful results in the presence of INFs. ","16/Aug/14 02:35;erans;Is there a consistent policy throughout CM for handling NaN and infinities?
+
+Unit tests for some statistics classes refer to ""special values"", so it looks like they were meant to be handled. If so, shouldn't we assume that they must be handled correctly, in all cases?
+Alternately, it would be fine to just signal that if special values are passed to those classes, results are undefined (filtering is the caller's responsibility).
+Anything in between is confusing, IMHO.
+
+Consistency should come first. Once the policy is defined, we can then look for an efficient way to implement it.
+","16/Aug/14 13:41;psteitz;I think the policy should be we document fully our algorithms and NaNs / INFs impact computations according to Java's extended arithmetic rules.   This is the de facto policy we have in most places now, when you get down to it.  Otherwise, we end up having to pre-process data for users and make (sometimes arbitrary) rules about what computations should actually mean in the presence of these values.  I do think its best to specify behavior though, so I favor improving javadoc where we can.  In the present case, the updating formula is provided in the javadoc, so one could argue there is nothing to do, but I would not be averse to adding a statement describing behavior when a NaN or INF is added to the data.  I am -0 on trying to extend the definition of the mean to datasets including infinities.","16/Aug/14 15:02;erans;By ""policy"" here, I don't mean best coding practices (which includes good documentation).
+But rather, can we state a general policy on handling special values instead of repeating all over the place (and forgetting to do so) that results could be garbage if NaN or infinities are involved?
+There are several places in CM where the implementations do not behave as one would expect from the plain math definition, and it has led to bug reports (recall e.g. ""Complex""). I don't dispute that there may be good reasons, and that the doc may state it clearly enough (although I don't think it that the doc should contain what could be deemed an implementation detail, such as the actual computation used to maintain the mean); I find it preferrable to state once and for all that if users want to manipulate NaN and infinities, they should not expect that CM will deliver correct results. The rationale being:
+bq. \[CM is\] designed for fast, accurate computations \[... and\] we do not add a performance hit for users with standard (non NaN, non-Inf) data \[... in order to\] return meaningful results in the presence of INFs.
+which is a quite well stated and perfectly acceptable policy IMO.
+
+","16/Aug/14 15:39;psteitz;I am fine with stating the general policy that NaNs and infinities are not specially handled by commons math.  I think documenting algorithms is important, though, and I will continue to do it where I can.   Most of what we do amounts to providing numerical approximations of mathematically defined quantities.  The numerical algorithms used in the approximation are part of the API contract, IMO, as it is their results that we are returning.   I see no harm in pointing out where possible what happens when infinities or NaNs are included in user-supplied data.  I think there are a few cases where we filter / specially handle these values today.  I am OK agreeing to change this behavior, but we should talk about it on the dev list and target a major release to implement these API changes.
+
+Back to this issue - I think the right resolution is to edit javadoc to make clear how NaNs and infinities impact the mean computation.  Same for other stats mentioned in this ticket.","18/Aug/14 12:24;cogen;Phil Steitz says ""The updating formulas and setup are designed for fast, accurate computations and I want to make sure we do not add a performance hit for users with standard (non NaN, non-Inf) data so we can return meaningful results in the presence of INFs. ""
+
+I fail to see how the current implementation of Mean could be faster than the definition way: maintaining a sum and dividing by the number of items.
+
+The current implementation maintains a current average, rather than computing the average from the sum when requested. So the number of divide operations is proportional to N rather than being equal to 1 for the definition way. (Assuming the normal use case of processing a bunch of values then getting the mean at the end. Whereas the current implementation is only an optimization if somebody wants to know the mean often - like after processing each input.)","18/Aug/14 17:05;erans;bq. \[...\] fast, accurate \[...\]
+
+There is a trade-off; this implementation of ""Mean"" is going to be accurate for longer sequences than with the other formula.
+But it may be interesting to provide the alternative implementation which, as you indicate, is more efficient (and handles correctly the use-case reported here).
+Could you please request further opinions on the ""dev"" ML?
+",05/Oct/14 18:39;psteitz;Will edit javadoc for 3.4 release.,16/Dec/14 23:53;psteitz;Javadoc fixes committed in 26e61145839e4da47eb83edfba406ceefc0b67bf,,,,,,,,,,,,,,,,,,,,,
+BicubicSplineInterpolator is returning incorrect interpolated values,MATH-1138,12726859,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,abedrossian,abedrossian,11/Jul/14 18:51,26/Dec/14 19:50,08/Jun/19 22:40,17/Oct/14 08:54,3.3,,,3.4,,,2,,,,,"I have encountered a use case with the BicubicSplineInterpolator where the interpolated values that are being returned seem incorrect.  Furthermore, the values do not match those generated by MatLab using the interp2 'cubic' method.
+
+Here is a snippet of code that uses the interpolator:
+
+        double[] xValues = new double[] {36, 36.001, 36.002};
+        double[] yValues = new double[] {-108.00, -107.999, -107.998};
+
+        double[][] fValues = new double[][] {{1915, 1906, 1931},
+                                        {1877, 1889, 1894},
+                                        {1878, 1873, 1888}};
+
+        BicubicSplineInterpolator interpolator = new BicubicSplineInterpolator();
+        BicubicSplineInterpolatingFunction interpolatorFunction = interpolator.interpolate(xValues, yValues, fValues);
+
+        double[][] results = new double[9][9];
+        double x = 36;
+        int arrayIndexX = 0, arrayIndexY = 0;
+
+        while(x <= 36.002) {
+            double y = -108;
+            arrayIndexY = 0;
+            while (y <= -107.998) {
+                results[arrayIndexX][arrayIndexY] = interpolatorFunction.value(x,  y);
+                System.out.println(results[arrayIndexX][arrayIndexY]);
+                y = y + 0.00025;
+                arrayIndexY++;
+            }
+
+            x = x + 0.00025;
+            arrayIndexX++;
+        }
+
+Attached is a grid showing x and y values and the corresponding interpolated value from both commons math and MatLab.
+
+The values produced by commons math are far off from those created by MatLab.",,,,,,,,,,MATH-1166,,11/Jul/14 18:52;abedrossian;Interpolated Values from CM and MatLab.docx;https://issues.apache.org/jira/secure/attachment/12655278/Interpolated+Values+from+CM+and+MatLab.docx,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-09-13 13:22:39.158,,,false,,,,,,,,,,,,404966,,,Tue Oct 21 02:27:06 UTC 2014,,,,,,0|i1xp0n:,405003,,,,,,,,,11/Jul/14 18:52;abedrossian;Contains x and y values and the corresponding interpolated values from both CM and MatLab.,"13/Sep/14 13:22;HankG;I have been investigating this much further.  The good news is that from what I can tell the implementation of this function is in line with the Wikipedia article it is based on.  The bad news is that this is just not working.  The unit tests associated with this aren't even passing a basic 2D linear function test. It should be getting identical results to the expected values. These aren't even close.
+
+I re-implemented the WIkipedia implementation in Octave and I get the same results the Apache Math function does.  I rederived the equations from the Wikipedia article and confirmed that the coefficients being used are the correct.  It's just not working though.
+
+I looked into how Octave performs the same function.  They do not do it this way.  They do it by building up from a series of cubic splines.  I have a mechanism for implementing it in that way and could take a crack at it if you would like.  I know I just joined the Apache project here so let me know what the proper path forward would be to get this assigned to me and contribute it back. 
+
+If I do get it, I intend to reform the unit tests so that they have more appropriate tolerances for the functions listed.  Even the ones that are passing are doing so because their tolerances are jacked up way too high, which isn't really testing the function numerical accuracy at all.","16/Sep/14 19:02;erans;bq. I re-implemented \[...\] rederived \[...\] confirmed
+
+Thanks a lot for this thorough review.
+
+bq. It's just not working though. \[...\] I looked into how Octave performs the same function. They do not do it this way.
+
+It would be interesting to go to the reference mentioned in the Wikipedia article.  Maybe it will reveal where the bugs are.
+A web search came up with this site:
+{noformat}
+  http://www.paulinternet.nl/?page=bicubic
+{noformat}
+At first sight, there would seem to be a discrepancy with the contents of the matrix...
+
+bq. I have a mechanism for implementing it in that way and could take a crack at it if you would like.
+
+That would be nice but be careful to not use a reference that would forbid inclusion in Commons Math.
+
+bq. let me know what the proper path forward would be to get this assigned to me and contribute it back.
+
+One way would be to generate the expected values from another package (e.g. Octave) and create a unit test that will miserably fail with the current code when ""reasonable"" tolerances are used.
+Then, you are most welcome to fix the implementation, trying to not change the public API.
+","17/Sep/14 12:55;HankG;Actually, the source they used for that derivation was not that link, but this one (also in their references section):
+
+http://www.geovista.psu.edu/sites/geocomp99/Gc99/082/gc_082.htm
+
+You can see in Section 3.8 how they are sampling just the corner points (0,0), (1,0), (0,1) and (1,1) in determining coefficients, just like their derivation.  The reference you cited is sampling a 4x4 grid, which makes more sense to me.  The methodology I was talking about existing in the Octave code is the same as the methodology in his site as well. Specifically, to do a 2D interpolation you call a series of 1D interpolations.  The coefficient term version at the bottom of the reference you cited is useful for when the region being sampled between iterations often stays the same.    
+
+I am aware that Octave uses GPL, which is not compatible with the Apache license, so I was not going to be using  their code (it is written in Matlab scripting language and FORTRAN too).  I was simply looking at which math algorithm they chose to use.  I did not want to use the code off of the site you listed as a baseline either because there is no mention of licensing rights at all. It simply says, ""Anything at this page may be copied and modified."" but it doesn't list what the requirements are for when you do that.  I thought about e-mailing the author asking them if they could put an explicit license, Creative Commons or something, to address the ambiguity.
+
+My implementation strategy was going to be as follows: I was therefore going to be implementing the algorithm using existing Apache Math 1D interpolation functions after I created my own validating implementation in Octave source code and a test set of data in Octave as well.  I would then create versions of the test that does random samplings of the interpolation region in Octave to figure out what the statistical distributions of errors are.  I would then use that for the tolerances of the same test implementation in Apache.  
+
+I believe the public API for this should be fine, but I will not change it without consulting team members here.  I would also like to implement lower order BivariateGridInterpolators.  This can be overkill for a lot of applications.  That would be done in a seperate story/issue though.
+
+",05/Oct/14 19:05;psteitz;Patch?,"06/Oct/14 01:12;HankG;I'm still working on the new coding up.  I'm trying to investigate why I'm not getting the same numerical accuracies out of my Apache Math implementation as I am out of my Octave implementation.  My linear case is only matching to within 1e-13 while it should be matching to within 1e-14, according to the results I get from Octave's built in function and my own hand coded function.  My parabaloid test should be within 1e-14 as well, but I'm no where near that.  I'm currently investigating the Spline interpolator.  The sensitivities on that object's tests aren't cranked down anywhere near 1e-14/1e-15.  I checked Math.NET unit tests and theirs are cranked down to that level, as are the levels I'm seeing in Octave.  I was therefore going to add some additional tests modeled after the Math.NET tests (the are using an MIT license, so that's compatible with this project).","06/Oct/14 01:32;HankG;Nevermind, I've modified the tolerances on the test to match those of Octave's built in functions for the same values.  So that is now properly cranked down to the tolerances for these algorithms for those curve fits.  No changes to the spline interpolator was necessary to match those values.  ","06/Oct/14 02:08;HankG;That said, the spline interpolator is not returning correct values for the Bicubic test data set.  For example, given:
+xi = [    3.0000   4.0000   5.0000   6.5000 ];
+zi = [ 25.000    47.000    73.000   119.500];
+
+The correct value of the interpolation of z for x = 4.5 is 59.5.  The spline interpolator in Apache Math is returning 59.388... . I'll continue to investigate this this week.  The accuracy of my implementation will not be correct until I figure out why spline is not working right.  
+
+Another note, TricubicSplineInterpolator was dependent on the partial derivatives in the original BicubicSplineInterpolatingFunction.  There is no such thing in this implementation therefore TricubicSpline will need to be implemented as a piece-wise spline based on the 2D spline, in the same way that the 2D spline is based on the piece-wise implementation based on the 1D spline.
+","06/Oct/14 13:55;HankG;Reviewing Octave and Math.NET I have identified the source of the discrepancy.  It appears that Octave uses B-splines for their spline interpolation.  The implementation in Apache Math is the Natural Spline.  When I use the Math.NET natural spline interpolator I get the same results as I get with the Apache Math method.  However if I use the Akima Cubic Spline algorithm from Math.NET I get valid numbers.  The only disadvantage of the Akima Spline that I see that we don't have with the standard cubic spline is that it needs a minimum of five elements, not four.  
+
+Because the current spline works I was going to code up an Akima spline based on the Math.NET implementation (referencing that source (they are a compatible MIT license), plus a book source.  I will then use that as the basis for the splines in the BicubicSpline Interpolation.","06/Oct/14 22:34;HankG;I've finished coding up the Akima spline interpolator, and while it works better than the natural spline it is still nowhere near as close as the b-splines in Octave.  It nails it for linear and quadratic curves, but even a cubic function throws it (and the natural spline) for a loop.  I've confirmed the uncertainties of both spline methods by comparing to Math.NET output.  I therefore want to implement a B-Spline.  I found this BSD-licensed B-spline library.  I intend to use for that implementation.
+
+http://www.eol.ucar.edu/homes/granger/bspline/doc/index.html
+
+","08/Oct/14 03:04;HankG;I have completed work on this to a point where it is generating substantially better values.  I am using the Akima Spline algorithm.  For the planar test the error off the truth function went from 6 to 6e-14.  On the parabaloid function test it went from 224 to 6e-14.  The corresponding errors on the Akima Spline test for linear, parabolic and cubic functions are 1e-15, 6e-14 and 3.8, respectively.  While that is an improvement over the Natural Spline, that could have errors over 15 on the cubic test, the B-spline would collapse errors on the higher order functions to something comparable to the linear and parabolic tests, and thus further enhance the accuracy of the interpolation of the higher dimension interpolators too.  Patch is attached to this incident.","08/Oct/14 03:05;HankG;Pull request for this is at:
+
+https://github.com/apache/commons-math/pull/2
+
+","17/Oct/14 08:54;luc;Patch applied as of b5e155e.
+
+Thanks for the patch!","18/Oct/14 08:34;tn;I do not know if we can already close this issue, as the original problem got now even worse: the minimum number of required data points for the new Akima spline method is 5, thus the above example fails with an InsufficientDataException.","18/Oct/14 11:14;HankG;Adam was working on a project for me when he uncovered the accuracies issues with the interpolators.  He posted this to the discussion board and then ultimately here to help resolve the matter.  The field we were running our interpolation on was much greater than the number of elements given.  We were just trying to come up with a concise example to send here.  This was before we started tearing into the test harness for these functions, which is when I took over the investigation of the problem.  We ultimately had to write our own bilinear interpolation rather than use the Apache Math libraries due to time constraints, but I do intend to switch that out for this method in a future sprint once this is part of a shipping Apache Math release.","18/Oct/14 11:38;tn;I understand and appreciate the effort that has been put into this issue, but I just wanted to point out that we might create a potential regression here for people that have been using the interpolator with less than 3 data points.
+
+To be honest, I do not know exactly how to proceed, as the current code clearly improves the results, maybe we should explicitely note this change in the release notes.","18/Oct/14 11:57;HankG;We can go back to only requiring four elements if we use the regular spline instead of the Akima spline.  The tolerances on the interpolation tests will have to be significantly loosened however since the regular spline algorithm produces larger deviations from the truth function by the nature of the algorithm.  I was opting for the increased accuracy.  In a future revision we were considering giving people the option to select their interpolation method between regular, Akima and B-Spline.  I just haven't gotten around to coding that.  Perhaps now would be a good time.  We could default to the regular spline and give people the Akima spline option, noting that it is of higher accuracy.  I do not know what the minimum number of points for the B-spline will be as I haven't started investigating an implementation yet.  It may be that too is four and thus once all is said and done the default spline algorithm would always be four.",18/Oct/14 12:10;tn;Giving the user control over the type of spline algorithm used in the interpolator / function would certainly be good imho.,"18/Oct/14 13:00;HankG;Agreed, we just need to discuss it in the message board.  I can create a new JIRA issue and start that process.","21/Oct/14 02:27;HankG;I have restored the original files but added deprecation and accuracy warnings.  The new interpolators are now in their own ""Piecewise"" surnamed classes.  All tests in the entire JUnit suite passed. 
+
+You can find the details of the pull request here:
+
+https://github.com/apache/commons-math/pull/3
+
+You can browse my version of the repository, or pull your own copy down, here:
+
+https://github.com/HankG/commons-math
+
+This pull request seems to also have all of the changes from apache:master that I fetched and merged with my local repository before I started these edits.  I'm not sure how to get GitHub to ignore those came from the root, nor have I figured out how to select a limited range of changes to get around that.  I also don't want to let my fork go stale.  Between the two I figured it was better to keep my fork up to date before making changes than it was for the person processing a pull request to try to shoe horn it into whatever the change is. 
+
+Along with these changes I did do a scan of my code to make sure I didn't miss any defensive programming practices, used magic numbers, et cetera.  Nothing stood out to me, but proofreading your own writing is never a good thing.  If whatever ""minor changes"" I need to make to get this code ""on par with what we had usually committed as new contributions"" can be pointed out here or in JIRA I'd appreciate it.",,,,,,,,,,,
+KolmogorovSmirnov test algorithm choice prone to integer overflow,MATH-1181,12761742,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,psteitz,psteitz,15/Dec/14 13:09,26/Dec/14 19:50,08/Jun/19 22:40,15/Dec/14 13:50,3.3,,,3.4,,,0,,,,,"The computation used to select the algorithm in the 2-sample KS test is prone to integer overflow, resulting in the ""exact"" method being chosen for very large samples, resulting in impractically long execution time.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Dec 15 13:50:36 UTC 2014,,,,,,0|i23fnr:,9223372036854775807,,,,,,,,,15/Dec/14 13:50;psteitz;Fixed in 2fb2221d487d925fd5d716173a80c798986aadf0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Suboptimal implementation of EnumeratedDistribution.sample(),MATH-1152,12740986,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,sandris,sandris,12/Sep/14 07:46,26/Dec/14 19:50,08/Jun/19 22:40,30/Sep/14 19:17,3.3,,,3.4,,,0,,,,,"org.apache.commons.math3.distribution.EnumeratedDistribution.sample() performs a *linear* search to find the appropriate element in the probability space (called singletons here) given a random double value. For large probability spaces, this is not effective. Instead, we should cache the cumulative probabilities and do a *binary* search.
+
+Rough implementation:
+{code:title=EnumeratedDistribution.java|borderStyle=solid}
+void computeCumulative() {
+  cumulative = new double[size]; 
+  double sum = 0;
+  for (int i = 1; i < weights.length - 1; i++) {
+      cumulative[i] = cumulative[i-1] + weights[i-1];
+   }
+  cumulative[size - 1] = 1;
+}
+{code}
+
+and then 
+{code:title=EnumeratedDistribution.java|borderStyle=solid}
+int sampleIndex() {
+ double randomValue = random.nextDouble();
+ int result = Arrays.binarySearch(cumulative, randomValue);
+ if (result >= 0) return result;
+ int insertionPoint = -result-1;
+ return insertionPoint;
+}
+
+{code}
+",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-09-30 19:17:20.448,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Sep 30 19:17:20 UTC 2014,,,,,,0|i1zynj:,9223372036854775807,,,,,,,,,"30/Sep/14 19:17;tn;Fixed in commit 97accb47de63ee5063eda23641c6017e29ab81d7.
+
+Thanks for the report and patch!",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+BUG - Insufficient Entropy in Commons-math3-3.3,MATH-1182,12763566,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Invalid,,david.espitia,david.espitia,23/Dec/14 21:56,23/Dec/14 22:49,08/Jun/19 22:40,23/Dec/14 22:39,3.3,,,,,,0,,,,,"We are currently using Commons-math3-3.3 and in the analysis for veracode, found this bug in these class:
+
+1. FastMath.java (Line 813)
+2. SynchronizedRandomGenerator.java (Line 78 and Line 85)
+3. UniformIntegerDistribution.java (Line 164 and Line 172)
+4. RandomAdaptor.java (Line 143  and 159)
+
+Type : Insufficient Entropy
+
+Description:
+
+Standard random number generators do not provide a sufficient amount of entropy when used for security purposes.
+Attackers can brute force the output of pseudorandom number generators such as rand().
+
+Recommendations:
+
+If this random number is used where security is a concern, such as generating a session key or session identifier, use
+a trusted cryptographic random number generator instead. These can be found on the Windows platform in the
+CryptoAPI or in an open source library such as OpenSSL.
+
+
+Thanks.",,432000,432000,,0%,432000,432000,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-12-23 22:11:10.284,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Dec 23 22:49:24 UTC 2014,,,,,,0|i23qqv:,9223372036854775807,,,,,,,,,"23/Dec/14 22:11;b.eckenfels;I think this is a false positive. If you need a scanner tool to analyse code, you also need to understand where the code is used for what. As the text suggests this is only a problem for security relevant code. Using FastMath for security relevant (i.e. crypto/nonces) code would be an error (but not one in FastMath but in your code).
+","23/Dec/14 22:39;psteitz;None of the methods referenced are intended for cryptographic / secure token generating use.  Other PRNGs are available in the library and in most cases, user-supplied PRNGs may also be used.","23/Dec/14 22:49;erans;{quote}
+1. FastMath.java (Line 813)
+2. SynchronizedRandomGenerator.java (Line 78 and Line 85)
+3. UniformIntegerDistribution.java (Line 164 and Line 172)
+4. RandomAdaptor.java (Line 143 and 159)
+{quote}
+
+General note: to help solve issues, information (such as line numbers) should refer to the development version.
+
+In all the classes above, the code uses a {{RandomGenerator}} (an interface); the actual implementation is chosen by the user!
+In your testing, you may have chosen one that is indeed not recommended for secure applications. 
+It would be interesting information to know which of the RNGs present in the Commons Math library are secure and which not.
+Could you provide it?
+",,,,,,,,,,,,,,,,,,,,,,,,,,,,
+PolygonSet instantiation throws NullPointerException,MATH-1168,12755175,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Cannot Reproduce,,gun,gun,13/Nov/14 22:13,02/Dec/14 21:25,08/Jun/19 22:40,02/Dec/14 21:25,3.3,,,,,,0,,,,,"the following generates an exception
+
+{noformat}
+import org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
+class Test {
+    public static void main(String[] args) {
+		new PolygonsSet(1.0E-10,
+					    new Vector2D(-76.8095991248, -15.087601999),
+					    new Vector2D(-76.8095991245, -18.288001999), 
+					    new Vector2D(-10.0583778834, -18.2880019979), 
+					    new Vector2D(-10.0583778835, -15.0876019979),
+					    new Vector2D(-54.8639991264, -15.0876019984));
+
+    }
+}
+{noformat}
+
+the exception is
+{noformat}
+Exception in thread ""main"" java.lang.NullPointerException
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.fitToCell(BSPTree.java:301)
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.insertCut(BSPTree.java:159)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:333)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.insertEdges(PolygonsSet.java:406)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.verticesToTree(PolygonsSet.java:309)
+        at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.<init>(PolygonsSet.java:156)
+        at Test.main(test.java:6)
+{noformat}
+",windows 8,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-11-23 20:56:06.426,,,false,,,,,,,,,,,,9223372036854775807,,,Sun Nov 23 20:56:06 UTC 2014,,,,,,0|i22cnj:,9223372036854775807,,,,,,,,,"23/Nov/14 20:56;luc;I was not able to reproduce the issue, neither with the current version after fix for MATH-1162, nor when reverting to a version prior to the fix for MATH-1162.
+
+Could you check if it still occurs on your computer?",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"""LevenbergMarquardtOptimizer"": Divergent behavior of new code",MATH-1126,12720874,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Cannot Reproduce,,erans,erans,12/Jun/14 13:36,13/Jun/14 15:37,08/Jun/19 22:40,13/Jun/14 15:37,3.3,,,,,,0,regression,,,,"The new implementation of ""LevenbergMarquardtOptimizer"" (package ""o.a.c.m.fitting.leastsquares"") behaves differently from the previous one (package ""o.a.c.m.optim.nonlinear.vector.jacobian"").
+
+This shows up not so much in the solutions respectively found by one and the other implementation; there are fairly similar, but in my use-case, the number of function evaluations is quite different. And this could explain an observed 35% performance degradation.
+",,,,,,,,,,,,12/Jun/14 14:07;erans;LM_cost_NEW;https://issues.apache.org/jira/secure/attachment/12650055/LM_cost_NEW,12/Jun/14 14:07;erans;LM_cost_OLD;https://issues.apache.org/jira/secure/attachment/12650054/LM_cost_OLD,,,,2.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,399073,,,Fri Jun 13 15:37:17 UTC 2014,,,,,,0|i1wpav:,399190,,,,,,,,,"12/Jun/14 14:07;erans;I could trace one possible cause of the problem up to the usage of variable ""currentCost"". As shown by the attachments, the value differ between the two implementations, although the core of the algorithm uses them in the same way to control the exploration of the search space.
+This could explain why the behaviours differ.
+","12/Jun/14 14:33;erans;It seems that in the old implementation, ""currentCost"" is computed using _unweighted_ residuals, while the new implementation uses _weighted_ residuals (cf. override of ""getResiduals"" in class ""DenseWeightedEvaluation"").","12/Jun/14 14:50;erans;bq. [...] in the old implementation, ""currentCost"" is computed using unweighted residuals [...]
+
+No, that's not it :(
+Cf. line 80 in ""AbstractLeastSquaresOptimizer"" (in ""o.a.c.m.optim.nonlinear.vector.jacobian"").","13/Jun/14 15:37;erans;It seems that after several cycles of recompiling, I cannot reproduce different outputs from the two implementations!  Maybe I was using ""stale"" files somewhere...
+The results are almost exactly the same.
+
+The performance degradation remains, although down to about 20% (vs 35% as initially observed).  I still get a different number of evaluations but it's not caused by the core of the optimization algorithm...
+Thus closing this report. Sorry for the noise.
+",,,,,,,,,,,,,,,,,,,,,,,,,,,
+Incorrect results from BinomialConfidenceInterval#getWilsonScoreInterval,MATH-1086,12688265,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Not A Problem,,khamenka,khamenka,10/Jan/14 15:48,19/May/14 15:13,08/Jun/19 22:40,11/Jan/14 07:59,3.3,,,3.3,,,0,,,,,"It looks like BinomialConfidenceInterval#getWilsonScoreInterval produces not accurate results for interval lower bound.
+E.g. for input (10,9,0.95) it returns 0.818 instead of 0.596; 
+       for input (10,10,0.95) it returns 0.856 instead of 0.722.
+
+Used also http://epitools.ausvet.com.au/content.php?page=CIProportion&SampleSize=10&Positive=9&Conf=0.95&Digits=3 and http://www.measuringusability.com/wald.htm to verify it.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-01-10 20:18:04.445,,,false,,,,,,,,,,,,367284,,,Mon May 19 15:13:32 UTC 2014,,,,,,0|i1rb4v:,367593,,,,,,,,,"10/Jan/14 20:18;tn;Running the following code on the latest trunk
+
+{noformat}
+        BinomialConfidenceInterval interval = new BinomialConfidenceInterval();
+        
+        ConfidenceInterval i1 = interval.getWilsonScoreInterval(10,9,0.95);
+        System.out.println(i1.getLowerBound());
+        
+        ConfidenceInterval i2 = interval.getWilsonScoreInterval(10,10,0.95);
+        System.out.println(i2.getLowerBound());
+{noformat}
+
+produces:
+
+{noformat}
+0.5958499732047616
+0.7224672001371106
+{noformat}
+
+which looks like the correct result. Can you verify this?
+
+btw. I wonder why the getXXXXInterval methods in BinomialConfidenceInterval are not static.","10/Jan/14 20:57;psteitz;Thomas - your comment about static methods applies to many methods in the stat package.  This class is just following the pattern of the others in stat.inference.  We decided some years back to favor non-static implementation methods when we had more strategy patterns and focus on extensibility.  We have moved more in the direction of single implementations and less concern for extensibility since, so it may make sense to revisit those decisions.  Personally, I still favor non-static implementation methods though (by ""implementation methods"" I mean methods that actually implement mathematical algorithms, as opposed to convenience methods like the ones in StatUtils), but am open to change if others feel strongly about it.","10/Jan/14 21:09;tn;In general I am not against this practice, but in the case of the BinomialConfidenceInterval I was really wondering if it is not better to make them static:
+
+ * the class itself has no internal state
+ * it does not implement any interface
+ * is not supposed to be sub-classed
+ * javadoc mentions factory methods (which actually got me started)
+
+For the various tests there is a TestUtils class, which means a user does not have to create an instance of the respective test, but can directly use the static methods there. For the BinomialConfidenceInterval one would have to instantiate an object first, which is at least inconvenient imho.","10/Jan/14 22:00;psteitz;All good points, Thomas; though one could quibble with the first and third bullets - i.e., you never know when something might be extended and that was in fact the reason for the old ""policy"" to keep implementation methods non-static.  It is a weak argument in this case, though; as the impls are really trivial and supposed to be definitive.  Sorry I missed the ""factory methods"" reference in the javadoc.  That should be removed.  I am fine changing the methods to static in this case.","10/Jan/14 22:29;tn;Actually, the BinomialConfidenceInterval class would also be suited for sub-classing, as all the getXXXInterval methods have the same signature. The interface would be like this
+
+{noformat}
+public interface BinomialConfidenceInterval {
+   ConfidenceInterval createInterval(int numberOfTrials, int numberOfSuccesses, double confidenceLevel);
+}
+{noformat}
+
+And there would be an implementation for each method:
+
+ * Wilson
+ * NormalApproximation
+ * ...
+
+Maybe an overkill, but at least very flexible ;-)","11/Jan/14 07:59;khamenka;Sorry, I compared values calculated with confidence interval 0.5 and 0.95. So obviously they were different. ","11/Jan/14 19:47;psteitz;Thomas - agree that is a nice design.  I would be +1 for this change, but it would be nice to then expose static methods somewhere to just get the intervals.  Not sure what the best place for these would be.  Maybe best to take this to commons-dev.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,,,,,
+arcs set split covers full circle instead of being empty,MATH-1093,12691036,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,luc,luc,24/Jan/14 14:11,19/May/14 15:13,08/Jun/19 22:40,24/Jan/14 16:04,3.3,,,3.3,,,0,,,,,"When splitting an arcs set using an arc very close to one of the boundaries (but not at the boundary), the algorithm confuses cases for which end - start = 2pi from cases for which end - start = epsilon.
+
+The following test case shows such a failure:
+{code}
+    @Test
+    public void testSplitWithinEpsilon() {
+        double epsilon = 1.0e-10;
+        double a = 6.25;
+        double b = a - 0.5 * epsilon;
+        ArcsSet set = new ArcsSet(a - 1, a, epsilon);
+        Arc arc = new Arc(b, b + FastMath.PI, epsilon);
+        ArcsSet.Split split = set.split(arc);
+        Assert.assertEquals(set.getSize(), split.getPlus().getSize(),  epsilon);
+        Assert.assertNull(split.getMinus());
+    }
+{code}
+
+The last assertion (split.getMinus() being null) fails, as with current code split.getMinus() covers the full circle from 0 to 2pi.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,369779,,,Mon May 19 15:13:31 UTC 2014,,,,,,0|i1rqe7:,370081,,,,,,,,,24/Jan/14 16:04;luc;Fixed in subversion repository as of r1561047.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+NullPointerExceptions not documented in some classes,MATH-1224,12828708,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,Telcontar,Telcontar,11/May/15 00:43,25/Jan/16 20:27,08/Jun/19 22:40,19/May/15 11:47,3.3,3.5,,3.6,4.0,,0,documentation,easyfix,easytest,newbie,"In general, the need to initialize newly constructed objects with more data is now documented, but we have found two cases where a NullPointerException is thrown because of missing data.
+
+The documentation should be updated to reflect this. This is similar to issues report in MATH-1116 but concerns classes that are not going to be deprecated (as far as we can tell).
+
+I have previously posted this as a new comment on issue 1116, but that comment has not elicited any response. As the original issue is one year old, I post this bug as a new issue.
+
+Below is the code that produces the two cases:
+
+org.apache.commons.math3.ode.nonstiff.HighamHall54Integrator var1 = new org.apache.commons.math3.ode.nonstiff.HighamHall54Integrator(0.0d, 0.0d, 0.0d, 0.0d);
+double[] var2 = new double[] { 0.0d };
+var1.computeDerivatives(0.0d, var2, var2); // NPE
+
+new org.apache.commons.math3.stat.correlation.SpearmansCorrelation().getCorrelationMatrix(); // NPE
+
+","Mac OS X, Java 6-8",2400,2400,,0%,2400,2400,,,,,11/May/15 00:44;Telcontar;Report6.java;https://issues.apache.org/jira/secure/attachment/12731837/Report6.java,11/May/15 00:44;Telcontar;Report7.java;https://issues.apache.org/jira/secure/attachment/12731838/Report7.java,,,,2.0,,,,,,,,,,,,,,,,,,,2015-05-13 19:27:59.03,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Jan 25 20:27:55 UTC 2016,,,,,,0|i2ejf3:,9223372036854775807,,,,,,,,,11/May/15 00:44;Telcontar;Self-contained unit test to reproduce NullPointerException on HighamHall54Integrator (the need to initialize it further is not documented yet).,11/May/15 00:44;Telcontar;Self-contained unit test to reproduce NullPointerException on SpearmansCorrelation (the need to initialize it further is not documented yet).,"13/May/15 19:27;psteitz;Fixed for Spearman's 
+3.x branch: fbf6259e0fd4fc85ff55ff7a496b40f98cca43f0
+master: 83c61da2c90548f2ddf48e164e8ab14b388e1d0c",19/May/15 11:47;luc;Fixed in git repository for the remaining part (ODE package).,25/Jan/16 20:27;luc;Closing all resolved issues that were included in 3.6 release.,,,,,,,,,,,,,,,,,,,,,,,,,,
+SolutionCallback has incorrect class javadoc,MATH-1214,12819893,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,psteitz,psteitz,10/Apr/15 00:09,18/Apr/15 09:28,08/Jun/19 22:40,10/Apr/15 01:32,3.3,3.4,3.4.1,3.5,4.0,,0,,,,,The class javadoc for o.a.c.m.optim.linear.SolutionCallback does not describe the class.,,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2015-04-18 09:28:25.105,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Apr 18 09:28:25 UTC 2015,,,,,,0|i2d2lz:,9223372036854775807,,,,,,,,,"10/Apr/15 01:32;psteitz;Fixed in
+Branch: refs/heads/master
+Commit: 6cd693a42256186fb3fd394ab040fa2132fac8d1
+Branch: refs/heads/MATH_3_X
+Commit: 6a24cf473c12dde2eeb584803d9e0f15ad061b00",18/Apr/15 09:28;luc;Closing resolved issue as 3.5 has been released.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+unsafe initialization in BicubicSplineInterpolatingFunction,MATH-1134,12724526,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,dscherger,dscherger,30/Jun/14 19:35,27/Feb/15 14:13,08/Jun/19 22:40,27/Feb/15 14:13,3.3,,,3.4,,,0,,,,,"The lazy initialization of the internal array of partialDerivatives in BicubicSplineInterpolatingFunction is not thread safe. If multiple threads call any of the partialDerivative functions concurrently one thread may start the initialization and others will see the array is non-null and assume it is fully initialized. If the internal array of partial derivatives was initialized in the constructor this would not be a problem.
+
+i.e. the following check in partialDerivative(which, x, y)
+        if (partialDerivatives == null) {
+            computePartialDerivatives();
+        }
+will start the initialization. However in computePartialDerivatives()
+        partialDerivatives = new BivariateFunction[5][lastI][lastJ];
+
+makes it appear to other threads as the the initialization has completed when it may not have.
+",,,,,,,,,,,,02/Jul/14 22:43;psteitz;MATH-1134.patch;https://issues.apache.org/jira/secure/attachment/12653709/MATH-1134.patch,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-06-30 22:28:24.215,,,false,,,,,,,,,,,,402709,,,Wed Feb 25 22:19:27 UTC 2015,,,,,,0|i1xbcn:,402776,,,,,,,,,"30/Jun/14 22:28;erans;Fields made ""final"" in revision 1606940.
+Could you please check the new code?
+We'd also be interested to get more unit tests for this interpolator. You are welcome to provide feedback.
+","30/Jun/14 22:37;dscherger;Wow, that was fast. At a glance the new code looks good, it will certainly fix the race I found earlier today.
+The only downside to initializing everything in the constructor is that you pay that cost up front, and if you weren't going to use the partial derivatives that's wasted. Not sure if that's a big deal or not.
+","30/Jun/14 23:39;psteitz;An alternative would be to just put the null check / initialization code above in a sync block.  The performance hit caused by the change is probably not large, but users who just want to interpolate may be annoyed by it.  ",01/Jul/14 09:31;erans;Another possibility is to add a constructor with a flag indicating that the derivatives must be computed.,01/Jul/14 11:59;sebb;Yet another might be to use the IODH pattern (I've not checked if that could work here),"01/Jul/14 16:16;erans;bq. IODH
+
+I don't think so: the fields are not static.","01/Jul/14 17:03;psteitz;Yes, we are dealing with cached member data here.  There are four logical options, that I will list in my personal order of preference
+
+0) Revert the change and just document that the class is not threadsafe.  This sounds wimpy, but basically the choice is between burdening all users of the class with the overhead associated with one of the other options or just burdening those who actually want to use instances as singletons with protecting them themselves.  That is the strategy we have used elsewhere and it has always made sense to me - users who use math objects that have internal state know better than us what the concurrency context of their applications are and can eat all and only the overhead they need to ensure correctness of their code.  We should make it clear which objects maintain internal state and mark them as not threadsafe, but we should not force ourselves to precompute everything or forego caching / mutability to maintain threadsafety everywhere.
+1) Protect the cached data by synchronizing access to it (adding sync blocks / explicit locks where needed)
+2) Get rid of the caching - actually compute the partials each time they are requested
+3) State of trunk as of r1606940 (force cache preload at construction)
+
+Gilles suggestion to make 3) itself configurable sort of combines 3) and 0) IIUC what he is suggesting.","01/Jul/14 17:54;erans;0) is a bit sad, because it can be thread-safe in an obvious way (all fields ""final"").
+
+Affirming thread-safety with 1) might not be as obvious. If only the ""private"" method that computed the derivatives were ""synchronized"", there might still be race conditions (leading to multiple computations of the same fields). While having all accessors synchronized will bring a penalty to applications that really make concurrent accesses.
+
+2) is not efficient, always (if derivatives are used).
+
+3) is not efficient, at instantiation.
+
+bq. Gilles suggestion to make 3) itself configurable sort of combines 3) and 0)
+
+Yes, IIUC what you means by ""combines"".
+Users who need the derivatives would have to specifically request that derivatives are computed (at instantiation), while the default would leave them at ""null"" (and if called later a NPE will be raised, by the JVM).
+\[This is my preferred option. And you didn't rank it ;)\]
+
+Another option might be to deprecate the derivatives code altogether. And perhaps move it to a subclass. And reimplement it, using the ""o.a.c.m.analysis.differentiation.DerivativeStructure"".
+","02/Jul/14 03:20;dscherger;I'm all for callers having the option to not initialize for partial derivatives on construction, as long as there is some explicit and obvious way to ensure that everything has been initialized before unleashing a bunch of threads on the interpolator.
+
+At the moment, it's not obvious that there is any internal state that requires initialization before using the class, the only way to find out is to experience the problem of incomplete initialization, and then to look at the source to see what is going on and discover that there is lazy initialization being done in both the partialDerivative[XY...] and value methods. The solution I've landed on for now is to make an initial partialDerivativeX(x,y) call as the objects are constructed, but some sort of explicit init() or alternative constructor with eager/lazy init options would be better.
+
+I'm not particularly fond of the idea of declaring methods synchronized unless that's really what is required to make them safe. The overhead there may be small, but that's relative and when running on many threads doing lots of computation it adds up, and sometimes becomes a significant problem, so if it can be avoided all the better. Similarly, recalculating the partials on every call is not very good if they can be computed once and re-used for every subsequent call, which seems like it could be a major performance win.
+
+","02/Jul/14 18:14;erans;New constructor added in r1607434: a flag will indicate whether initialization of the internal data needed to call the partial derivatives methods is to be performed. If set to false (default), calling a method anyway will trigger a NPE.
+
+Not sure that ""false"" should be the default...
+",02/Jul/14 18:19;psteitz;I don't like the NPE part.  Can we at least make it so that the flag basically says precompute and cache derivatives and false means there is no caching (i.e. they are computed each time).,"02/Jul/14 21:04;erans;bq. I don't like the NPE part.
+
+This is similar to how other parts of the CM code would behave if preconditions are not satisfied. Here, the user requests an interpolating function whose base interface is a ""BivariateFunction""; the derivative part is a ""bonus"" for those who comply with the precondition (which is that the flag must be set to true).
+
+In fact, I chose ""false"" as the default because you advocated that a user who just wants to interpolate should not pay the price needed to use the derivative functionality.
+But the converse is safer: let then the default be ""true""; a user that explicitly requests no initialization can only blame himself if he calls one of the derivative methods afterwards.
+
+Using on-demand caching complicates the code and prevents making the field final.
+Also, the derivatives were initially intended for internal purposes (to be used in ""TricubicInterpolator"").
+
+The initial code (initialization at access time) was really based on (untested) efficiency considerations, and I would consider it premature optimization. As it is now the code is both safe (if the user abides by the simple precondition) and efficient.
+","02/Jul/14 22:43;psteitz;Attached is a patch against the pre-1606940 code that should fix the race.  Since we require JDK 1.5+, the double-checked locking should be OK.  This fix avoids having to add constructor arguments, etc. and will only impose sync overhead (one time) for those wanting the partials.","03/Jul/14 09:22;erans;It's an elegant fix if the goal is to have as little change as possible.
+I still think that the goal of having all fields final has higher priority (as per our numerous discussions on avoiding non-final fields).
+
+I won't oppose your applying this patch if other people think that it's better than the current version.
+","03/Jul/14 21:46;erans;Phil,
+
+You seem always reluctant to let the code throw a NPE. Although I think that it is perfectly fine behaviour to signal a programming error, would you like it better if we change the exception type to ""MathIllegalStateException""?
+","04/Jul/14 19:44;psteitz;I agree that ISE would be better, but I think the API is a little awkward.  The r1607434 code does clearly document preconditions so the RTE would not be ""unexpected"" but I think the current code forces users to think about the constructor flag when we can just fix the code to be threadsafe.  I think we should strive to make our APIs as simple as possible, avoiding situations where you have to provide special constructor arguments for instance methods to work when we can.
+
+I think we should either get rid of the partials caching, have the flag control that (meaning false means do not cache partials), or just make the cache initialization threadsafe (the patch I provided is one way to do this).",25/Feb/15 22:07;tn;BicubicSplineInterpolatingFunction has been already been deprecated for 3.4 and now removed in 4.0 so I would suggest to close this issue or is there still anything planned for 3.5?,"25/Feb/15 22:19;erans;Closing is fine with me.
+",,,,,,,,,,,,,
+Rare case for updateMembershipMatrix() in FuzzyKMeansClusterer,MATH-1165,12753376,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,pasmod,pasmod,06/Nov/14 11:57,26/Dec/14 19:50,08/Jun/19 22:40,07/Nov/14 22:10,3.3,,,3.4,,,0,easyfix,,,,"The function updateMembershipMatrix() in FuzzyKMeansClusterer assigns the points to the cluster with the highest membership. Consider the following case:
+
+If the distance between a point and the cluster center is zero, then we will have a cluster membership of one, and all other membership values will be zero.
+
+So the if condition:
+if (membershipMatrix[i][j] > maxMembership) {
+                    maxMembership = membershipMatrix[i][j];
+                    newCluster = j;
+}
+will never be true during the for loop and newCluster will remain -1. This will throw an exception because of the line:
+clusters.get(newCluster)
+                    .addPoint(point);
+
+Adding the following condition can solve the problem:
+double d;
+if (sum == 0)
+d = 1;
+else
+d = 1.0/sum;",,3600,3600,,0%,3600,3600,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-11-06 14:59:24.476,,,false,,,,,,,,,,,,9223372036854775807,,,Fri Nov 07 22:10:00 UTC 2014,,,,,,0|i221yf:,9223372036854775807,,,,,,,,,"06/Nov/14 14:59;tn;This can only happen if the clusterer is initialized to form exactly 1 cluster and is then fed with only 1 data point.
+
+It is quite unlikely that somebody will use the clusterer in that way, but we will fix this rare case.","06/Nov/14 21:57;tn;Fixed in commit 596ccd59a11ad5e9fda19ccd0f4fc714d8d3394d
+
+Thanks for the report!",07/Nov/14 20:40;pasmod;I think the case that u mentioned is not the only one! What if one of the initial random centroids is exactly the same as the one of the data points?,"07/Nov/14 22:10;tn;Yes, I realized this while working on the fix.
+
+The implemented fix takes care of these cases too now, so I assume this issue can be closed safely.
+
+If you still encounter problems with the code in trunk, please let us know.",,,,,,,,,,,,,,,,,,,,,,,,,,,
+BinomialDistribution deals with degenerate cases incorrectly,MATH-1136,12726786,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,dievsky,dievsky,11/Jul/14 11:30,26/Dec/14 19:50,08/Jun/19 22:40,11/Jul/14 19:23,3.3,,,3.4,,,0,bug,patch,,,"The following calculation returns false results:
+
+{{new BinomialDistribution(0, 0.01).logProbability(0)}}
+
+It evaluates to Double.NaN when it should be 0 (cf., for example, ""dbinom(0, 0, 0.01, log=T)"" in R).
+
+I attach a patch dealing with the problem. The patch also adds a test for this bug.",,,,,,,,,,,,11/Jul/14 11:31;dievsky;BINOMIAL_DEGENERATE.patch;https://issues.apache.org/jira/secure/attachment/12655198/BINOMIAL_DEGENERATE.patch,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-07-11 19:23:31.066,,,false,,,,,,,,,,,,404893,,,Fri Jul 11 19:23:31 UTC 2014,,,,,,0|i1xokn:,404931,,,,,,,,,11/Jul/14 19:23;psteitz;Patch applied in r1609775.  Thanks for reporting this and thanks for the patch!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Bug in MonotoneChain: a collinear point landing on the existing boundary should be dropped (patch),MATH-1135,12726642,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,gmarceau,gmarceau,10/Jul/14 18:00,26/Dec/14 19:50,08/Jun/19 22:40,10/Jul/14 21:40,3.3,,,3.4,,,0,patch,,,,"The is a bug on the code in MonotoneChain.java that attempts to handle the case of a point on the line formed by the previous last points and the last point of the chain being constructed. When `includeCollinearPoints` is false, the point should be dropped entirely. In common-math 3,3, the point is added, which in some cases can cause a `ConvergenceException` to be thrown.
+
+In the patch below, the data points are from a case that showed up in testing before we went to production.
+
+{code:java}
+Index: src/main/java/org/apache/commons/math3/geometry/euclidean/twod/hull/MonotoneChain.java
+===================================================================
+--- src/main/java/org/apache/commons/math3/geometry/euclidean/twod/hull/MonotoneChain.java	(revision 1609491)
++++ src/main/java/org/apache/commons/math3/geometry/euclidean/twod/hull/MonotoneChain.java	(working copy)
+@@ -160,8 +160,8 @@
+                 } else {
+                     if (distanceToCurrent > distanceToLast) {
+                         hull.remove(size - 1);
++                        hull.add(point);
+                     }
+-                    hull.add(point);
+                 }
+                 return;
+             } else if (offset > 0) {
+Index: src/test/java/org/apache/commons/math3/geometry/euclidean/twod/hull/ConvexHullGenerator2DAbstractTest.java
+===================================================================
+--- src/test/java/org/apache/commons/math3/geometry/euclidean/twod/hull/ConvexHullGenerator2DAbstractTest.java	(revision 1609491)
++++ src/test/java/org/apache/commons/math3/geometry/euclidean/twod/hull/ConvexHullGenerator2DAbstractTest.java	(working copy)
+@@ -204,6 +204,24 @@
+     }
+ 
+     @Test
++    public void testCollinnearPointOnExistingBoundary() {
++        final Collection<Vector2D> points = new ArrayList<Vector2D>();
++        points.add(new Vector2D(7.3152, 34.7472));
++        points.add(new Vector2D(6.400799999999997, 34.747199999999985));
++        points.add(new Vector2D(5.486399999999997, 34.7472));
++        points.add(new Vector2D(4.876799999999999, 34.7472));
++        points.add(new Vector2D(4.876799999999999, 34.1376));
++        points.add(new Vector2D(4.876799999999999, 30.48));
++        points.add(new Vector2D(6.0959999999999965, 30.48));
++        points.add(new Vector2D(6.0959999999999965, 34.1376));
++        points.add(new Vector2D(7.315199999999996, 34.1376));
++        points.add(new Vector2D(7.3152, 30.48));
++
++        final ConvexHull2D hull = generator.generate(points);
++        checkConvexHull(points, hull);
++    }
++
++    @Test
+     public void testIssue1123() {
+ 
+         List<Vector2D> points = new ArrayList<Vector2D>();
+{code}",,,,,,,,,,,,10/Jul/14 18:01;gmarceau;MonotoneChain_testCollinnearPointOnExistingBoundary.patch;https://issues.apache.org/jira/secure/attachment/12655042/MonotoneChain_testCollinnearPointOnExistingBoundary.patch,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-07-10 21:22:44.9,,,false,,,,,,,,,,,,404749,,,Thu Jul 10 21:40:09 UTC 2014,,,,,,0|i1xnov:,404787,,,,,,,,,"10/Jul/14 21:22;tn;Ah, this is quite an embarrassing bug, but thanks a lot for the report and especially for a reproducible test case.",10/Jul/14 21:40;tn;Fixed in r1609577.,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+mvn tests fail if JDK 8 is used,MATH-1156,12746354,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,luc,luc,luc,07/Oct/14 09:20,26/Dec/14 19:50,08/Jun/19 22:40,07/Oct/14 11:56,3.3,,,3.4,,,0,,,,,"Despite the fact the pom.xml specifies Java version to be 1.5, some tests for FastMath use reflection to verify that FastMath implements all methods found in StrictMath. As the class available in a Java 8 environment has newer methods, and these methods are not available in FastMath, the test fail and maven refuses to build the artifacts.
+
+The missing methods should be added, just as the new methods were added when Java 6 was relesed.","Linux Debian Jessie, openJDK 8",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Oct 07 11:56:48 UTC 2014,,,,,,0|i20vhz:,9223372036854775807,,,,,,,,,07/Oct/14 11:56;luc;Solved in Git repository (commit a67f0a3),,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+BUG - Use of a Broken or Risky Cryptographic Algorithm - RandomDataGenerator.java,MATH-1183,12763825,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Invalid,,david.espitia,david.espitia,26/Dec/14 14:14,26/Dec/14 16:58,08/Jun/19 22:40,26/Dec/14 16:58,3.3,,,,,,0,,,,,"We are currently using Commons-math3-3.3 and in the analysis for veracode, found this bug in these class:
+
+1. RandomDataGenerator (Line 285)
+
+Description:
+
+The use of a broken or risky cryptographic algorithm is an unnecessary risk that may result in the disclosure of
+sensitive information
+",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-12-26 14:45:40.955,,,false,,,,,,,,,,,,9223372036854775807,,,Fri Dec 26 16:58:26 UTC 2014,,,,,,0|i23sbj:,9223372036854775807,,,,,,,,,"26/Dec/14 14:45;erans;Please be more specific, starting with line numbers that refer to the development version: Commons Math v3.4 will be available shortly and we do not have the resources to handle older releases.
+
+What is broken?
+Which algorithm is risky?
+","26/Dec/14 16:58;psteitz;The RandomDataGenerator has a pluggable PRNG.  For cryptographic use, users can supply whatever PRNG they wish.",,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+QRDecomposition does not detect the matrix singularity,MATH-1176,12759405,Bug,Reopened,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,,,albert_triv,albert_triv,04/Dec/14 11:20,17/Dec/14 13:15,08/Jun/19 22:40,,3.3,,,4.0,,,0,,,,,"QRDecomposition fails this test. The default contructor sets the threshold=0, so we will never have abs(Rii) <= 0
+
+public void testSimpleRankDeficient() throws Exception {
+		double[][] A = new double[][] { 
+				{ 1, 2, 3 }, 
+				{ 4, 5, 6 },
+				{ 7, 8, 9 }};
+		//this matrix is singular			
+		
+		RealMatrix M2 = MatrixUtils.createRealMatrix(A);
+		QRDecomposition qr2 = new QRDecomposition(M2);
+		assertFalse(qr2.getSolver().isNonSingular());//this fails
+}",,,,,,,,,,,,04/Dec/14 13:23;erans;MATH-1176.failing.patch;https://issues.apache.org/jira/secure/attachment/12685110/MATH-1176.failing.patch,,,,,1.0,,,,,,,,,,,,,,,,,,,2014-12-04 12:48:12.85,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Dec 15 11:03:38 UTC 2014,,,,,,0|i231wn:,9223372036854775807,,,,,,,,,04/Dec/14 12:48;tn;This is related to MATH-1024. QRDecomposition uses by default a singularity threshold of 0.,"04/Dec/14 13:17;erans;""QRDecompositionTest"" contains a test with the *transposed* matrix of your example, and a check for singularity that _passes_.
+Here are the values of ""rDiag""
+* for the case reported:
+rDiag: -8.12403840463596, 0.9045340337332888, 2.220446049250313E-16
+* for the transpose:
+rDiag: -3.7416573867739413, 1.9639610121239321, 0.0
+",04/Dec/14 13:23;erans;I've attached a unit test which is currently failing.,"04/Dec/14 14:12;albert_triv;Is it not misleading that, for a given matrix A, we have QR.isSingular(A) != QR.isSingular(A.transpose()) ?","04/Dec/14 14:49;erans;Sure! :)
+I posted the unit test to signal that there might be more to the problem than a choice of threshold.  The code that computes ""rDiag"" should probably be modified so as to avoid the inconsistency.
+","04/Dec/14 17:02;tn;Yes, there seems to be a bug. I have compared this to octave and jama:
+
+Octave:
+{noformat}
+A =
+
+   1   2   3
+   4   5   6
+   7   8   9
+
+octave:9> qr(A)
+ans =
+
+  -8.1240e+00  -9.6011e+00  -1.1078e+01
+   4.9237e-01   9.0453e-01   1.8091e+00
+   8.6164e-01   9.9547e-01  -8.1207e-16
+
+octave:10> qr(transpose(A))
+ans =
+
+  -3.7417e+00  -8.5524e+00  -1.3363e+01
+   5.3452e-01   1.9640e+00   3.9279e+00
+   8.0178e-01   9.8869e-01  -5.3083e-16
+{noformat}
+
+Jama:
+{noformat}
+A.qr(): [-3.741657386773941, 1.963961012123933, -1.7763568394002505E-15]
+A.transpose().qr(): [-8.12403840463596, 0.9045340337332888, 2.220446049250313E-16]
+{noformat}","15/Dec/14 11:03;tn;I just want to add that our result is not wrong, just surprising that it results in a diagonal element to be exactly zero, while other implementations do return a very small number. The implementation of jama and ours are very similar, the main difference I have seen so far was the calculation of the squared norm.",,,,,,,,,,,,,,,,,,,,,,,,
+Incorrect result from MannWhitneyUTest#mannWhitneyUTest with large datasets,MATH-1140,12730092,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Not A Problem,,aconbere,aconbere,27/Jul/14 21:26,11/Aug/14 18:27,08/Jun/19 22:40,08/Aug/14 17:38,3.3,,,,,,0,,,,,"On large datasets MannWhitneyUTest#mannWhitneyUTest returns the double value 0.0 instead of the correct p-value. I suspect this is an overflow but haven't been able to trace it down yet.
+
+I'm afraid I'm not very good at java, but I'm including a link to a public repository where you can reproduce the issue, unfortunately my implementation is written in clojure.
+
+https://github.com/aconbere/apache-commons-mann-whitney-bug
+
+The summary is that by calling MannWhitneyUTest#mannWhitneyUTest with two randomly generated arrays (50k elements with a max value of 300) I can reliably reproduce the result 0.0. By reducing that to something more modest  like 2k I get correct p-value calculations.",,,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-08-08 17:37:17.948,,,false,,,,,,,,,,,,408165,,,Mon Aug 11 18:27:20 UTC 2014,,,,,,0|i1y8ev:,408170,,,,,,,,,"08/Aug/14 15:59;aconbere;Ouch, somewhat embarrassed to say that our experimental data was just often large enough that we often hit 0 :-/",08/Aug/14 17:37;erans;Thanks for the follow-up.,11/Aug/14 18:27;aconbere;I found my actual source of the issue I'm experiencing which has to do with an integer overflow when calculating U1 in mannWhitneyU and multiplying array lengths together. Since array lengths are ints this imposes a pretty tiny maximum size to the length of your array inputs Math.sqrt(Integer.MAX_VALUE). I would recommend casting those into longs or doubles to improve usability or asserting the maximum length of the arrays early on.,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+KendallsCorrelation suffers from integer overflow for large arrays.,MATH-1068,12681992,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,Terran-Ghost,Terran-Ghost,01/Dec/13 11:48,19/May/14 15:13,08/Jun/19 22:40,07/Dec/13 13:08,3.3,,,3.3,,,0,newbie,,,,"For large array size (say, over 5,000), numPairs > 10 million.
+in line 258, (numPairs - tiedXPairs) * (numPairs - tiedYPairs) possibly > 100 billion, which will cause an integer overflow, resulting in a negative number, which will result in the end result in a NaN since the square-root of that number is calculated.
+This can easily be solved by changing line 163 to
+final long numPairs = ((long)n) * (n - 1) / 2; // to avoid overflow",,60,60,,0%,60,60,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-12-01 19:17:36.014,,,false,,,,,,,,,,,,361251,,,Mon May 19 15:13:23 UTC 2014,,,,,,0|i1q9u7:,361550,,,,,,,,,"01/Dec/13 19:17;tn;Fixed in r1546840.
+
+Thanks for the report!","05/Dec/13 20:37;Terran-Ghost;I've noticed a few more overflow issues for very large arrays (100k's), e.g., correlation < -1 or > 1.
+Changing all the tiedX/Y/XYPairs, consecutiveX/Y/XYTies and swaps to long fixed the correlation out of bounds error at least.","05/Dec/13 21:33;tn;Can you please attach a test case for this?
+
+Thanks",07/Dec/13 13:08;tn;Changed in r1548907.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,,,,,,,,
