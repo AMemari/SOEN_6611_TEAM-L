@@ -7,7 +7,7 @@ PITest dependecy in pom file:
        <plugin>
           <groupId>org.pitest</groupId>
           <artifactId>pitest-maven</artifactId>
-          <version>${pitest.version}</version>
+          <version>$1.4.8</version>
           <executions>
              <execution>
                <id>pit-report</id>
@@ -27,5 +27,9 @@ JFreeChart			33%
 Apache Commons dbUtils	        51%
 Apache Commons Collections	42%
 
+Values of mutation score shows the effectiveness of the test suite , i.e., higher the mutation score the higher test suite effectiveness.
+
+Correlation between mutation score and Statement coverage , Branch Coverage are futher explored to establish relation among various metrics d
+to obtain meaningful insights in to measuring the project. 
 
 
