@@ -30,7 +30,10 @@ Apache Commons Collections	42%
 Values of mutation score shows the effectiveness of the test suite , i.e., higher the mutation score the higher test suite effectiveness.
 
 Correlation between mutation score and Statement coverage , Branch Coverage are futher explored to establish relation among various metrics d
-to obtain meaningful insights in to measuring the project. 
+to obtain meaningful insights in to measuring the software project. 
+
+Correlation between Mutation score and Statement coverage , Branch coverage metrics have found out to be not  strongly correlated . 
+
 
 
 
