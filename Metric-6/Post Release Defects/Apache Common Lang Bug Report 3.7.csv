@@ -1,0 +1,699 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Component/s,Due Date,Votes,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Flags),Custom field (Flags),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+After version Commons-lang3.4 DateFormatUtils has a bug,LANG-1462,13237655,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,,,elunlng,elunlng,05/Jun/19 06:49,05/Jun/19 06:49,08/Jun/19 23:14,,3.5,3.6,3.7,3.8,3.8.1,3.9,,lang.time.*,,0,,"The code is as follows ：
+
+Calendar cale = Calendar.getInstance();
+ System.out.println(""Old time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+ cale.setTimeZone(TimeZone.getTimeZone(""JST""));
+ System.out.println(""New time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+
+ 
+
+The results of commons-lang3 3.4：
+
+Old time is 20190605144536
+New time is 20190605154536
+
+ 
+
+The results of the version after commons-lang3 3.4:
+
+Old time is 20190605144536
+New time is 20190605144536
+
+ 
+
+We found that the time zone setting was invalidated when it was formatted
+
+ ",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,,9223372036854775807,,,2019-06-05 06:49:22.0,,,,,,0|z03fgg:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,
+Illegal Reflective Access Operation,LANG-1383,13142201,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,schackbrian,schackbrian,02/Mar/18 21:22,24/May/19 09:18,08/Jun/19 23:14,,3.7,,,,,,,lang.builder.*,,0,,"ReflectionToStringBuilder::toString prints an illegal access warning to System.err. The warning suggests to report this issue to the Apache Commons maintainers.
+
+Boolean.TRUE is such a simple value that I don't really need ReflectionToStringBuilder. But more complex types (such as HashMap) print the same warning. I chose Boolean.TRUE in order to simplify this example.
+
+When I searched for this warning message, I found a StackOverflow answer which suggested to report it to the package maintainers ([JDK9: An illegal reflective access operation has occurred. org.python.core.PySystemState|https://stackoverflow.com/questions/46230413/jdk9-an-illegal-reflective-access-operation-has-occurred-org-python-core-pysys/46230678]).
+
+I also asked my own StackOverflow question about how to throw an exception for this warning ([How can I throw an exception for an illegal reflective access warning?|https://stackoverflow.com/questions/49076972/how-can-i-throw-an-exception-for-an-illegal-reflective-access-warning]).
+
+I will try to change my code to avoid this warning, but it also seems that Apache Commons should not cause the warning. Perhaps it could use different methods to get the values of the fields, or skip the private fields, or throw an exception? The warning message suggests that the Java maintainers want the Apache Commons maintainers to avoid this warning. And when they disable this illegal access in the future, then it could impact Apache Commons.
+
+Code:
+
+{{import org.apache.commons.lang3.builder.*;}}
+ {{class Test {}}
+
+{{public static void main(String[] args) {}}
+
+{{System.out.println(ReflectionToStringBuilder.toString(Boolean.TRUE));}}
+
+{{}}}
+
+{{}}}
+
+Output:
+
+{{WARNING: An illegal reflective access operation has occurred}}
+ {{WARNING: Illegal reflective access by org.apache.commons.lang3.builder.ReflectionToStringBuilder ([file:/Users/brianschack/eclipse-workspace/User%20Libraries/com|file:///Users/brianschack/eclipse-workspace/User%20Libraries/com]mons-lang3-3.7/commons-lang3-3.7.jar) to field java.lang.Boolean.value}}
+ {{WARNING: Please consider reporting this to the maintainers of org.apache.commons.lang3.builder.ReflectionToStringBuilder}}
+ {{WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations}}
+
+{{WARNING: All illegal access operations will be denied in a future release}}",,,,,,,,,,02/Mar/18 21:14;schackbrian;Test.java;https://issues.apache.org/jira/secure/attachment/12912825/Test.java,,1.0,,,,,,,,,,,,,,,,,,,2019-05-24 09:18:53.302,,,false,,,,https://stackoverflow.com/questions/49076972/how-can-i-throw-an-exception-for-an-illegal-reflective-access-warning,,,,,,,,,,9223372036854775807,,,Fri May 24 09:18:53 UTC 2019,,,,,,0|i3qta7:,9223372036854775807,,,,,,,,,"24/May/19 09:18;jschmied;Same here:
+
+WARNING: Illegal reflective access by org.apache.commons.lang3.builder.CompareToBuilder (file:/D:/maven_repo/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar) to field java.lang.String.serialVersionUID
+WARNING: Please consider reporting this to the maintainers of org.apache.commons.lang3.builder.CompareToBuilder
+",,,,,,,,,,,,,,
+MultilineRecursiveToStringStyle produces wrong output for BigDecimal,LANG-1452,13229819,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,novozhilov.a.russia,novozhilov.a.russia,24/Apr/19 09:36,24/Apr/19 09:36,08/Jun/19 23:14,,3.7,,,,,,,lang.builder.*,,0,MultilineRecursiveToStringStyle,"Class has 2 BigDecimal fields:
+{code:java}
+BigDecimal biddecimal123 = new BigDecimal(""123"");
+BigDecimal biddecimal456 = new BigDecimal(""456"");
+{code}
+MultilineRecursiveToStringStyle produces this output:
+{quote}BDToString@36baf30c[
+ biddecimal123=java.math.BigDecimal@7adf9f5f[
+ intVal=<null>,
+ scale=0
+ ],
+ biddecimal456=java.math.BigDecimal@63961c42[
+ intVal=<null>,
+ scale=0
+ ]
+ ]
+{quote}
+ 
+
+ToStringStyle.MULTI_LINE_STYLE doesn't have this problem. It was introduced with method
+{code:java}
+@Override
+public void appendDetail(final StringBuffer buffer, final String fieldName, final Object value){code}
+of MultilineRecursiveToStringStyle. It doesnt'n treat BigDecimal as a primitive type. So I had to do the following to solve my issue:
+
+ 
+{code:java}
+class FixedMultilineRecursiveToStringStyle extends MultilineRecursiveToStringStyle{
+    @Override
+    public void appendDetail(StringBuffer buffer, String fieldName, Object value) {
+        if (!BigDecimal.class.equals(value.getClass())){
+            super.appendDetail(buffer, fieldName, value);
+        } else {
+            buffer.append(value);
+        }
+    }
+}
+{code}
+ 
+
+ ",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,,9223372036854775807,,,2019-04-24 09:36:57.0,,,,,,0|z0237k:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,
+TypeUtils.isAssignable returns wrong result for GenericArrayType and ParameterizedType comparison,LANG-1420,13184815,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,gofraser,gofraser,13/Sep/18 08:05,09/Dec/18 00:49,08/Jun/19 23:14,,3.7,3.8,,,,,,lang.reflect.*,,0,,"TypeUtils.isAssignable returns a wrong result when checking whether a ParameterizedType is assignable to a GenericArrayType that has the same ParameterizedType as component type.
+
+For example:
+{code:java}
+ParameterizedType componentType = TypeUtils.parameterize(java.lang.reflect.Constructor.class, java.awt.Insets.class);
+GenericArrayType arrayType = TypeUtils.genericArrayType(componentType);{code}
+
+In this case,
+{code:java}
+TypeUtils.isAssignable(arrayType, componentType) {code}
+returns true, but this should be false (the component type should not be assignable to the array type - the Java compiler complains about this).
+
+ 
+
+It seem that the problem is that the method:
+{code:java}
+private static boolean isAssignable(final Type type, final ParameterizedType toParameterizedType, final Map<TypeVariable<?>, Type> typeVarAssigns){code}
+only compares the type parameters, since method getTypeArguments retrieves the component type using getGenericComponentType. There seems to be no check whether an array type is being assigned to a non-array in the first place.",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-12-08 01:01:34.709,,,false,,,,,,,,,,,,,,9223372036854775807,,,Sun Dec 09 00:49:34 UTC 2018,,,,,,0|i3y1kv:,9223372036854775807,,,,,,,,,"08/Dec/18 01:01;rosti-il;Adding following check into the suspected method fixes it:
+
+{code}        if (type instanceof GenericArrayType) {
+            return false;
+        }{code}
+
+Is it the right fix and should this check also be added into other private {{isAssignable()}} methods where the second parameter isn't {{GenericArrayType}} ?","09/Dec/18 00:49;ggregory;Hi [~gofraser],
+
+Thank you for your report. Feel free to provide a PR on GitHub. Ideally, it should come with a unit test that fails without changes to the main code tree.
+
+Gary",,,,,,,,,,,,,
+DateUtils.parseDateStrictly() is not parsing millisecond value,LANG-1425,13199145,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,VamsiBhagi,VamsiBhagi,18/Nov/18 06:59,18/Nov/18 09:29,08/Jun/19 23:14,,3.7,,,,,,,,,0,,"We need to parse String to java.util.Date and are having multiple Date formats.
+
+Snippet for this is 
+{code:java}
+java.util.Date dt = DateUtils.parseDateStrictly(verificationDate.get_value(),
+                                    Locale.ENGLISH,
+                                    new String[] { ""yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX"",""yyyy-MM-dd'T'HH:mm::ss.SSSSSSS"" });{code}
+2018-11-13T08:03:41.2860000-06:00 is not being parsed correctly. On troubleshooting, we discovered that 2018-11-13T08:03:41.0000286-06:00 is parsing fine.
+
+How to handle this?
+
+ ",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-11-18 09:28:38.219,,,false,,,,,,,,,,,,,,9223372036854775807,,,Sun Nov 18 09:28:38 UTC 2018,,,,,,0|s00mds:,9223372036854775807,,,,,,,,,"18/Nov/18 09:28;michael-o;There are several issues here:
+
+# How close is our parsing pattern to {{SimpleDateFormat}}? Not properly documented
+# {{Date}} is millisecond precision: {{SSSSSSS}} cannot and will not work.
+# {{S}} alreay implies upto three decimal places while parsing, during formatting it shall add trailing null at most, as far as I remember.
+
+I guess we need to improve docs and tests. I stumbled upon this some time ago too.
+
+Also look here: https://stackoverflow.com/a/19223267/696632
+
+If you really need more precision, consider using new Java Time API.",,,,,,,,,,,,,,
+WordUtils.wrap throws StringIndexOutOfBoundsException when wrapLength is Integer.MAX_VALUE,LANG-1397,13159640,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,ggregory,tasanuma,tasanuma,16/May/18 08:14,21/Aug/18 13:08,08/Jun/19 23:14,18/May/18 17:45,3.7,,,,,,3.8,,,0,,"This is the sample code.
+{code:java}
+int max = Integer.MAX_VALUE;  // 2147483647
+WordUtils.wrap(""foobar"", max, ""\n"", true);
+{code}
+
+and the error log.
+{noformat}
+Exception in thread ""main"" java.lang.StringIndexOutOfBoundsException: String index out of range: -2147483648
+	at java.lang.String.substring(String.java:1967)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:291)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:179)
+{noformat}
+
+Seems WordUtils in commons-text has the same bug. I will file it on commons-text side later.",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-05-16 08:33:24.303,,,false,,,330,https://github.com/apache/commons-lang/pull/330,,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:55 UTC 2018,,,,,,0|i3trmn:,9223372036854775807,,,,,,,,,"16/May/18 08:33;githubbot;GitHub user tasanuma opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/330
+
+    LANG-1397: WordUtils.wrap throws StringIndexOutOfBoundsException when wrapLength is Integer.MAX_VALUE
+
+    There is a bug of WordUtils. WordUtils in commons-text has the same bug. I will work on it after merging this pull request.
+    
+    This is my first contribute to this project. I confirmed `mvn clean verify` succeeds. If there is any problem, please let me know.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/tasanuma/commons-lang LANG-1397-WordUtils
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/330.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #330
+    
+----
+commit 2a5c0f0d22f465020314bb029eb758917595a7eb
+Author: Takanobu Asanuma <tasanuma@...>
+Date:   2018-05-16T08:06:03Z
+
+    fix a bug of WordUtils
+
+----
+","16/May/18 08:41;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/330
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/17007638/badge)](https://coveralls.io/builds/17007638)
+    
+    Coverage increased (+0.007%) to 95.242% when pulling **2a5c0f0d22f465020314bb029eb758917595a7eb on tasanuma:LANG-1397-WordUtils** into **961e4a821b66b27c77418dece6017e3fe912fa56 on apache:master**.
+
+","16/May/18 08:41;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/330
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/17007638/badge)](https://coveralls.io/builds/17007638)
+    
+    Coverage increased (+0.007%) to 95.242% when pulling **2a5c0f0d22f465020314bb029eb758917595a7eb on tasanuma:LANG-1397-WordUtils** into **961e4a821b66b27c77418dece6017e3fe912fa56 on apache:master**.
+
+","17/May/18 18:40;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/330
+  
+    Thanks for the pull request!
+    
+    I would be nice if you could amend the commit to add the issue id and description at the beginning of the commit message.
+    
+    Thanks!
+","18/May/18 04:47;githubbot;Github user tasanuma commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/330
+  
+    Thanks for your advice, @PascalSchumacher! I updated the pull request addressing it.
+",18/May/18 17:28;ggregory;Note: I just realized that {{WordUtils}} in Commons Lang is deprecated in favor of Commons Text. ,"18/May/18 17:45;ggregory;In Git master. Please verify and close this ticket and associated PR.
+","19/May/18 02:20;githubbot;Github user tasanuma commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/330
+  
+    This pull request is merged by https://github.com/apache/commons-lang/commit/09ef69c5b51115300da6df43690cd455d83c8027. Thanks for committing it, @garydgregory!
+","19/May/18 02:20;githubbot;Github user tasanuma closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/330
+",19/May/18 02:21;tasanuma;I've just closed the PR. Thanks [~garydgregory]!,21/Aug/18 13:08;chtompki;3.8 Released.,,,,
+NPE from SystemUtils.isJavaVersionAtLeast under Java 11 EA,LANG-1384,13143515,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,erans,iay,iay,08/Mar/18 11:18,21/Aug/18 13:08,08/Jun/19 23:14,23/Mar/18 21:02,3.7,,,,,,3.8,,,0,,"Calling, for example, {{SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_7);}} under the Java 11 early access release causes a NPE:
+{code:java}
+java.lang.NullPointerException
+at org.apache.commons.lang3.SystemUtils.isJavaVersionAtLeast(SystemUtils.java:1654)
+{code}
+
+This is:
+
+{code}
+return JAVA_SPECIFICATION_VERSION_AS_ENUM.atLeast(requiredVersion);
+{code}
+
+... which implies that {{JAVA_SPECIFICATION_VERSION_AS_ENUM}} hasn't been resolved properly, although it looks like the code in JavaVersion intends to return {{JAVA_RECENT}} in the case of unknown versions.
+
+The {{java.specification.version}} system property is ""11"" in this environment.
+
+{code}
+$ java -version
+java version ""11-ea"" 2018-09-18
+Java(TM) SE Runtime Environment 18.9 (build 11-ea+2)
+Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11-ea+2, mixed mode){code}",Java 11 EA,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-03-08 12:13:14.036,,,false,,,,,,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:53 UTC 2018,,,,,,0|i3r1ef:,9223372036854775807,,,,,,,,,"08/Mar/18 12:13;erans;Thanks for the report.
+{quote}it looks like the code in JavaVersion intends to return JAVA_RECENT in the case of unknown versions.
+{quote}
+Clearly, this is broken. It seems to assume that versions are always ""1.X"".
+ Adding a new {{enum}} item ({{JAVA_11}}) would work for now; but the same bug will reappear at the next unknown version.","08/Mar/18 12:43;iay;I agree that – particularly given the increased pace of Java releases – any real solution has to put a nail in this for good rather than just adding a new {{enum}} reactively every few months. The {{JAVA_RECENT}} thing seems to have been an attempt to do that, it just doesn't seem to be working.","08/Mar/18 12:57;erans;I've added {{JAVA_11}} in commit 50ce8c44e1601acffa39f5568f0fc140aade0564 (""master"" branch).",08/Mar/18 15:09;ggregory;[~erans]: Don't forget to update {{changes.xml}} ;),"08/Mar/18 15:10;ggregory;We also need to push out a 3.8 ASAP IMO so that Maven plugins like Surefire can update Commons Lang (again), to avoid this NPE.","08/Mar/18 15:32;erans;bq. Don't forget to update changes.xml
+
+Done (I didn't know whether my changes would be sufficient to resolve this issue).
+
+Please examine the attempt to prevent the same failure for later versions (would only work if the naming scheme stays the same).","08/Mar/18 15:46;ggregory;Yes, this will work for now, at least until Java versions go past {{""99""}}. This {{SystemUtils}} method:
+
+{code:java}
+    static boolean isJavaVersionMatch(final String version, final String versionPrefix) {
+        if (version == null) {
+            return false;
+        }
+        return version.startsWith(versionPrefix);
+    }
+{code}
+
+will not do the right thing when comparing {{""100""}} with {{""10""}}.
+
+Gary",21/Aug/18 13:08;chtompki;3.8 Released.,,,,,,,
+Crashes when testing StringUtils and CharSequenceUtils,LANG-1409,13178123,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,Mozhan,Mozhan,09/Aug/18 20:47,09/Aug/18 20:47,08/Jun/19 23:14,,3.7,,,,,,,lang.*,,0,test,"The attached test suites for {{org.apache.commons.lang3.StringUtils.java}} and {{org.apache.commons.lang3.CharSequenceUtils.java}} come from a prototype I have been working on which combines static analysis and automated test generation.
+
+The prototype analyses a specified dependency of a project to identify risky API calls which may potentially lead to runtime exceptions. Runtime exceptions may occur either because
+ # an API lacks sufficient documentation,or
+ # usage of the API does not conform to the specification, or
+ # API wrapper does not indicate the API specification as part of its own specification.
+
+The prototype then automatically generates test cases which show how such exceptions may be triggered.
+
+*Observation:*
+
+For {{commons-lang}}, {{JDK APIs}} were analyzed. It seems that the failing methods do not handle the potential runtime exceptions which may or may not have been declared/documented for the JDK APIs they invoke.
+
+*Possible fixes:*
+ # The failing methods under test could add internal checks on the values they forward to the {{JDK APIs}}.
+ # The failing methods could handle the exceptions by adding relevant try/catch blocks.
+ # The failing methods under test could specify the potential exceptions by adding {{@throws}} in their documentation/method signatures.","Ubuntu 16.04.4 LTS, and McOs High Sierra-10.13.5 
+ Junit-4.12",,,,,,,,,09/Aug/18 20:44;Mozhan;CharSequenceUtilsTests.java;https://issues.apache.org/jira/secure/attachment/12935039/CharSequenceUtilsTests.java,09/Aug/18 20:43;Mozhan;StringUtilsTests.java;https://issues.apache.org/jira/secure/attachment/12935040/StringUtilsTests.java,2.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,,9223372036854775807,,,2018-08-09 20:47:49.0,,,,,,0|i3wwm7:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,
+ToStringBuilder Works Inconsistently With HashMap,LANG-1381,13140817,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,schackbrian,schackbrian,25/Feb/18 22:59,26/Feb/18 16:03,08/Jun/19 23:14,,3.7,,,,,,,lang.builder.*,,0,,"In the following code, why do the two lines containing `System.out.println(person);` yield different outputs? The second line indirectly calls the method `Job.toString` yielding the string `""Manager""`, but the first line mysteriously does not yielding `Job@28f67ac7`. The line in between `person.put(""a"", ""b"");` doesn't seem to me like it should make any difference.
+
+Code:
+
+{{import java.util.*;
+import org.apache.commons.lang3.builder.*;
+
+class Job extends HashMap<String, String> {
+	@Override public String toString() {
+		return ""Manager"";
+	}
+}
+
+class Person extends HashMap<String, String> {
+	Job job;
+	
+	Person() {
+		this.job = new Job();
+	}
+	
+	@Override public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+}
+
+class Test {
+	public static void main(String[] args) {
+		Person person = new Person();
+		System.out.println(person);
+		person.put(""a"", ""b"");
+		System.out.println(person);
+	}
+}}}
+
+Console:
+
+{{Person@2b80d80f[job=Job@28f67ac7,threshold=0,loadFactor=0.75]
+Person@2b80d80f[job=Manager,threshold=12,loadFactor=0.75]}}",,,,,,,,,,25/Feb/18 22:58;schackbrian;Test.java;https://issues.apache.org/jira/secure/attachment/12911971/Test.java,,1.0,,,,,,,,,,,,,,,,,,,2018-02-26 03:17:34.402,,,false,,,,https://stackoverflow.com/questions/48979192/why-does-tostringbuilder-work-inconsistently,,,,,,,,,,9223372036854775807,,,Mon Feb 26 16:03:33 UTC 2018,,,,,,0|i3qksv:,9223372036854775807,,,,,,,,,"26/Feb/18 03:17;tkruse;Different Handling seems to come from different result of isRegistered(value) in ToStringStyle.appendInternal().
+
+isRegistered(value) checks for getRegistry().containsKey(value), which in case of empty HashMaps is true for any empty HashMap.
+
+Consider also outputs for these cases:
+
+ 
+
+    person.put({color:#008000}""a""{color}, {color:#008000}""b""{color});
+    person.{color:#660e7a}job{color}.put({color:#008000}""a""{color}, {color:#008000}""b""{color});
+    System.{color:#660e7a}out{color}.println(person); // job=Job@...
+    person.clear();
+    System.{color:#660e7a}out{color}.println(person); // job=Manager
+
+ 
+
+At a glance, containsKey(value) might have to be replaced with identity check inside keySet()","26/Feb/18 16:03;schackbrian;Dear Mr. Kruse,
+
+Thank you for taking this issue seriously! Also, thank you for the explanation. I was looking at the source code, but it didn't occur to me to look at the isRegistered method.
+
+Regards,
+Brian Schack ",,,,,,,,,,,,,
+DateUtils.parseDateStrictly is not working properly,LANG-1377,13134294,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Invalid,,dpalic,dpalic,28/Jan/18 14:09,16/Feb/18 23:31,08/Jun/19 23:14,16/Feb/18 23:31,3.7,,,,,,,lang.time.*,,0,,"I have following example to parse dates. The parsing fails in the given cases.
+
+ 
+
+removed the code from inline, since Jira is unable to handle it properly... Please check the attachment
+
+ 
+
+ ",,,,,,,,,,28/Jan/18 14:17;dpalic;dateParseTest.java;https://issues.apache.org/jira/secure/attachment/12908057/dateParseTest.java,,1.0,,,,,,,,,,,,,,,,,,,2018-02-16 15:21:12.995,,,false,,,,,,,,,,,,,,9223372036854775807,,,Fri Feb 16 23:31:39 UTC 2018,,,,,,0|i3pglj:,9223372036854775807,,,,,,,,,"16/Feb/18 15:21;orbot90;Looks like the examples in the test are wrong.
+
+The documentation of the parseDateStrictly method reads:
+ * @throws ParseException if none of the date patterns were suitable
+
+and for the date 13:05:15 03.05 there is no suitable pattern in the test. The pattern ""hh:mm dd.MM"" is not suitable for the date. It should be ""HH:mm:ss dd.MM""
+
+ ","16/Feb/18 23:31;sebb;There are two problems with the format strings:
+* none of them allow for the seconds in ""13:05:15 03.05""
+* the format char 'h' expects a number from 1-12; 13 is not such a number",,,,,,,,,,,,,
+Fix TypeUtils#parameterize to work correctly with narrower-typed array,LANG-1371,13126327,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,pascalschumacher,pascalschumacher,pascalschumacher,20/Dec/17 16:14,21/Aug/18 13:08,08/Jun/19 23:14,20/Dec/17 16:21,3.7,,,,,,3.8,,,0,,reported in [https://github.com/apache/commons-lang/pull/307],,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-12-20 16:15:26.502,,,false,,,,https://github.com/apache/commons-lang/pull/307,,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:55 UTC 2018,,,,,,0|i3o4zz:,9223372036854775807,,,,,,,,,"20/Dec/17 16:15;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/307
+  
+    created https://issues.apache.org/jira/browse/LANG-1371 to track this
+",21/Aug/18 13:08;chtompki;3.8 Released.,,,,,,,,,,,,,
+Fix EventCountCircuitBreaker increment batch,LANG-1370,13120702,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,kinow,kinow,kinow,25/Nov/17 08:06,21/Aug/18 13:08,08/Jun/19 23:14,25/Nov/17 08:39,3.7,,,,,,3.8,lang.concurrent.*,,0,,"Place holder for https://github.com/apache/commons-lang/pull/309
+
+Fixes a bug where the increment count is not correctly propagated.",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-11-25 08:06:24.929,,,false,,,,,Patch,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:53 UTC 2018,,,,,,0|i3n6hb:,9223372036854775807,,,,,,,,,"25/Nov/17 08:06;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/309
+  
+    Ticket created in JIRA https://issues.apache.org/jira/browse/LANG-1370
+",21/Aug/18 13:08;chtompki;3.8 Released.,,,,,,,,,,,,,
+FastDateParser too strict on abbreviated short month symbols,LANG-1380,13140219,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,,markus17,markus17,22/Feb/18 15:18,21/Aug/18 13:08,08/Jun/19 23:14,03/Jul/18 03:52,3.7,,,,,,3.8,lang.time.*,,0,,"The date format symbols of the French locale adds a . (dot) when short month names are really abbreviated.
+
+{code}
+janv.
+févr.
+mars
+avr.
+mai
+juin
+juil.
+août
+sept.
+oct.
+nov.
+déc.
+{code}
+
+But in real world examples, the dot is frequently omitted.
+
+FastDateParser should be lenient in the case where the dot isn't there, e.g. ""14 avr 2014"".",,,,,,,,,,22/Feb/18 15:19;markus17;LANG-1380.patch;https://issues.apache.org/jira/secure/attachment/12911566/LANG-1380.patch,,1.0,,,,,,,,,,,,,,,,,,,2018-02-24 02:33:53.973,,,false,,,,,,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:52 UTC 2018,,,,,,0|i3qh3z:,9223372036854775807,,,,,,,,,22/Feb/18 15:20;markus17;Attaching a unit test proving the problem. I am not sure through there it should be fixed.,"24/Feb/18 02:33;ggregory;The month name Strings are returned by {{java.util.Calendar.getDisplayNames(int, int, Locale)}}. I am not sure it would be a good idea to try to perform additional processing on those values. This is all done programatically. There might be room for adding more values based on an optional resource bundle which matches up with the French locale.
+
+What do you all (the reported [~markus17] and the community) think?","24/Feb/18 10:27;erans;A quick look at the code reveals all sorts of ""strategies"" (a.o. {{ABBREVIATED_YEAR_STRATEGY}}). Hence (IIUC), the design considered not quite correct input, and could perhaps be extended with a prospective {{ABBREVIATED_MONTH_MISSING_DOT}} (?).","26/Feb/18 11:01;markus17;Hello Gary, Gilles, 
+
+I was thinking to be more lenient not only for missing dots in some month forms, but also sometimes optional or mandatory punctuation depending on Locale.
+
+To give an example, we receive date formats from all over the web in the strangest forms. It is easy for us to preprocess AM and PM (stripping punctuation or whitespace), or timezone abbreviations, so it fits for the locale. But, it is not possible (or very hard) to preprocess how some locale's treat their abbreviated literals, we can't add or strip dots without knowing which month (or weekday) we are dealing with.
+
+I did some work on FastDateParser.appendDisplayNames() to strip punctuation or append the regex question mark to punctuation, but that broke things elsewhere, so that was clearly not a good idea.
+","26/Feb/18 11:22;erans;If the problem/issue/fix is not well-defined, you might want to post to the ""dev"" ML (using prefix ""[Lang][Text]"" on the ""Subject:"" line).","19/May/18 01:36;githubbot;GitHub user chonton opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/331
+
+    LANG-1380: FastDateParser too strict on abbreviated short month symbols
+
+    I'm interested in feedback.  Particularly from recent committers - @garydgregory @britter @PascalSchumacher @sebbASF 
+    thanks
+
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/chonton/commons-lang LANG-1380
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/331.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #331
+    
+----
+commit 8c114fa865156fa4341390e66e42ca0cf3c494c8
+Author: Chas Honton <chas@...>
+Date:   2018-05-19T01:29:26Z
+
+    LANG-1380: FastDateParser too strict on abbreviated short month symbols
+
+----
+","19/May/18 09:53;githubbot;Github user sebbASF commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    The change is hard to review as it contains at least one unrelated change and some code re-arrangement.
+    
+    Would it be possible to provide a PR that addresses only the proposed change?
+","19/May/18 17:19;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/17069311/badge)](https://coveralls.io/builds/17069311)
+    
+    Coverage decreased (-0.004%) to 95.229% when pulling **b09d26f12bd4bfd1456d876f56fb8d6986a88a26 on chonton:LANG-1380** into **09ef69c5b51115300da6df43690cd455d83c8027 on apache:master**.
+
+","19/May/18 17:19;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/17069311/badge)](https://coveralls.io/builds/17069311)
+    
+    Coverage decreased (-0.004%) to 95.229% when pulling **b09d26f12bd4bfd1456d876f56fb8d6986a88a26 on chonton:LANG-1380** into **09ef69c5b51115300da6df43690cd455d83c8027 on apache:master**.
+
+","28/May/18 06:47;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    +1
+","27/Jun/18 18:32;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    @chonton No further review comments by anyone, so I guess this is good to merge?
+","03/Jul/18 03:53;githubbot;Github user chonton commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/331
+  
+    closed with commit f56931c176fef5e164b681c740746aebdccccec3
+","03/Jul/18 03:53;githubbot;Github user chonton closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/331
+",03/Jul/18 10:15;markus17;Thanks!,21/Aug/18 13:08;chtompki;3.8 Released.
+Improve Javadoc for StringUtils.isAnyEmpty(null) ,LANG-1391,13151952,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,,smatulli,smatulli,12/Apr/18 12:14,30/Apr/18 09:38,08/Jun/19 23:14,18/Apr/18 18:28,3.7,,,,,,3.8,lang.*,,0,," 
+
+The StringUtils.isAnyEmpty(null) method returns an incorrect value from what is specified in the javadoc.
+
+JAVADOC:   StringUtils.isAnyEmpty(null) = true
+
+Test: System.out.println("""" + StringUtils.isAnyEmpty(null));  --> false
+
+ 
+
+ 
+
+ ",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-04-17 23:57:16.531,,,false,,,,,,,,,,,,,,9223372036854775807,,,Fri Apr 27 14:46:41 UTC 2018,,,,,,0|i3sgvb:,9223372036854775807,,,,,,,,,"17/Apr/18 23:57;ggregory;That does not make sense based on the tests we have the behavior with other params:
+
+{{StringUtils.isAnyEmpty(null)}} is the same as {{StringUtils.isAnyEmpty([null])}}, an array with one element, a null.
+
+Note that {{StringUtils.isAnyEmpty([null, ""foo""]) returns {{true}}.
+
+You might be confusing:
+- StringUtils.isAnyEmpty((String[]) null) return false, this actually passes a null
+- {{StringUtils.isAnyEmpty(null)}} is the same as {{StringUtils.isAnyEmpty([null])}}, an array with one element, a null
+ ",18/Apr/18 00:35;oleg.chubaryov;Maybe better to specify this behavior appropriately in javadoc. Because it's confusing at the moment.,"18/Apr/18 18:28;ggregory;I updated the Javadoc in git master. Please verify and close.
+
+If anyone of you would like to participate and volunteer to improve the Javadoc for the other methods in this class, please provide a PR on GitHub at [https://github.com/apache/commons-lang]
+
+Thank you!
+
+Gary","24/Apr/18 22:34;githubbot;GitHub user coms opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/326
+
+    [LANG-1391] Improve Javadoc for StringUtils methods
+
+    Improved Javadoc for null cases. Methods: StringUtils.isNoneEmpty, StringUtils.isAnyBlank, StringUtils.isNoneBlank.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/coms/commons-lang master
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/326.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #326
+    
+----
+commit 235b485e3a7a8cc60b6884357ecef4fd6bca0abd
+Author: Oleg Chubaryov <oleg.chubaryov@...>
+Date:   2018-04-24T22:26:29Z
+
+    Improve Javadoc for StringUtils methods
+
+----
+","24/Apr/18 22:36;oleg.chubaryov;I've just created PR: [https://github.com/apache/commons-lang/pull/326]
+
+Thank you!","24/Apr/18 22:38;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/326
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/16680481/badge)](https://coveralls.io/builds/16680481)
+    
+    Coverage remained the same at 95.14% when pulling **235b485e3a7a8cc60b6884357ecef4fd6bca0abd on coms:master** into **58a8f12b443d7cbc16ec00b8841138ee55ee6630 on apache:master**.
+
+",26/Apr/18 16:07;ggregory;[~oleg.chubaryov]: Patch applied. Thank you.,"27/Apr/18 14:46;githubbot;Github user coms closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/326
+",,,,,,,
+NumberUtils.createNumber() throws StringIndexOutOfBoundsException  instead of NumberFormatException,LANG-1385,13144118,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,ggregory,rohanpadhye,rohanpadhye,10/Mar/18 23:47,11/Mar/18 01:23,08/Jun/19 23:14,11/Mar/18 01:17,3.7,,,,,,3.8,lang.math.*,,0,,"Test case:
+{noformat}
+NumberUtils.createNumber(""L""){noformat}
+
+Expected: {{NumberFormatException}}
+
+Got:
+{noformat}
+java.lang.StringIndexOutOfBoundsException: String index out of range: 0
+at java.lang.String.charAt(String.java:658)
+ at org.apache.commons.lang3.math.NumberUtils.createNumber(NumberUtils.java:528)
+{noformat}
+ 
+
+ ",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-03-11 01:17:17.852,,,false,,,,,,,,,,,,,,9223372036854775807,,,Sun Mar 11 01:23:46 UTC 2018,,,,,,0|i3r547:,9223372036854775807,,,,,,,,,"11/Mar/18 01:17;ggregory;Thank you for your report [~rohanpadhye].
+
+Fixed in git master. Please verify and close this ticket.","11/Mar/18 01:23;rohanpadhye;Great! Thanks for the quick response, [~garydgregory].",,,,,,,,,,,,,
+Parsing Json Array failed,LANG-1374,13128424,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Trivial,Fixed,kinow,jaswanth,jaswanth,04/Jan/18 07:13,21/Aug/18 13:08,08/Jun/19 23:14,04/Jan/18 09:18,3.7,,,,,,3.8,lang.builder.*,,0,,"In ToStringStyle class, which checking if a string is a valid Json array, the boolean check was wrong.
+original:
+
+{code:java}
+        private boolean isJsonArray(final String valueAsString) {
+            return valueAsString.startsWith(getArrayStart())
+                    && valueAsString.startsWith(getArrayEnd());
+        }
+{code}
+
+The second expression should be valueAsString.endsWith(getArrayEnd())",,3600,3600,,0%,3600,3600,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-01-04 09:17:33.807,,,false,,,,,Important,Patch,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:53 UTC 2018,,,,,,0|i3ohwn:,9223372036854775807,,,,,,,,,"04/Jan/18 09:17;kinow;Nice catch! Thanks for reporting the issue.
+
+Fixed with a small test that will force the code to go through that line. Probably coverage will increase a tiny bit.
+
+However, that test is not really important. The output generated with or without the fix is the same, from what I could tell. When that check returns - incorrectly - false, then result of toString() is appended anyway.
+
+But for the sake of correctness, we should fix that method and allow it to follow the correct execution logic :-)
+
+Thanks again for spotting it and for providing the fix. Feel free to submit a pull request next time if you'd like your code to be included with the project. Added credits in the changes.xml, so it should appear in the website after the next release.
+
+Bruno","04/Jan/18 09:18;kinow;Fixed in c614fbcc79615f93d2c60a153db6e82d7474c425. changes.xml updated, FixVersion and Affect Version updated in JIRA too.",21/Aug/18 13:08;chtompki;3.8 Released.,,,,,,,,,,,,

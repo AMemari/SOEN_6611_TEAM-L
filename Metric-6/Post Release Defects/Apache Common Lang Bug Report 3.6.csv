@@ -1,0 +1,1344 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Component/s,Due Date,Votes,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+After version Commons-lang3.4 DateFormatUtils has a bug,LANG-1462,13237655,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,,,elunlng,elunlng,05/Jun/19 06:49,05/Jun/19 06:49,08/Jun/19 23:14,,3.5,3.6,3.7,3.8,3.8.1,3.9,,lang.time.*,,0,"The code is as follows ：
+
+Calendar cale = Calendar.getInstance();
+ System.out.println(""Old time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+ cale.setTimeZone(TimeZone.getTimeZone(""JST""));
+ System.out.println(""New time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+
+ 
+
+The results of commons-lang3 3.4：
+
+Old time is 20190605144536
+New time is 20190605154536
+
+ 
+
+The results of the version after commons-lang3 3.4:
+
+Old time is 20190605144536
+New time is 20190605144536
+
+ 
+
+We found that the time zone setting was invalidated when it was formatted
+
+ ",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,2019-06-05 06:49:22.0,,,,,,0|z03fgg:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+NumberUtils.isNumber bug,LANG-1353,13102489,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,Not A Bug,,yusw,yusw,15/Sep/17 07:07,19/Sep/17 14:32,08/Jun/19 23:14,15/Sep/17 23:05,3.6,,,,,,3.7,lang.math.*,,0,"
+hi,I used to NumberUtils.isNumber()[version:3.6] find this error, this error is mainly caused by method isCreatable() in the 723 line of code。
+See below for details:
+
+            String str = ""0927"";
+            System.out.println(NumberUtils.isNumber(str));
+            {color:red}//result:false{color}
+
+            String str1 = ""9027"";
+            System.out.println(NumberUtils.isNumber(str1));
+            //result:true
+
+",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-09-15 23:05:09.553,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Sep 19 14:32:39 UTC 2017,,,,,,0|i3k3x3:,9223372036854775807,,,,,,,,,"15/Sep/17 23:05;sebb;The leading 0 means octal.
+
+09 is not valid octal","19/Sep/17 13:22;yusw;This is a trap, if you do not see the specific implementation of the method, who do not know will be treated as octal. I do not think it's a good practice.","19/Sep/17 14:32;sebb;The behaviour is clearly explained in the Javadoc:
+
+http://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/math/NumberUtils.html#isNumber-java.lang.String-",,,,,,,,,,,,,,,,,,,
+ExceptionUtils#getRootCause(Throwable t) should return t if no lower level cause exists,LANG-1364,13112845,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,pascalschumacher,pascalschumacher,28/Oct/17 18:52,21/Aug/18 13:08,08/Jun/19 23:14,11/Feb/18 13:20,3.6,,,,,,3.8,,,0,"{quote}
+I have found the design of three root cause related methods inconsistent
+when the input Throwable does not wrap up another Throwable.
+
+These three methods are
+
+   1. getRootCause(Throwable t)
+   2. getRootCauseMessage(Throwable t)
+   3. getRootCauseStackTrace(Throwable t)
+
+
+When the input t has no lower level cause:
+
+   - the first method returns null;
+   - the second method returns the message of t, which means the input t is
+   considered as the root cause in this method;
+   - the third method returns the stack trace of t, which also means this
+   method considers t as the root cause.
+
+Therefore, I consider the design of the first method is not consistent with
+the second and the third.
+
+I usually write a function myself to get the root cause of an exception;
+and it makes much better sense to me the root cause of a Throwable is
+itself if no more lower level cause exists.
+
+A request: change the first method to return t itself when there is no more
+'causes'.
+{quote}
+
+Reported by Zheng Xie in https://mail-archives.apache.org/mod_mbox/commons-dev/201710.mbox/%3CCAL-LHk7jvQGM9J1SPxLB2qEsXazwwq%2BYKuv29XgWXEcccHUn0w%40mail.gmail.com%3E
+",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2018-08-21 13:08:52.453,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Aug 21 13:08:52 UTC 2018,,,,,,0|i3lu3r:,9223372036854775807,,,,,,,,,21/Aug/18 13:08;chtompki;3.8 Released.,,,,,,,,,,,,,,,,,,,,,
+StackOverflowError on TypeUtils.toString(...) for a generic return type of Enum.valueOf,LANG-1348,13093496,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,dimitrovchi,dimitrovchi,09/Aug/17 14:31,10/Nov/17 16:41,08/Jun/19 23:14,07/Oct/17 09:57,3.6,,,,,,3.7,lang.reflect.*,,0,"The following code
+{code:java}
+final Method method = Enum.class.getMethod(""valueOf"", Class.class, String.class);
+final String typeText = TypeUtils.toString(method.getGenericReturnType());
+{code}
+
+throws the following
+
+{code:none}
+Exception in thread ""main"" java.lang.StackOverflowError
+	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.getRawType(ParameterizedTypeImpl.java:126)
+	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.getRawType(ParameterizedTypeImpl.java:40)
+	at org.apache.commons.lang3.reflect.TypeUtils.parameterizedTypeToString(TypeUtils.java:1790)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1666)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.typeVariableToString(TypeUtils.java:1775)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1672)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.parameterizedTypeToString(TypeUtils.java:1803)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1666)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.typeVariableToString(TypeUtils.java:1775)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1672)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.parameterizedTypeToString(TypeUtils.java:1803)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1666)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.typeVariableToString(TypeUtils.java:1775)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1672)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.parameterizedTypeToString(TypeUtils.java:1803)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1666)
+	at org.apache.commons.lang3.reflect.TypeUtils.appendAllTo(TypeUtils.java:1846)
+	at org.apache.commons.lang3.reflect.TypeUtils.typeVariableToString(TypeUtils.java:1775)
+	at org.apache.commons.lang3.reflect.TypeUtils.toString(TypeUtils.java:1672)
+...
+{code}",Java 8 update 144,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-08-19 18:14:07.632,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Oct 07 09:56:29 UTC 2017,,,,,,0|i3ilhj:,9223372036854775807,,,,,,,,,19/Aug/17 18:14;ggregory;Patches welcome ;-),"24/Sep/17 16:25;MarkDacek;I started poking into this. It's a sweet circular call. 
+You wind up at TypeUtils, Line 1672. This calls typeVariableToString, into the if block.
+This, line 1775, calls the appendToAll method. You will hit line 1846... which calls the same toString function that you called in the first place. 
+
+I don't have a remediation plan. But maybe that will help!",28/Sep/17 20:59;mbusso;I'm working on a patch trying to stop the circular call.,"29/Sep/17 00:23;githubbot;GitHub user mbusso opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/291
+
+    LANG-1348 - StackOverflowError on TypeUtils.toString
+
+    StackOverflowError on TypeUtils.toString(...) for a generic return type of Enum.valueOf
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/mbusso/commons-lang master
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/291.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #291
+    
+----
+commit 1ddc70df56a81a94e4b11813c6da6f107c2ebb0c
+Author: mbusso <matiassbb@gmail.com>
+Date:   2017-09-29T00:17:55Z
+
+    LANG-1348 - StackOverflowError on TypeUtils.toString(...) for a generic return type of Enum.valueOf
+
+----
+","29/Sep/17 00:51;githubbot;Github user mbusso closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/291
+","29/Sep/17 00:56;githubbot;GitHub user mbusso opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/292
+
+    LANG-1348 - StackOverflowError on TypeUtils.toString
+
+    StackOverflowError on TypeUtils.toString(...) for a generic return type of Enum.valueOf
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/mbusso/commons-lang master
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/292.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #292
+    
+----
+commit 39df422dd3f36be889d6e174a94a24449373de6d
+Author: mbusso <matiassbb@gmail.com>
+Date:   2017-09-29T00:51:24Z
+
+    LANG-1348 - StackOverflowError on TypeUtils.toString(...) for a generic return type of Enum.valueOf
+
+----
+","29/Sep/17 01:00;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/292
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/13489028/badge)](https://coveralls.io/builds/13489028)
+    
+    Coverage increased (+0.01%) to 95.213% when pulling **39df422dd3f36be889d6e174a94a24449373de6d on mbusso:master** into **1406f2a4f2cda80a05b8dc2506ec9d0a25bdf2db on apache:master**.
+
+","07/Oct/17 09:55;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/292
+","07/Oct/17 09:56;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/292
+  
+    Great pull request! Thanks! :+1: 
+    
+    merged in https://github.com/apache/commons-lang/commit/cc6beb2d05347fba64d933906ae2b712b1a43302
+",,,,,,,,,,,,,
+ExceptionUtils.getThrowableList() is using deprecated ExceptionUtils.getCause(),LANG-1361,13111442,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,,afelisatti,afelisatti,23/Oct/17 14:39,10/Nov/17 16:41,08/Jun/19 23:14,23/Oct/17 18:07,3.6,,,,,,3.7,lang.exception.*,,0,"Though ExceptionUtils.getCause is deprecated it's used internally, for example in ExceptionUtils.getThrowables. 
+We noticed this while running performance tests where a large number of NoSuchMethod exceptions where seen since ExceptionUtils.getCause catches them repeatedly. Unless initialised carefully, creating exceptions has the overhead of filling the stack trace which was our performance concern. ",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-10-23 18:07:00.533,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Oct 23 18:50:18 UTC 2017,,,,,,0|i3llhr:,9223372036854775807,,,,,,,,,23/Oct/17 18:07;ggregory;In git master. Please verify and close.,23/Oct/17 18:50;afelisatti;Thanks!,,,,,,,,,,,,,,,,,,,,
+EqualsBuilder#isRegistered: swappedPair construction bug,LANG-1349,13094318,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,pascalschumacher,pascalschumacher,13/Aug/17 10:40,10/Nov/17 16:41,08/Jun/19 23:14,08/Sep/17 16:29,3.6,,,,,,3.7,lang.builder.*,,0,"See
+
+https://stackoverflow.com/questions/45603317/org-apache-commons-lang3-builder-equalsbuilder
+
+and
+
+https://github.com/apache/commons-lang/pull/282
+
+for details.",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-08-13 10:41:46.952,,,false,,,,,,,,,,,,9223372036854775807,,,Sun Aug 13 10:41:46 UTC 2017,,,,,,0|i3iqcn:,9223372036854775807,,,,,,,,,"13/Aug/17 10:41;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/282
+  
+    created https://issues.apache.org/jira/browse/LANG-1349 to track this
+",,,,,,,,,,,,,,,,,,,,,
+"ConstructorUtils.invokeConstructor(Class, Object...) regression",LANG-1350,13094842,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,,bjkail,bjkail,15/Aug/17 19:25,10/Nov/17 16:41,08/Jun/19 23:14,21/Aug/17 15:29,3.5,3.6,,,,,3.7,lang.reflect.*,,0,"As of LANG-1115, the following test program no longer works:
+{noformat}
+public class ConstructorUtilsTest {
+	@Test
+	public void test() throws Exception {
+		ConstructorUtils.invokeConstructor(TestCtor.class, new A() {}, new B[0]);
+	}
+
+	public static class TestCtor {
+		public TestCtor(A a, B... b) {}
+	}
+
+	public static class A {}
+	public static class B {}
+}
+{noformat}",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-08-19 18:10:54.981,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Aug 26 12:59:37 UTC 2017,,,,,,0|i3itjz:,9223372036854775807,,,,,,,,,19/Aug/17 18:10;ggregory;Patches welcome ;-),"20/Aug/17 18:26;githubbot;GitHub user bjkail opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/283
+
+    LANG-1350: Fix varargs array invokeConstructor
+
+    If ConstructorUtils.invokeConstructor(Class, Object...) is invoked with an array of arguments whose classes do not match a constructor exactly (for example, a subclass is used) and an array is used for a varargs parameter, then the array is not matched to the varargs parameter type.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/bjkail/commons-lang LANG-1350
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/283.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #283
+    
+----
+commit a54613f4c8774c34a9942b3ffe93d803fcc452cd
+Author: Brett Kail <bjkail@gmail.com>
+Date:   2017-08-20T18:25:41Z
+
+    LANG-1350: Fix varargs array invokeConstructor
+    
+    If ConstructorUtils.invokeConstructor(Class, Object...) is invoked with
+    an array of arguments whose classes do not match a constructor exactly
+    (for example, a subclass is used) and an array is used for a varargs
+    parameter, then the array is not matched to the varargs parameter type.
+
+----
+","20/Aug/17 18:34;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/12913326/badge)](https://coveralls.io/builds/12913326)
+    
+    Coverage increased (+0.01%) to 95.194% when pulling **a54613f4c8774c34a9942b3ffe93d803fcc452cd on bjkail:LANG-1350** into **05d9518038ae8d2ac9f11b91b731f47b909a9bad on apache:master**.
+
+","20/Aug/17 18:34;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/12913326/badge)](https://coveralls.io/builds/12913326)
+    
+    Coverage increased (+0.01%) to 95.194% when pulling **a54613f4c8774c34a9942b3ffe93d803fcc452cd on bjkail:LANG-1350** into **05d9518038ae8d2ac9f11b91b731f47b909a9bad on apache:master**.
+
+",21/Aug/17 15:29;ggregory;In Git master. Please verify and fix.,"26/Aug/17 10:21;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    Thanks for the pull request! :+1: 
+    
+    It was merged by @garydgregory in https://github.com/apache/commons-lang/commit/cc94767e7eabdfcf9d1cab1d8d1d8556864394c6
+    
+    It would be nice if you could close the pull request.
+    
+    Thanks!
+","26/Aug/17 12:59;githubbot;Github user bjkail closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/283
+",,,,,,,,,,,,,,,
+TimeZone.getTimeZone() in FastDateParser causes resource contention,LANG-1355,13105890,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,chonton,kwboone,kwboone,28/Sep/17 22:32,10/Nov/17 16:41,08/Jun/19 23:14,10/Oct/17 17:59,3.6,,,,,,3.7,lang.time.*,,0,"Under heavy load we are seeing contention in FastDateParser.parse() on calls to TimeZone.getTimeZone().  TimeZone.getTimeZone() is a synchronized static in the Oracle JVM.
+
+Our proposed solution is to add a class TimeZoneCache containing a single method getTimeZone() which gets the requested time zone from a ConcurrentMap, and if not present, looks it up via TimeZone.getTimeZone() and caches it before returning it.
+
+Then replace calls to TimeZone.getTimeZone() in FastDateParser ( and whereever else) to calls to TimeZoneCache.getTimeZone().  
+
+The reason to add a separate class is because it can also be used by other applications which heavily parse or format or do other things where TimeZone is repeatedly needed.
+
+Under extreme load we have seen an 50:1 improvement in calls to FastDateParser.parse().  This saves about a ms/call in our test environment, and reduces contention.
+
+
+",Windows,172800,172800,,0%,172800,172800,,,0.0,,,,,,,,,,,,,,,,,,,2017-10-02 03:00:00.875,,"package org.apache.commons.lang3.time;
+
+import java.util.TimeZone;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * <p>TimeZoneCache is a thread-safe cache and retriever for TimeZone objects.</p>
+ *
+ * <p>To obtain a TimeZone, use {@link TimeZoneCache.getTimeZone(String tid).  If no instance
+ * if found in the cache, an instance will be created by calling TimeZone.getTimeZone().
+ * Otherwise, the instance with the matching tid will be obtained from TimeZone.getTimeZone(),
+ * stored in the cache and returned.</p>
+ *
+ * <p>TimeZone.getTimeZone() is a synchronized static method, which can cause thread 
+ * contention under high load. If you must use a large number of time formatter or parser 
+ * objects, this class can be used to avoid repeated construction and synchronization 
+ * blocking.</p>
+ * <code>
+ *     TimeZone tz = TimeZoneCache.getInstance(""UTC"");
+ * </code>
+ *
+ * @see FastDateParser, FastDateFormatter
+ */
+public class TimeZoneCache {
+	/* A cache of the currently known TimeZones */
+	private final static ConcurrentMap<String, TimeZone> timeZoneCache = new ConcurrentHashMap<String, TimeZone>(7);
+	
+	public static TimeZone getTimeZone(String tid) {
+		TimeZone tz = timeZoneCache.get(tid);
+		if (tz == null) {
+			tz = TimeZone.getTimeZone(tid);
+			timeZoneCache.put(tid, tz);
+		}
+		return tz;
+	}
+}
+",false,,,,,,,,,,,,9223372036854775807,,,Tue Oct 10 17:59:31 UTC 2017,,,,,,0|i3korz:,9223372036854775807,,,,,,,,,02/Oct/17 03:00;chonton;What is the format you are using?  What is the micro-benchmark code that you are running?,"02/Oct/17 21:44;kwboone;The format we are using most often is ISO8601, but would expect to see others based on offsets from UTC/GMT.
+
+I'm not using a microbenchmark framework but do have a small program that I used to test the variations below.  It spawns a hundred threads that repeatedly hit the calls in question and times the results a couple of ways.
+
+This test creates higher load than what we would expect in normal use, but was good enough to give me an idea what we might experience with it, as I was able to create a situation showing the effects of the contention with this.
+
+Note: InstantType comes from http://hapifhir.io, but is basically a data type that when copied, converts an Instant from a Date back to a string of the appropriate precision, and when constructed, parses the given string into a Date object (and saves the precision of the original string).  The copy operation was in the stack trace of the locked threads we saw in our performance testing beneath calls to FastDateParser.parse().  Note: Some code in hapifhir.io also pays a penalty for its own internal use of TimeZone.getTimeZone() (in calls to a Date Formatter), which is in part why I felt this needed to be an externally available API.
+
+   Keith 
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
+import java.util.Date;
+
+import org.hl7.fhir.instance.model.InstantType;
+
+public class TimeZoneTester implements Runnable {
+	private static int done = 0;
+	private static Thread t[] = null;
+	private static TimeZoneTester tester[] = null;
+	private static long total;
+	
+	long timer = 0;
+	long cpuTimer = 0;
+	
+	public static void main(String args[]) {
+		 int numThreads = args.length > 0 ? Integer.parseInt(args[0]) : 4;
+		 
+		 t = new Thread[numThreads];
+		 tester = new TimeZoneTester[numThreads];
+		 
+		 // Warm it up
+		 runThisStuff(numThreads);
+
+		 // Let it rip
+		 runThisStuff(numThreads);
+		 long sumTimer = 0, sumCPUTimer = 0;
+		 for (int i = 0; i < numThreads; i++) {
+			 System.out.printf(""%6d\t%10d\t%10d\n"", i, tester[i].timer, tester[i].cpuTimer);
+			 sumTimer += tester[i].timer;
+			 sumCPUTimer += tester[i].cpuTimer;
+		 }
+		 System.out.printf(""Total\t%10d\t%10d\n"", sumTimer, sumCPUTimer);
+		 System.out.printf(""Actual\t%10d\n"", total);
+		 System.out.printf(""Master\t%10d\n"", currentCPUTime());
+	}
+	
+	static void runThisStuff(int numThreads) {
+		 done = numThreads;
+
+		 // Create all the threads.
+		 for (int i = 0; i < t.length; i++) {
+			 t[i] = new Thread(tester[i] = new TimeZoneTester());
+			 t[i].setName(""TimeZoneTester-"" + i);
+		 }
+		 
+		 
+		 total = System.nanoTime();
+		 for (int i = 0; i < t.length; i++) {
+			 t[i].start();
+		 }
+		 while (done != 0) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+			}
+			System.out.printf(""%d threads running\n"", done);
+		 }
+		 total = System.nanoTime() - total;
+	}
+	
+	public void run() {
+		timer = System.nanoTime();
+		InstantType i = new InstantType(new Date());
+		for (int loop = 0; loop < 100000; loop++) {
+			// Force use of parser
+			i = i.copy();
+		}
+		timer = System.nanoTime() - timer;
+		cpuTimer = currentCPUTime();
+		synchronized (TimeZoneTester.class) {
+			--done;
+		}
+	}
+	
+	private static final ThreadMXBean THREADING = ManagementFactory.getThreadMXBean();
+	private static final boolean IS_THREAD_CPU_SUPPORTED = THREADING.isThreadCpuTimeSupported();
+	
+	public static final long currentCPUTime() {
+		return IS_THREAD_CPU_SUPPORTED ? THREADING.getCurrentThreadCpuTime() : 0;
+	}
+
+}
+","08/Oct/17 20:43;chonton;In the JDK7 implementation, synchronized method java.util.TimeZone.getTimeZone(String id) ultimately invokes sun.util.calendar.ZoneInfo.getZoneInfo(String id) which consults a ConcurrentHashMap for the zone corresponding with the id.  For ""custom time zone IDs"", after this call is invoked and no Olson/IANA timezone is found, the custom TimeZone instance is created and returned.  This custom TimeZone instance is never cached.
+
+I suggest that the logic be to first check if the timezone id is a ""custom time zone IDs"".  If so, create and return the custom TimeZone instance; otherwise invoke the java.util.TimeZone.getTimeZone(String id) method.  All ""custom time zone IDs"" will not hold the synchronized section open.","09/Oct/17 02:19;githubbot;GitHub user chonton opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/296
+
+    LANG-1355: Add FastTimeZone to decrease TimeZone.getTimezone latency
+
+    Adding FastTimeZone to decrease latency of timezone lookups.   I'll hold this PR open for 48 hours for commons committers' comments.  Thanks!
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/chonton/commons-lang LANG-1355
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/296.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #296
+    
+----
+commit a703646e949c277c5249c87e08486d2b7a69cb34
+Author: Chas Honton <chas@apache.org>
+Date:   2017-10-09T01:54:17Z
+
+    LANG-1355: Add FasTimeZone to decrease TimeZone.getTimezone latency
+
+commit 7670979033076f354af7e4cf852709d5403ffbd4
+Author: Chas Honton <chas@apache.org>
+Date:   2017-10-09T02:18:01Z
+
+    Replace all TimeZone.getTimeZone(UTC) wiht FastTimeZone.getGmtTimeZone()
+
+----
+","09/Oct/17 02:23;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/296
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/13625524/badge)](https://coveralls.io/builds/13625524)
+    
+    Coverage decreased (-0.01%) to 95.198% when pulling **7670979033076f354af7e4cf852709d5403ffbd4 on chonton:LANG-1355** into **00feb98f807cf44c993296052726043a90d70b7e on apache:master**.
+
+","10/Oct/17 03:43;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/296
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/13642621/badge)](https://coveralls.io/builds/13642621)
+    
+    Coverage decreased (-0.01%) to 95.192% when pulling **0476df2d4276da567e5f6bbf64813e9fff0fa7d5 on chonton:LANG-1355** into **15d5503215a4cd1efc1ae6659d82194a22ebee9b on apache:master**.
+
+","10/Oct/17 08:08;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/296
+  
+    Looks good imho. 👍 
+","10/Oct/17 09:00;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143664742
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java ---
+    @@ -0,0 +1,103 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.Date;
+    +import java.util.TimeZone;
+    +
+    +/**
+    + * Custom timezone that contains offset from GMT.
+    + *
+    + * @since 3.7
+    + */
+    +class GmtTimeZone extends TimeZone {
+    --- End diff --
+    
+    TimeZone is Serializabe. Do we need to add a serialVersionUID here?
+","10/Oct/17 09:00;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143660909
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -0,0 +1,90 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.TimeZone;
+    +import java.util.regex.Matcher;
+    +import java.util.regex.Pattern;
+    +
+    +/**
+    + * Faster methods to produce custom time zones.
+    + *
+    + * @since 3.7
+    + */
+    +public class FastTimeZone {
+    +
+    +    private static final TimeZone GREENWICH = new GmtTimeZone(false, 0, 0);
+    +
+    +    /**
+    +     * Get the GMT TimeZone.
+    +     * @return A TimeZone with a raw offset of zero.
+    +     */
+    +    public static TimeZone getGmtTimeZone() {
+    +        return GREENWICH;
+    +    }
+    +
+    +    /**
+    +     * Get a TimeZone, looking first for GMT custom ids, then falling back to Olson ids.
+    +     * A GMT custom id has an optional prefix of GMT, followed by sign, hours digit(s), optional
+    +     * colon(':'), and optional minutes digits: <em>[GMT] (+|-) Hours [[:] Minutes]</em>
+    +     *
+    +     * @param id A GMT custom id or Olsen id
+    +     * @return A timezone
+    +     */
+    +    public static TimeZone getTimeZone(String id) {
+    +        TimeZone tz = getGmtTimeZone(id);
+    +        if (tz != null) {
+    +            return tz;
+    +        }
+    +        return TimeZone.getTimeZone(id);
+    +    }
+    +
+    +    private static final Pattern GMT_PATTERN = Pattern.compile(""^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$"");
+    +
+    +    /**
+    +     * Get a TimeZone with GMT offsets.  A GMT offset must be either 'Z' or match
+    +     * (GMT)? hh?(:?mm?)?, where h and m are digits representing hours and minutes.
+    --- End diff --
+    
+    Maybe instead of
+    
+    > A GMT offset must be either 'Z' or match (GMT)? hh?(:?mm?)?
+    
+    It should be
+    
+    > A GMT offset must be 'Z', or 'UTC', or match (GMT)? hh?(:?mm?)?
+    
+    ?
+    
+
+","10/Oct/17 09:00;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143663160
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -0,0 +1,90 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.TimeZone;
+    +import java.util.regex.Matcher;
+    +import java.util.regex.Pattern;
+    +
+    +/**
+    + * Faster methods to produce custom time zones.
+    + *
+    + * @since 3.7
+    + */
+    +public class FastTimeZone {
+    --- End diff --
+    
+    Do we need a private constructor to prevent instantiation of FastTimeZone? It seems to contain only static methods. Not sure if that's the intended design. But noticed it while looking at the cobertura report (which is looking great).
+","10/Oct/17 09:00;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143667156
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/time/GmtTimeZoneTest.java ---
+    @@ -0,0 +1,80 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import org.junit.Assert;
+    +import org.junit.Test;
+    +
+    +/**
+    + * Tests for GmtTimeZone
+    + */
+    +public class GmtTimeZoneTest {
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void hoursOutOfRange() {
+    +        new GmtTimeZone(false, 24, 0);
+    +    }
+    +
+    +    @Test
+    +    public void hoursInRange() {
+    +        Assert.assertEquals(23 * 60 * 60 * 1000, new GmtTimeZone(false, 23, 0).getRawOffset());
+    +    }
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void minutesOutOfRange() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 60, 0));
+    --- End diff --
+    
+    This test is wrong. Its title states that the minutes will be out of range, but the hour is actually out of range (60). Minute is 0, but never gets checked.
+","10/Oct/17 09:00;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143667312
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/time/GmtTimeZoneTest.java ---
+    @@ -0,0 +1,80 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import org.junit.Assert;
+    +import org.junit.Test;
+    +
+    +/**
+    + * Tests for GmtTimeZone
+    + */
+    +public class GmtTimeZoneTest {
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void hoursOutOfRange() {
+    +        new GmtTimeZone(false, 24, 0);
+    +    }
+    +
+    +    @Test
+    +    public void hoursInRange() {
+    +        Assert.assertEquals(23 * 60 * 60 * 1000, new GmtTimeZone(false, 23, 0).getRawOffset());
+    +    }
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void minutesOutOfRange() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 60, 0));
+    +    }
+    +
+    +    @Test
+    +    public void minutesInRange() {
+    +        Assert.assertEquals(59 * 60 * 1000, new GmtTimeZone(false, 0, 59).getRawOffset());
+    +    }
+    +
+    +    @Test
+    +    public void getOffset() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 0, 0).getOffset(234304));
+    +    }
+    +
+    +    @Test(expected = UnsupportedOperationException.class)
+    +    public void setRawOffset() {
+    +        new GmtTimeZone(false, 0, 0).setRawOffset(0);
+    +    }
+    +
+    +    @Test
+    +    public void getRawOffset() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 0, 0).getRawOffset());
+    +    }
+    +
+    +    @Test
+    +    public void getID() {
+    +        Assert.assertEquals(""GMT+00:00"", new GmtTimeZone(false, 0, 0).getID());
+    +        Assert.assertEquals(""GMT+01:02"", new GmtTimeZone(false, 1, 2).getID());
+    +        Assert.assertEquals(""GMT+11:22"", new GmtTimeZone(false, 11, 22).getID());
+    +        Assert.assertEquals(""GMT-01:02"", new GmtTimeZone(true, 1, 2).getID());
+    +        Assert.assertEquals(""GMT-11:22"", new GmtTimeZone(true, 11, 22).getID());
+    +    }
+    +
+    +    @Test
+    +    public void useDaylightTime() {
+    +        Assert.assertFalse(new GmtTimeZone(false, 0, 0).useDaylightTime());
+    +    }
+    +
+    +    @Test
+    +    public void inDaylightTime() {
+    +        Assert.assertFalse(new GmtTimeZone(false, 0, 0).useDaylightTime());
+    +    }
+    --- End diff --
+    
+    Maybe add something like
+    
+    ```
+    @Test
+        public void testToString() {
+            Assert.assertEquals(""[GmtTimeZone id=\""GMT+23:00\"",offset=82800000]"", new GmtTimeZone(false, 23, 0).toString());
+        }
+    
+        @Test
+        public void testGetOffset() {
+            Assert.assertEquals(82800000, new GmtTimeZone(false, 23, 0).getOffset(1, 1, 1, 1, 1, 1));
+        }
+    ```
+    
+    With these two tests we reach 100% for GmtTimeZone.
+","10/Oct/17 14:41;githubbot;Github user chonton commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143748823
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -0,0 +1,90 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.TimeZone;
+    +import java.util.regex.Matcher;
+    +import java.util.regex.Pattern;
+    +
+    +/**
+    + * Faster methods to produce custom time zones.
+    + *
+    + * @since 3.7
+    + */
+    +public class FastTimeZone {
+    --- End diff --
+    
+    done
+","10/Oct/17 14:41;githubbot;Github user chonton commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143748869
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -0,0 +1,90 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.TimeZone;
+    +import java.util.regex.Matcher;
+    +import java.util.regex.Pattern;
+    +
+    +/**
+    + * Faster methods to produce custom time zones.
+    + *
+    + * @since 3.7
+    + */
+    +public class FastTimeZone {
+    +
+    +    private static final TimeZone GREENWICH = new GmtTimeZone(false, 0, 0);
+    +
+    +    /**
+    +     * Get the GMT TimeZone.
+    +     * @return A TimeZone with a raw offset of zero.
+    +     */
+    +    public static TimeZone getGmtTimeZone() {
+    +        return GREENWICH;
+    +    }
+    +
+    +    /**
+    +     * Get a TimeZone, looking first for GMT custom ids, then falling back to Olson ids.
+    +     * A GMT custom id has an optional prefix of GMT, followed by sign, hours digit(s), optional
+    +     * colon(':'), and optional minutes digits: <em>[GMT] (+|-) Hours [[:] Minutes]</em>
+    +     *
+    +     * @param id A GMT custom id or Olsen id
+    +     * @return A timezone
+    +     */
+    +    public static TimeZone getTimeZone(String id) {
+    +        TimeZone tz = getGmtTimeZone(id);
+    +        if (tz != null) {
+    +            return tz;
+    +        }
+    +        return TimeZone.getTimeZone(id);
+    +    }
+    +
+    +    private static final Pattern GMT_PATTERN = Pattern.compile(""^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$"");
+    +
+    +    /**
+    +     * Get a TimeZone with GMT offsets.  A GMT offset must be either 'Z' or match
+    +     * (GMT)? hh?(:?mm?)?, where h and m are digits representing hours and minutes.
+    --- End diff --
+    
+    done
+","10/Oct/17 14:41;githubbot;Github user chonton commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143748954
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java ---
+    @@ -0,0 +1,103 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.Date;
+    +import java.util.TimeZone;
+    +
+    +/**
+    + * Custom timezone that contains offset from GMT.
+    + *
+    + * @since 3.7
+    + */
+    +class GmtTimeZone extends TimeZone {
+    --- End diff --
+    
+    great catch! done
+","10/Oct/17 14:42;githubbot;Github user chonton commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143749105
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/time/GmtTimeZoneTest.java ---
+    @@ -0,0 +1,80 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import org.junit.Assert;
+    +import org.junit.Test;
+    +
+    +/**
+    + * Tests for GmtTimeZone
+    + */
+    +public class GmtTimeZoneTest {
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void hoursOutOfRange() {
+    +        new GmtTimeZone(false, 24, 0);
+    +    }
+    +
+    +    @Test
+    +    public void hoursInRange() {
+    +        Assert.assertEquals(23 * 60 * 60 * 1000, new GmtTimeZone(false, 23, 0).getRawOffset());
+    +    }
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void minutesOutOfRange() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 60, 0));
+    --- End diff --
+    
+    great catch! thanks.
+    done.
+","10/Oct/17 14:42;githubbot;Github user chonton commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143749142
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/time/GmtTimeZoneTest.java ---
+    @@ -0,0 +1,80 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import org.junit.Assert;
+    +import org.junit.Test;
+    +
+    +/**
+    + * Tests for GmtTimeZone
+    + */
+    +public class GmtTimeZoneTest {
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void hoursOutOfRange() {
+    +        new GmtTimeZone(false, 24, 0);
+    +    }
+    +
+    +    @Test
+    +    public void hoursInRange() {
+    +        Assert.assertEquals(23 * 60 * 60 * 1000, new GmtTimeZone(false, 23, 0).getRawOffset());
+    +    }
+    +
+    +    @Test(expected = IllegalArgumentException.class)
+    +    public void minutesOutOfRange() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 60, 0));
+    +    }
+    +
+    +    @Test
+    +    public void minutesInRange() {
+    +        Assert.assertEquals(59 * 60 * 1000, new GmtTimeZone(false, 0, 59).getRawOffset());
+    +    }
+    +
+    +    @Test
+    +    public void getOffset() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 0, 0).getOffset(234304));
+    +    }
+    +
+    +    @Test(expected = UnsupportedOperationException.class)
+    +    public void setRawOffset() {
+    +        new GmtTimeZone(false, 0, 0).setRawOffset(0);
+    +    }
+    +
+    +    @Test
+    +    public void getRawOffset() {
+    +        Assert.assertEquals(0, new GmtTimeZone(false, 0, 0).getRawOffset());
+    +    }
+    +
+    +    @Test
+    +    public void getID() {
+    +        Assert.assertEquals(""GMT+00:00"", new GmtTimeZone(false, 0, 0).getID());
+    +        Assert.assertEquals(""GMT+01:02"", new GmtTimeZone(false, 1, 2).getID());
+    +        Assert.assertEquals(""GMT+11:22"", new GmtTimeZone(false, 11, 22).getID());
+    +        Assert.assertEquals(""GMT-01:02"", new GmtTimeZone(true, 1, 2).getID());
+    +        Assert.assertEquals(""GMT-11:22"", new GmtTimeZone(true, 11, 22).getID());
+    +    }
+    +
+    +    @Test
+    +    public void useDaylightTime() {
+    +        Assert.assertFalse(new GmtTimeZone(false, 0, 0).useDaylightTime());
+    +    }
+    +
+    +    @Test
+    +    public void inDaylightTime() {
+    +        Assert.assertFalse(new GmtTimeZone(false, 0, 0).useDaylightTime());
+    +    }
+    --- End diff --
+    
+    done
+","10/Oct/17 14:45;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/296
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/13650527/badge)](https://coveralls.io/builds/13650527)
+    
+    Coverage decreased (-0.007%) to 95.199% when pulling **db5c0a208e26bbae13d1bd4700049e330569aa3b on chonton:LANG-1355** into **15d5503215a4cd1efc1ae6659d82194a22ebee9b on apache:master**.
+
+","10/Oct/17 16:26;githubbot;Github user PascalSchumacher commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143781416
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -39,10 +43,11 @@ public static TimeZone getGmtTimeZone() {
+     
+         /**
+          * Get a TimeZone, looking first for GMT custom ids, then falling back to Olson ids.
+    -     * A GMT custom id has an optional prefix of GMT, followed by sign, hours digit(s), optional
+    -     * colon(':'), and optional minutes digits: <em>[GMT] (+|-) Hours [[:] Minutes]</em>
+    +     * A GMT custom id can be 'Z', or 'UTC', or has an optional prefix of GMT,
+    +     * followed by sign, hours digit(s), optional colon(':'), and optional minutes digits.
+    +     * i.e. <em>[GMT] (+|-) Hours [[:] Minutes]</em>
+          *
+    -     * @param id A GMT custom id or Olsen id
+    +     * @param id A GMT custom id (or Olson id
+    --- End diff --
+    
+    Nitpick: either a superfluous `(` or a missing `)`
+","10/Oct/17 17:54;githubbot;Github user garydgregory commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/296#discussion_r143804862
+  
+    --- Diff: src/main/java/org/apache/commons/lang3/time/FastTimeZone.java ---
+    @@ -0,0 +1,95 @@
+    +/*
+    + * Licensed to the Apache Software Foundation (ASF) under one or more
+    + * contributor license agreements.  See the NOTICE file distributed with
+    + * this work for additional information regarding copyright ownership.
+    + * The ASF licenses this file to You under the Apache License, Version 2.0
+    + * (the ""License""); you may not use this file except in compliance with
+    + * the License.  You may obtain a copy of the License at
+    + *
+    + *      http://www.apache.org/licenses/LICENSE-2.0
+    + *
+    + * Unless required by applicable law or agreed to in writing, software
+    + * distributed under the License is distributed on an ""AS IS"" BASIS,
+    + * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    + * See the License for the specific language governing permissions and
+    + * limitations under the License.
+    + */
+    +package org.apache.commons.lang3.time;
+    +
+    +import java.util.TimeZone;
+    +import java.util.regex.Matcher;
+    +import java.util.regex.Pattern;
+    +
+    +/**
+    + * Faster methods to produce custom time zones.
+    + *
+    + * @since 3.7
+    + */
+    +public class FastTimeZone {
+    +
+    +    private static final TimeZone GREENWICH = new GmtTimeZone(false, 0, 0);
+    +
+    +    // do not instantiate
+    +    private FastTimeZone() {
+    +    }
+    +
+    +    /**
+    +     * Get the GMT TimeZone.
+    +     * @return A TimeZone with a raw offset of zero.
+    +     */
+    +    public static TimeZone getGmtTimeZone() {
+    +        return GREENWICH;
+    +    }
+    +
+    +    /**
+    +     * Get a TimeZone, looking first for GMT custom ids, then falling back to Olson ids.
+    --- End diff --
+    
+    In future patches, you can use the active voice for Javadocs: ""Gets a TimeZone..."" instead of ""Get..."". :-)
+","10/Oct/17 17:58;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/296
+","10/Oct/17 17:59;ggregory;In git master, please verify and close."
+org.apache.commons.lang3.time.FastDateParser should use toUpperCase(Locale),LANG-1357,13108072,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,ggregory,ggregory,ggregory,09/Oct/17 20:17,09/Oct/17 20:33,08/Jun/19 23:14,09/Oct/17 20:33,3.6,,,,,,3.7,lang.time.*,,0,The class org.apache.commons.lang3.time.FastDateParser should use {{toUpperCase(Locale)}} internally to avoid i18n issues https://garygregory.wordpress.com/2015/11/03/java-lowercase-conversion-turkey/,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-10-09 20:22:34.253,,,false,,,,,,,,,,,,9223372036854775807,,,Mon Oct 09 20:33:36 UTC 2017,,,,,,0|i3l1nj:,9223372036854775807,,,,,,,,,"09/Oct/17 20:22;githubbot;Github user garydgregory commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/297
+  
+    I am splitting out the FastDateParser changes here: https://issues.apache.org/jira/browse/LANG-1357
+",09/Oct/17 20:33;ggregory;Closing: In git master.,,,,,,,,,,,,,,,,,,,,
+java.lang.NoClassDefFoundError: java.util.Objects on android < API 19,LANG-1347,13093079,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Invalid,,vlavruk,vlavruk,08/Aug/17 06:40,08/Aug/17 09:08,08/Jun/19 23:14,08/Aug/17 09:08,3.6,,,,,,,lang.tuple.*,,0,"The app is throwing a runtime error, as I understand, because the java.util.Objects is not available on Android below API 19.
+
+
+{code:java}
+         AndroidRuntime  E  FATAL EXCEPTION: main
+                         E  java.lang.NoClassDefFoundError: java.util.Objects
+                         E      at org.apache.commons.lang3.tuple.Pair.equals(Pair.java:134)
+{code}
+",Android API level below 19,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-08-08 09:08:08.475,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Aug 08 09:08:08 UTC 2017,,,,,,0|i3iixb:,9223372036854775807,,,,,,,,,"08/Aug/17 09:08;britter;Commons Lang requires Java 7, which is not available on Android.",,,,,,,,,,,,,,,,,,,,,
+StringUtils#abbreviate breaks up surrogate pairs,LANG-1343,13083411,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,,dstrecker@web.de,dstrecker@web.de,29/Jun/17 09:44,29/Jun/17 09:44,08/Jun/19 23:14,,3.6,,,,,,,lang.*,,0,"If the last char in the remaining substring is the first char of a surrogate pair, the resulting string has an illegal surrogate pair with the second char of the surrogate pair being the first char of the ellipsis.
+
+
+{code:java}
+StringUtils.abbreviate(""\uD83D\uDCA9\uD83D\uDCA9\uD83D\uDCA9"", 4); // returns ""\uD83D...""
+{code}
+
+In my case this breaks further along when the string is transformed to UTF-8 for a SOAP request.
+
+Should this at least be mentioned in the Javadoc?",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,2017-06-29 09:44:54.0,,,,,,0|i3gvxj:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+JavaVersion is not consistent with JEP-223,LANG-1342,13082937,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,,sesuncedu,sesuncedu,27/Jun/17 20:47,27/Jun/17 21:22,08/Jun/19 23:14,,3.6,,,,,,,lang.*,,1,"[JEP 223: New Version-String Syntax|http://openjdk.java.net/jeps/223] introduces a new syntax for version strings. 
+This syntax is sort-of not incompatible with JavaVersion in 3.5, but this is likely to change as soon as someone finds a bug in JDK 9 after it's released.  There is a third specified version number component for security releases. Unlike the rest of the full version string, this component is significant for ordering, and cannot reliably be mapped to float. 
+
+JEP 223 defines some regular expressions.  It also defines an api class (java.lang.Runtime.Version).  This class can't be used directly (since it's new with JDK-9), and the  API can't be directly emulated, as it requires java.lang.Optional.  However, it's not rocket science  (it is however regular expressions, so now you have problems 2.0).    
+
+I'll take a crack at a class implementing JEP-223 Versions and try to get them to play with JavaVersion.  
+
+The existing mapping to float is unsuited to minor versions, so there has to be some new hackery  for java 9 even for two components.  ( JDK 9.11 should be >  JDK 9.2 )
+
+Since there's no java minor releases yet, there's a bit of freedom.  If the range of minor and patch versions is restricted to values between 0 and 99 there should be a way to make things work. 
+
+Ideally the floaty stuff can be deprecated for removal before that matters. ",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Jun 27 21:22:18 UTC 2017,,,,,,0|i3gt0f:,9223372036854775807,,,,,,,,,"27/Jun/17 21:22;sesuncedu;Of course, JEP 223 is a little non-semantic-versiony on the semantics of specification.version .  A minor version may include non-breaking api changes from MR of specifications, but those versions aren't specification versions.
+
+
+{panel:title=Minor}
+$MINOR --- The minor version number, incremented for a minor update release that may contain compatible bug fixes, revisions to standard APIs mandated by a Maintenance Release of the relevant Platform Specification, and implementation features outside the scope of that Specification such as new JDK-specific APIs, additional service providers, new garbage collectors, and ports to new hardware architectures.
+
+{panel}
+
+
+*Major (GA)*
+{noformat}
+  java.version                    1.9.0         9
+  java.runtime.version            1.9.0-b100    9+100
+  java.vm.version                 1.9.0-b100    9+100
+  java.specification.version      1.9           9
+  java.vm.specification.version   1.9           9
+{noformat}
+
+*Minor #1 (GA)*
+{noformat}
+  java.version                    1.9.0_20      9.1.2
+  java.runtime.version            1.9.0_20-b62  9.1.2+62
+  java.vm.version                 1.9.0_20-b62  9.1.2+62
+  java.specification.version      1.9           9
+  java.vm.specification.version   1.9           9
+{noformat}
+",,,,,,,,,,,,,,,,,,,,,
+StringUtils#isAllEmpty and #isAllBlank should return false for an empty array,LANG-1326,13067949,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,,arshad0789,arshad0789,29/Apr/17 19:17,29/Apr/17 19:27,08/Jun/19 23:14,,3.6,,,,,,,lang.*,,0,"If the description of https://issues.apache.org/jira/browse/LANG-1271 is what is the agreed behavior, then I believe isAllEmpty and isAllBlank method should be updated as well. Please let me know if i'm missing something on this.  ",,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-04-29 19:20:47.133,,,false,,,,,,,,,,,,9223372036854775807,,,Sat Apr 29 19:27:20 UTC 2017,,,,,,0|i3ea9b:,9223372036854775807,,,,,,,,,"29/Apr/17 19:20;githubbot;GitHub user arbasha opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/267
+
+    LANG-1326 - Fixed isAllEmpty and isAllBlank
+
+    If the description of https://issues.apache.org/jira/browse/LANG-1271 is what is the agreed behavior, then I believe isAllEmpty and isAllBlank method should be updated as well. Please let me know if i'm missing something on this.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/arbasha/commons-lang bug_fix
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/267.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #267
+    
+----
+commit 35ba1e2f344d87f77f2782a188ea436cbe596a53
+Author: Basha <arbasha@paypalcorp.com>
+Date:   2017-04-29T19:18:24Z
+
+    LANG-1326 - Fixed isAllEmpty and isAllBlank
+
+----
+","29/Apr/17 19:27;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/267
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/11304534/badge)](https://coveralls.io/builds/11304534)
+    
+    Coverage remained the same at 94.655% when pulling **35ba1e2f344d87f77f2782a188ea436cbe596a53 on arbasha:bug_fix** into **c8e648b92cc133a604b5e1f4da1ced943788e64b on apache:master**.
+
+",,,,,,,,,,,,,,,,,,,,

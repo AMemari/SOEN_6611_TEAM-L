@@ -1,0 +1,1108 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Fix Version/s,Due Date,Votes,Labels,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Duplicate),Outward issue link (Reference),Attachment,Attachment,Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+Incorrect rounding of float,MATH-1070,12682369,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Critical,Fixed,,lvovlink,lvovlink,03/Dec/13 12:31,19/May/14 15:13,08/Jun/19 22:44,09/Jan/14 13:18,3.2,,,,3.3,,,0,,,,,"package org.apache.commons.math3.util 
+example of usage of round functions of Precision class:
+
+Precision.round(0.0f, 2, BigDecimal.ROUND_UP) = 0.01
+Precision.round((float)0.0, 2, BigDecimal.ROUND_UP) = 0.01
+Precision.round((float) 0.0, 2) = 0.0
+Precision.round(0.0, 2, BigDecimal.ROUND_UP) = 0.0
+
+Seems the reason is usage of extending float to double inside round functions and getting influence of memory trash as value.
+
+I think, same problem will be found at usage of other round modes.
+","Windows 7, IntelliJ IDEA 10.5.4.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-12-03 23:51:10.299,,,false,,,,,,,,,,,,361626,,,Mon May 19 15:13:34 UTC 2014,,,,,,0|i1qc5j:,361924,,,,,,,,,"03/Dec/13 23:51;tn;Fixed in r1547649.
+
+According to BigDecimal.ROUND_UP, the value shall only be rounded up if the discarded fraction is non-zero.","09/Jan/14 11:53;lvovlink;Still left problem with round of zero value for float usage:
+Precision.round(-0.0d, 0) = 0.0
+Precision.round(-0.0f, 0) = -0.0
+","09/Jan/14 13:18;tn;Could you please create a different issue for this problem.
+
+Calling Precision.round(x, y) will use the rounding mode ROUND_HALF_UP thus is it different to the problem reported before.","09/Jan/14 13:31;tn;The problem you outline is quite interesting. In the case of Precision.round(double, scale), the double value gets internally converted to a BigDecimal, but BigDecimal loses the sign if the value is 0. This is even documented in the javadoc: http://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html#BigDecimal%28java.lang.String%29","16/Jan/14 22:46;tn;Created issue MATH-1089 for the problem with negative zero, which has already been fixed.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,
+BOBYQA trsbox infinite loop,MATH-1282,12906321,Bug,Open,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,,,Tillmann Gaida,Tillmann Gaida,20/Oct/15 17:41,18/Apr/17 15:17,08/Jun/19 22:44,,3.2,,,,4.0,,,0,,,,,"Apparently the BOBYQA optimizer can get stuck in the trsbox method. This happened to us out of the blue after millions of successful optimizations.
+
+Unfortunately our target function has too many dependencies, so I can't provide a unit test for the full optimization. I have however created a unit test which isolates the call to trsbox: http://pastebin.com/wYPVS3SC
+
+I took a quick look at the code, but it looks like one can't understand a thing without having read the original paper. Can someone help?",,,,,,,,,,,MATH-1375,,,,,0.0,,,,,,,,,,,,,,,,,,,2015-10-21 12:52:03.555,,,false,,,,,,,,,,,,9223372036854775807,,,Tue Oct 27 20:51:31 UTC 2015,,,,,,0|i2n91z:,9223372036854775807,,,,,,,,,"21/Oct/15 12:52;erans;Hi.
+
+If you look at the linked issues, you'll see that previous attempts to improve the port of this code did not quite succeed. :(
+The warning in the [release notes|http://commons.apache.org/proper/commons-math/changes-report.html] has been standing through 8 releases...
+","27/Oct/15 20:51;tn;Thanks for providing an isolated test case, but I fear that this will not be enough to track down the problem. Investigating the test case shows that the gradientAtTrustRegionCenter variable has numbers of very large magnitude (10e100 and larger). Subsequent calculations involving this parameters result in Infinity and NaN, which might be the final cause for the infinite loop.
+
+Looking at the unit tests, I could not observe similar large values for the gradient. Would it be possible for you to trace the evolution of this parameter?",,,,,,,,,,,,,,,,,,,
+"Complex: semantics of equals != Double equals, mismatch with hashCode",MATH-1118,12708189,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,Telcontar,Telcontar,14/Apr/14 06:04,25/Jan/16 20:28,08/Jun/19 22:44,07/May/15 14:47,3.2,,,,3.6,4.0,,0,,,,,"Two complex numbers with real/imaginary parts 0.0d but different signs compare as equal numbers. This is according to their mathematical value; the comparison is done via 
+
+                return (real == c.real) && (imaginary == c.imaginary);
+
+Unfortunately, two Double values do NOT compare as equal in that case, so real.equals(c.real) would return false if the signs differ.
+
+This becomes a problem because for the hashCode, MathUtils.hash is used on the real and imaginary parts, which in turn uses Double.hash.
+
+This violates the contract on equals/hashCode, so Complex numbers cannot be used in a hashtable or similar data structure:
+
+    Complex c1 = new Complex(0.0, 0.0);
+    Complex c2 = new Complex(0.0, -0.0);
+    // Checks the contract:  equals-hashcode on c1 and c2
+    assertTrue(""Contract failed: equals-hashcode on c1 and c2"", c1.equals(c2) ? c1.hashCode() == c2.hashCode() : true);","Mac OS 10.9, Java 6, 7",,,,,,,,,,,17/Apr/14 11:13;erans;MATH-1118.patch;https://issues.apache.org/jira/secure/attachment/12640615/MATH-1118.patch,14/Apr/14 13:12;erans;MATH-1118.patch;https://issues.apache.org/jira/secure/attachment/12640066/MATH-1118.patch,14/Apr/14 06:04;Telcontar;Report5.java;https://issues.apache.org/jira/secure/attachment/12640028/Report5.java,14/Apr/14 07:42;Telcontar;Report5a.java;https://issues.apache.org/jira/secure/attachment/12640036/Report5a.java,4.0,,,,,,,,,,,,,,,,,,,2014-04-14 12:53:23.365,,,false,,,,,,,,,,,,386512,,,Mon Jan 25 20:28:01 UTC 2016,,,,,,0|i1ul1b:,386776,,,,,,,,,14/Apr/14 07:42;Telcontar;Dfp instances are affected in the same way (-0.0 == 0.0 but their hash code differs).,"14/Apr/14 12:53;erans;When introducing the ""correct"" (according to JDK for use with ""Map"") semantics, other unit test fails, especially one that was introduced to ensure the _other_ semantics: MATH-221
+
+Could you please raise this issue on the ""dev"" ML? Thanks.
+","14/Apr/14 13:12;erans;Patch: proposed change (with one failing test).
+","14/Apr/14 22:55;Telcontar;It is indeed not clear which way this bug should be fixed.
+Another option (assuming the problem only occurs due to the sign with value 0.0) is to override hashCode such that hashCode(-0.0d) returns hashCode(0.0d), and works as is in the other cases.","14/Apr/14 23:05;psteitz;Given the decision in MATH-221, I am inclined to agree that the better approach is to just fix the hashcode impl.","14/Apr/14 23:08;Telcontar;I've posted a message on the mailing list. While writing that message, it occurred to me that unnormalized floating point values may break the idea of overriding hashCode for special cases, as there are too many possible cases of unnormalized floats with equal values but different internal representations.
+Therefore, I think Gilles' suggestion is the safest, even though people expecting a mathematical comparison in equals() may be surprised. The update should make it clear in the Javadoc that for a mathematical comparison, ""=="" must be used.","14/Apr/14 23:18;Telcontar;It seems my previous message overlapped with Phil's. A fix in hashCode would be the most intuitive behavior, but what about unnormalized floats? Does anyone know how that works in Java?
+For example, can we get different representations of two Double numbers with the same value? For example, 1 * 2^1 or 2 * 2^0, which are both 2? In that case, fixing hashCode is hopeless.","15/Apr/14 12:23;erans;In revision 1587548, I've added the utility method ""equals(double, double)"" in ""MathUtils"".
+","17/Apr/14 11:13;erans;Uploaded patch for making ""equals"" compatible with ""hashCode"" and adding new ""equals"" methods for testing floating-point equality (using implementations in ""o.a.c.m.util.Precision"").
+
+OK to commit?","18/Apr/14 16:00;erans;Committed in revision 1588500.
+Thanks for the report.
+",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,"07/May/15 06:35;Telcontar;The bug has been fixed for class Complex, but not for Dfp. The code in ""Report5a.java"" still fails. The nature of the problem is exactly the same as in ""Report5.java"", so I have reported the bug in the same place.
+
+If you would prefer a new issue on this instead, I can file ""Report5a.java"" as a new bug.","07/May/15 14:47;luc;Fixed in git repository on both the master branch and the 3.X branch.
+
+Thanks for the reminding.",25/Jan/16 20:28;luc;Closing all resolved issues that were included in 3.6 release.,,,,,,,
+Impossible NotStrictlyPositiveException after getStandardDeviation(),MATH-1234,12838473,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Duplicate,,Sklavit,Sklavit,17/Jun/15 13:32,19/Jun/15 21:42,08/Jun/19 22:44,19/Jun/15 08:21,3.2,,,,3.5,,,0,,,,,"org.apache.commons.math3.random.EmpiricalDistribution.density() calls 
+EmpiricalDistribution.getKernel which calls
+bStats.getStandardDeviation() -- bStats is SummaryStatistics
+and return result caused NotStrictlyPositiveException: standard deviation (0)
+in new NormalDistribution(randomData.getRandomGenerator(),
+                bStats.getMean(), bStats.getStandardDeviation(),
+                NormalDistribution.DEFAULT_INVERSE_ABSOLUTE_ACCURACY);
+
+As I understand, it shouldn't be so by contract of SummaryStatistics.","Windows 7, Java 1.8",,,,,,,,,MATH-1203,,,,,,0.0,,,,,,,,,,,,,,,,,,,2015-06-18 22:39:29.42,,,false,,,,,,,,,,,,9223372036854775807,,,Fri Jun 19 08:21:42 UTC 2015,,,,,,0|i2g5lr:,9223372036854775807,,,,,,,,,"18/Jun/15 22:39;erans;What do you mean by ""impossible""?  That it should not occur, or that it is not advertised in the javadoc?
+Could  you please upload a unit test that shows the problem?
+
+Did you try version 3.5 of Commons Math?
+",19/Jun/15 08:21;tn;This has already been reported and fixed in MATH-1203.,,,,,,,,,,,,,,,,,,,
+Incorrect (bugged) generating function getNextValue() in .random.EmpiricalDistribution,MATH-984,12649629,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,psteitz,rtsvet,rtsvet,28/May/13 07:12,26/Dec/14 19:50,08/Jun/19 22:44,22/Jun/14 18:55,3.1.1,3.2,,,3.4,,,0,,,,,"The generating function getNextValue() in org.apache.commons.math3.random.EmpiricalDistribution
+will generate wrong values for all Distributions that are single tailed or limited. For example Data which are resembling Exponential or Lognormal distributions.
+
+The problem could be easily seen in code and tested.
+
+In last version code
+...
+490               return getKernel(stats).sample();
+...
+it samples from Gaussian distribution to ""smooth"" in_the_bin. Obviously Gaussian Distribution is not limited and sometimes it does generates numbers outside the bin. In the case when it is the last bin it will generate wrong numbers. 
+
+For example for empirical non-negative data it will generate negative rubbish.
+
+  Additionally the proposed algorithm boldly returns only the mean value of the bin in case of one value! This last makes the generating function unusable for heavy tailed distributions with small number of values. (for example computer network traffic)
+
+On the last place usage of Gaussian soothing in the bin will change greatly some empirical distribution properties.
+
+The proposed method should be reworked to be applicable for real data which have often limited ranges. (either non-negative or both sides limited)
+
+
+",all,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-05-28 17:29:11.935,,,false,,,,,,,,,,,,329956,,,Sun Jun 22 18:55:22 UTC 2014,,,,,,0|i1kxbz:,330291,,,,,,,,,"28/May/13 17:29;psteitz;Ack on the first issue (deviates should be constrained to come from the target bin).  Thanks for raising this issue.  A workaround available since version 3.2 is to provide a custom kernel by subclassing and overriding EmpiricalDistribution's getKernel method.  Patches are welcome to fix the issue with the current code.  The private method, kB, can be used to get the mass of a bin under its kernel.  In 4.0, we may want to consider a more direct way to plug in an alternative kernel.
+
+Sorry if I am being dense, but I don't understand the second issue.  If there is no variation among values in a bin, returning their common value makes sense to me.","29/May/13 07:22;rtsvet;For the second issue:
+Consider long tailed distribution as shown on http://en.wikipedia.org/wiki/Long_tail  (In case of network traffic. The biggest 90% data volume comes comes from less then 10% of connections.) 
+In this case we have extremely wide spread __important__ values with only ___single_ occurrences.
+If we want to generate similar variable (for ex. larger sample) we'll get fixed values for all this bins in the long tail.
+It signifies 10% of generated values will be __fixed_ values - their respective bin means!
+
+
+Last Issue: I would question usage of Gaussian Kernel at all. Without having a mathematical prove, I nevertheless suppose it could disturb parameters of generation if we have non Gaussian empirical data. (for ex. Pareto, Tweedie, ..)
+
+Why we don't stick with triangular or uniform distribution as default for Kernel within the bean?","29/May/13 19:11;psteitz;Thanks, I get the second problem now.  To really address that issue, I think we would need to depart from the current simple equal-sized bins model.  I have thought before about either introducing a new class or a config option for EmpiricalDistribution that supported alternative binning structures, such as:
+
+1. equiprobable bins (so bin size is not constant)
+2. variable bin sizes (break the total range into subranges, allow a number of fixed-size bins to be specified for each range, so grid could become very fine in densely packed subranges).
+
+Regarding the default kernel choice, in the absence of any information about the within-bin distributions, I would expect the (correctly truncated) Gaussian smoother to perform better than uniform or triangular. I don't have a proof of this statement either; but I will see if I can hunt down some references, starting with [1], referenced in the class javadoc as what the current implementation is based on.  
+
+As [1] states, heavy tails create problems for this approach and in some cases an alternative to the Gaussian kernel may work better.  This could actually be tested on a case basis by comparing probabilities computed using the Distribution methods now implemented in the class with ""true"" empirical probabilities from the raw data.  Some experiments doing this with different kernels and data would be interesting to look at.
+
+[1] http://ned.ipac.caltech.edu/level5/March02/Silverman/Silver2_4.html
+","31/May/13 11:59;rtsvet;Simplest way would be to use  inverse CDF (quantile funct) with some uniformly distributed input. But unfortunately seems it's also having Kernel calculations problems. 
+I'm getting NotStrictlyPositiveException from EmpiricalDistribution.getKernel l(EmpiricalDistribution.java:846) )
+
+ 
+I thought of looking in what algorithms R is using. 
+http://en.wikibooks.org/wiki/R_Programming/Random_Number_Generation","31/May/13 19:43;psteitz;That should work.  Looks like you have hit a new bug, which should be opened as a separate issue if you don't mind doing that.  What I suspect is going on is that your data has singleton bins, which results in zero variance within bin.  The getKernel method tries to create a NormalDistribution instance using the bin stats.  This throws NotStrictlyPositiveException if the standard deviation parameter is not strictly positive.  This is part of the reason that the singleton check is there in getNextValue.  I forgot to account for this case in inverseCumulativeProbability (added in 3.2).  A unit test demonstrating the bug would be most appreciated.
+
+I think it would probably be a little more efficient though to keep the direct implementation of getNextValue as it is now, but just fix the bug.","31/May/13 19:49;psteitz;One more comment on getNextValue implementation.  If we want to just do straight inversion-based sampling, that is available for free from the superclass, AbstractRealDistribution.  To use that, we would just need to reverse the roles of sample() and getNextValue - i.e., have getNextValue call sample() and drop the override of sample() in EmpiricalDistribution.","03/Jun/13 06:54;rtsvet;To generate some Exception on attempt to calculate St.Dev. from single observation is correct. It’s just that the _Exception Text_ generated by getKernel() is not clearly pointing the cause. An average user should dig and search to get to to the ""real"" cause. But as getKernel() should deliver the ""kernel"" and not proliferate his chosen internal method restrictions outside, better would be _for single observation_ to deliver uniformly distributed value. (and perhaps warning).
+
+generate() within EmpiricalDistribution could be ""fixed"" easily if it uses truncated Gaussian on the end bins. 
+
+*So would propose 2 code changes:*
+
+1. Add generate(double min, double max) function. Where *min* and *max* should indicate the hard limits of generation. They should be checked if the conform to input data. It means *min* should not be greater than the minimal empirically observed value, and *max* should be no less then the biggest empirical value. Then the new generate function should use truncated Gaussian on the edges. (open if one implements it through additional getKernel(limits.. ) function )
+
+2. Change getKernel() to deliver uniformly distributed value on single observation. (and perhaps warning)
+ 
+
+The first change does not touch old code. So, it's a practically no risk and we retain 100% code compatibility.
+The second change is also low risk and is compatible with old code.
+
+As a result we have smooth and correct generation and positively fixed  inverse CDF.","04/Jun/13 14:14;psteitz;Thanks, Radoslav.  I agree with your point 2 and after looking at the code some more, I am going to retract my comment above about direct implementation of getNextValue being more efficient.  I think the simplest and best fix for both of these problems is to fix getKernel to return a uniform distribution on one value for singleton bins, drop the implementation of sample() and have getNextValue delegate to the parent's (inversion-based) sample() implementation.  The probability methods basically truncate the bin kernels now.  The problem is in the direct implementation of sampling.",20/Feb/14 09:20;luc;Are there any progress on this issue?,"20/Feb/14 14:44;psteitz;Yes, I am working on it.  Thanks for the nudge.",22/Jun/14 18:55;psteitz;Fixed in r1604639.,,,,,,,,,,
+Percentile Computation errs,MATH-1129,12721640,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,carlwitt,carlwitt,17/Jun/14 09:22,26/Dec/14 19:50,08/Jun/19 22:44,05/Oct/14 18:44,3.2,,,,3.4,,,0,,,,,"In the following test, the 75th percentile is _smaller_ than the 25th percentile, leaving me with a negative interquartile range.
+
+{code:title=Bar.java|borderStyle=solid}
+@Test public void negativePercentiles(){
+
+        double[] data = new double[]{
+                -0.012086732064244697, 
+                -0.24975668704012527, 
+                0.5706168483164684, 
+                -0.322111769955327, 
+                0.24166759508327315, 
+                Double.NaN, 
+                0.16698443218942854, 
+                -0.10427763937565114, 
+                -0.15595963093172435, 
+                -0.028075857595882995, 
+                -0.24137994506058857, 
+                0.47543170476574426, 
+                -0.07495595384947631, 
+                0.37445697625436497, 
+                -0.09944199541668033
+        };
+        DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics(data);
+
+        double threeQuarters = descriptiveStatistics.getPercentile(75);
+        double oneQuarter = descriptiveStatistics.getPercentile(25);
+
+        double IQR = threeQuarters - oneQuarter;
+        
+        System.out.println(String.format(""25th percentile %s 75th percentile %s"", oneQuarter, threeQuarters ));
+        
+        assert IQR >= 0;
+        
+    }
+{code}",Java 1.8.0,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-06-17 16:13:25.783,,,false,,,,,,,,,,,,399836,,,Wed Jun 18 12:21:38 UTC 2014,,,,,,0|i1wtxb:,399944,,,,,,,,,"17/Jun/14 09:25;carlwitt;It's the NaN value, but there's no note in the percentile documentation that this is not allowed.
+Adding a NaNStrategy like in rank conversions might be a solution. 
+This also creates doubts that the other methods handle NaN values correctly.","17/Jun/14 16:13;erans;The [Javadoc|http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/stat/descriptive/rank/Percentile.html] for {{Percentile}} does provide some warning about NaN within data:
+{noformat}
+To compute percentiles, the data must be at least partially ordered. Input arrays are copied and recursively partitioned using an ordering definition. The ordering used by Arrays.sort(double[]) is the one determined by Double.compareTo(Double). This ordering makes Double.NaN larger than any other value (including Double.POSITIVE_INFINITY). Therefore, for example, the median (50th percentile) of {0, 1, 2, 3, 4, Double.NaN} evaluates to 2.5.
+
+Since percentile estimation usually involves interpolation between array elements, arrays containing NaN or infinite values will often result in NaN or infinite values returned.
+{noformat}
+but the caveat does not appear in {{DescriptiveStatistics}}.
+
+Even when no NaN is returned, the result varies with the position of the NaN value in the data array. :(
+It looks like the sorting is wrong in the presence of NaN. See below.
+
+bq. This also creates doubts that the other methods handle NaN values correctly.
+
+I don't know whether the intention was that the result should always be considered undefined in the presence of NaN.
+
+Local sort
+Without NaN: 25th percentile -0.1773147094639404 75th percentile 0.2748649403760461
+With NaN: 25th percentile 0.24166759508327315 75th percentile -0.028075857595882995
+With +inf: 25th percentile -0.15595963093172435 75th percentile 0.37445697625436497
+
+java.util.Arrays.sort (sorting the whole data array)
+Without NaN: 25th percentile -0.1773147094639404 75th percentile 0.2748649403760461
+With NaN: 25th percentile -0.15595963093172435 75th percentile 0.37445697625436497
+With +inf: 25th percentile -0.15595963093172435 75th percentile 0.37445697625436497
+
+I've attempted to fix the local sort:
+Without NaN: 25th percentile -0.1773147094639404 75th percentile 0.2748649403760461
+With NaN: 25th percentile -0.15595963093172435 75th percentile 0.37445697625436497
+With +inf: 25th percentile -0.15595963093172435 75th percentile 0.37445697625436497
+
+If nobody objects, I'll commit this modification, and further tests can be devised to ensure that it works correctly for other inputs.
+","17/Jun/14 16:20;erans;Actually, the standard {{java.util.Arrays}} class has the needed functionality (a method for sorting part of an array in place).
+The Javadoc indicates that it is a tuned quicksort, while the function in CM is called ""insertionSort"".
+I'd rather use the JDK one, and remove the ""local"" sort. Any objection?
+","17/Jun/14 16:32;erans;Fixed ""insertionSort"" method in revision 1603217.
+
+Waiting for comment about removing it in favour of JDK's implementation.
+","17/Jun/14 16:43;erans;bq. Adding a NaNStrategy like in rank conversions might be a solution. 
+
+This suggestion is also to be discussed for MATH-1120.
+Could you please raise the issue on the ""dev"" ML?
+","17/Jun/14 16:57;carlwitt;Me? This was my first post here, so I'm not sure what to do.","17/Jun/14 17:21;erans;Whenever you submit a report here, a discussion might ensue about how to best fix the problem, or to properly implement a feature request, so it is quite useful to be subscribed to the project's development mailing list (""dev@commons.apache.org""):
+http://commons.apache.org/proper/commons-math/mail-lists.html
+
+Then when you post there, you should prefix the ""subject"" line with ""\[Math\]"" (because the list is shared with many other projects under the ""Commons"" common ;) umbrella).
+
+","17/Jun/14 17:30;carlwitt;Gilles, would you mind doing that for me? I'm not what you would call a power user of the commons math library, so I'd rather like to stay out of development issues.
+
+Thank you!","18/Jun/14 09:46;erans;bq. [...] so I'd rather like to stay out of development issues.
+
+Development is also driven by user needs.
+
+If you are satisfied with the current status of this issue, I'm fine to leave it at that. Thanks for the report.
+",18/Jun/14 12:21;carlwitt;I think I expressed my needs. You're welcome!,,,,,,,,,,,
+ArrayIndexOutOfBoundsException in MathArrays.linearCombination,MATH-1005,12657428,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,roman.werpachowski,roman.werpachowski,12/Jul/13 09:39,19/May/14 15:13,08/Jun/19 22:44,12/Jul/13 11:32,3.2,,,,3.3,,,0,,,,,"When MathArrays.linearCombination is passed arguments with length 1, it throws an ArrayOutOfBoundsException. This is caused by this line:
+
+double prodHighNext = prodHigh[1];
+
+linearCombination should check the length of the arguments and fall back to simple multiplication if length == 1.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-07-12 11:32:18.969,,,false,,,,,,,,,,,,337650,,,Mon May 19 15:13:33 UTC 2014,,,,,,0|i1m8n3:,337973,,,,,,,,,12/Jul/13 11:32;erans;Proposed fix committed in revision 1502516. Thanks for the report.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+Constructor of PolyhedronsSet throws NullPointerException,MATH-1115,12708178,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,Telcontar,Telcontar,14/Apr/14 02:38,19/May/14 15:13,08/Jun/19 22:44,26/Apr/14 17:38,3.2,,,,3.3,,,0,,,,,"The following statement throws a NullPointerException:
+new org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet(0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d);
+
+I found that other numbers also produce that effect. The stack trace:
+java.lang.NullPointerException
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.fitToCell(BSPTree.java:297)
+        at org.apache.commons.math3.geometry.partitioning.BSPTree.insertCut(BSPTree.java:155)
+        at org.apache.commons.math3.geometry.partitioning.RegionFactory.buildConvex(RegionFactory.java:55)
+        at org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet.buildBoundary(PolyhedronsSet.java:119)
+        at org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet.<init>(PolyhedronsSet.java:97)","Mac OS 10.9 with Java 6, 7",,,,,,,,,,,14/Apr/14 02:40;Telcontar;Report1.java;https://issues.apache.org/jira/secure/attachment/12640009/Report1.java,14/Apr/14 08:01;Telcontar;Report1a.java;https://issues.apache.org/jira/secure/attachment/12640037/Report1a.java,,,2.0,,,,,,,,,,,,,,,,,,,2014-04-26 17:38:27.688,,,false,,,,,,,,,,,,386501,,,Mon May 19 15:13:32 UTC 2014,,,,,,0|i1ukyv:,386765,,,,,,,,,14/Apr/14 02:40;Telcontar;JUnit test to reproduce problem.,14/Apr/14 08:01;Telcontar;PolygonsSet (the 2D case) shows the same issue.,"26/Apr/14 17:38;luc;Fixed in subversion repository as of r1590254.
+
+We have also included the same javadoc improvements as in MATH-1117.
+
+Thanks for the report.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,
+OLSMultipleLinearRegression needs a way to specify non-zero singularity threshold when instantiating QRDecomposition,MATH-1110,12701620,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,ejs,ejs,14/Mar/14 22:27,19/May/14 15:13,08/Jun/19 22:44,01/May/14 11:54,3.2,,,,3.3,,,0,,,,,"OLSMultipleLinearRegression uses QRDecomposition to perform a least-squares solution. QRDecomposition has the capability to use a non-zero threshold for detecting when the design matrix is singular (see https://issues.apache.org/jira/browse/MATH-665, https://issues.apache.org/jira/browse/MATH-1024, https://issues.apache.org/jira/browse/MATH-1100, https://issues.apache.org/jira/browse/MATH-1101) but OLSMultipleLinearRegression does not use this capability and therefore always uses the default singularity test threshold of 0. This can lead to bad solutions (see in particular https://issues.apache.org/jira/browse/MATH-1101?focusedCommentId=13909750&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-13909750) when a SingularMatrixException should instead be thrown. 
+
+When I encountered this situation, I noticed it because the solution values were extremely large (in the range 1e09 - 1e12). Normal values in the domain I am working with are on the order of 1e-3. To find out why the values are so large, I traced through the source and found that an rDiag value was on the order of 1e-15, and that this passed the threshold test. I then noticed that two columns of the design matrix are linearly dependent (one column is all 1's because I want an intercept value in the solution, and another is also all 1's because that's how the data worked out). Thus the matrix is definitely singular. 
+
+If I could specify a non-zero threshold, this situation would result in  a SingularMatrixException, but without that, the bad solution values would be blindly propagated. That is a problem because this solution is intended for controlling a physical system, and damage could result from a bad solution. 
+
+Unfortunately, I see no way to change the threshold value from outside -- I would have to in effect re-implement OLSMultipleLinearRegression to do this as a user of the package. ","Windows 7, jdk1.6.0_45",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-03-15 19:12:43.214,,,false,,,,,,,,,,,,379966,,,Mon May 19 15:13:31 UTC 2014,,,,,,0|i1tgw7:,380250,,,,,,,,,15/Mar/14 19:12;psteitz;Agreed this should be fixed.  The default should not be 0 and it should be configurable.  Patches welcome.,"01/May/14 11:54;tn;In r1591624, added a new constructor to be able to specify a custom singularity threshold.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,
+EnumeratedRealDistribution.inverseCumulativeProbability returns values not in the samples set,MATH-1065,12680726,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,matteodg@infinito.it,matteodg@infinito.it,22/Nov/13 11:21,19/May/14 15:13,08/Jun/19 22:44,09/Feb/14 11:21,3.2,,,,3.3,,,0,,,,,"The method EnumeratedRealDistribution.inverseCumulativeProbability() sometimes returns values that are not in the initial samples domain...
+I will attach a test to exploit this bug.
+",,,,,,,,,,,,22/Nov/13 11:31;matteodg@infinito.it;EnumeratedRealDistributionTest.java;https://issues.apache.org/jira/secure/attachment/12615317/EnumeratedRealDistributionTest.java,,,,1.0,,,,,,,,,,,,,,,,,,,2013-11-24 14:29:51.395,,,false,,,,,,,,,,,,359991,,,Mon May 19 15:13:30 UTC 2014,,,,,,0|i1q23b:,360290,,,,,,,,,"22/Nov/13 11:31;matteodg@infinito.it;Failing tests for numerical issues are:
+- testFailing1
+- testFailing2
+- testFailing3
+- testFailing4
+
+Failing tests with very wrong results are:
+- testFailing5
+- testFailing6
+","24/Nov/13 14:29;tn;Hi Matteo,
+
+regarding the numerical issues:
+
+the distribution works internally with an absolute accuracy of 1e-6. The results should be compared with an epsilon value like this.
+
+There is currently no easy way to set another accuracy, but you can instantiate an EnumeratedRealDistribution like this, and override the getSolverAbsoluteAccuracy method:
+
+{noformat}
+        DISTRIBUTION = new EnumeratedRealDistribution(new double[]{
+            14.0, 18.0, 21.0, 28.0, 31.0, 33.0
+        }, new double[]{
+            4.0 / 16.0, 5.0 / 16.0, 0.0 / 16.0, 3.0 / 16.0, 1.0 / 16.0, 3.0 / 16.0
+        }) {
+
+            @Override
+            protected double getSolverAbsoluteAccuracy() {
+                return 1e-9;
+            }
+            
+        };
+{noformat}","24/Nov/13 15:08;tn;For the other failing tests: I am not sure what the enumerated distribution tries to achieve:
+
+ * a discrete probability distribution
+ * a distribution with continuous and discrete parts
+
+in case of a discrete probability distribution the inverseCumulativeProbability method is clearly wrong, and would have to fixed like this:
+
+{noformat}
+    public double inverseCumulativeProbability(final double p) throws OutOfRangeException {
+        double probability = 0;
+        double x = getSupportLowerBound();
+        for (final Pair<Double, Double> sample : innerDistribution.getPmf()) {
+            if (sample.getValue() == 0.0) {
+                continue;
+            }
+            probability += sample.getValue();
+            if (probability <= p) {
+                x = sample.getKey();
+            }
+
+            if (probability >= p) {
+                break;
+            }
+        }
+
+        return x;
+    }
+{noformat}
+
+But then your other test cases are wrong imho:
+
+{noformat}
+  inverseCumulativeProbability(0.5) = 14 instead of 18
+  inverseCumulativeProbability(0.5624) = 14 instead of 18
+  inverseCumulativeProbability(0.5626) = 18 instead of 28
+  inverseCumulativeProbability(0.7600) = 28 instead of 31
+{noformat}","24/Nov/13 17:12;psteitz;I think the intent of this class is to represent a discrete, but real-valued distribution.  EnumeratedDistributions are discrete distributions with a finite, ""enumerated"" set of values.  The problem here (as Thomas notes) is that EnumeratedRealDistribution extends AbstractRealDistribution and does not override the default inverse cum method that basically assumes a continuous distribution.  What it should implement is a discrete algorithm like what Thomas has suggested.","01/Dec/13 19:20;tn;Thanks for the better explanation of the problem.
+I am still searching for a mathematical definition of such a distribution as I mainly looked at the referenced wikipedia page and derived the above algorithm from the cdf graph that is available there, although I am of course unsure if it is correct.","08/Feb/14 18:10;psteitz;By contract in RealDistribution (same actually in IntegerDistribution), what the inverse cum needs to return is
+{code} 
+inf{x in R | P(X<=x) >= p} for 0 < p <= 1}
+inf{x in R | P(X<=x) > 0} for p = 0.
+{code}
+
+Looks to me like your algorithm returns {code} sup{x in R | P(X <= x) < p} {code} which is not the same.  The key is to be consistent with the way we have defined the inverse cum for both discrete (""Integer"") and continuous (""Real"") distributions.
+ ","08/Feb/14 19:31;tn;Hi Phil,
+
+thanks for looking into this. I updated the code to this:
+
+{noformat}
+    public double inverseCumulativeProbability(final double p) throws OutOfRangeException {
+
+        if (p < 0.0 || p > 1.0) {
+            throw new OutOfRangeException(p, 0, 1);
+        }
+
+        double probability = 0;
+        double x = getSupportLowerBound();
+        for (final Pair<Double, Double> sample : innerDistribution.getPmf()) {
+            if (sample.getValue() == 0.0) {
+                continue;
+            }
+            probability += sample.getValue();
+            x = sample.getKey();
+
+            if (probability >= p) {
+                break;
+            }
+        }
+
+        return x;
+    }
+{noformat}
+
+Which returns the same results as the EnumeratedIntegerDistribution for the same input values and also succeeds in running all the test cases from the attached unit test.",08/Feb/14 21:31;psteitz;Code and tests look correct to me.,"09/Feb/14 11:21;tn;Applied changes in r1566274.
+
+Thanks for the report and the testcase!",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,
+Use FastMath instead of Math within CM,MATH-1059,12677579,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,tn,tn,05/Nov/13 14:30,19/May/14 15:13,08/Jun/19 22:44,03/Dec/13 23:03,3.2,,,,3.3,,,0,,,,,"Some code in CM still uses Math.xxx instead of the counterparts in FastMath. This could lead to subtle differences with different jvms as could be seen in MATH-1057.
+
+All calls to Math shall be replaced by calls to FastMath.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-05-19 15:13:29.779,,,false,,,,,,,,,,,,356954,,,Mon May 19 15:13:29 UTC 2014,,,,,,0|i1pjbb:,357244,,,,,,,,,"03/Dec/13 23:03;tn;Finished changes in r1547633.
+
+Remaining uses of Math:
+
+ * PI
+ * ulp
+ * for FastMath validation and performance tests",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+Kalman filter does not work if covarance matrix is not of dimension 1,MATH-1033,12667131,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,abyssqu,abyssqu,05/Sep/13 16:15,19/May/14 15:13,08/Jun/19 22:44,11/Oct/13 21:39,3.2,,,,3.3,,,0,,,,,"In org.apache.commons.math3.filter.KalmanFilter,
+
+The check below doesn't look right, it reques measNoise's column dimension to be 1 at all time.
+        
+// row dimension of R must be equal to row dimension of H
+        if (measNoise.getRowDimension() != measurementMatrix.getRowDimension() ||
+            measNoise.getColumnDimension() != 1) {
+            throw new MatrixDimensionMismatchException(measNoise.getRowDimension(),
+                                                       measNoise.getColumnDimension(),
+                                                       measurementMatrix.getRowDimension(), 1);
+        }",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-09-06 07:44:21.275,,,false,,,,,,,,,,,,347068,,,Mon May 19 15:13:27 UTC 2014,,,,,,0|i1nuiv:,347367,,,,,,,,,"06/Sep/13 07:44;tn;Hmm, this looks indeed wrong as the measurement noise is supposed to be a matrix. I can not remember again why this check has been put there but will investigate.","11/Oct/13 21:39;tn;Fixed in r1531430.
+
+Thanks for the report.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,
+QR and Rank-revealing QR fail to find a least-squares solution,MATH-1101,12696499,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,roman.werpachowski,roman.werpachowski,21/Feb/14 11:39,19/May/14 15:13,08/Jun/19 22:44,23/Feb/14 11:15,3.2,,,,3.3,,,0,solver,,,,"QR and RRQR (rank-revealing) algorithms fail to find a least-squares solution in some cases.
+
+The following code:
+
+final RealMatrix A = new BlockRealMatrix(3, 3);
+        A.setEntry(0, 0, 1);
+        A.setEntry(0, 1, 6);
+        A.setEntry(0, 2, 4);
+        A.setEntry(1, 0, 2);
+        A.setEntry(1, 1, 4);
+        A.setEntry(1, 2, -1);
+        A.setEntry(2, 0, -1);
+        A.setEntry(2, 1, 2);
+        A.setEntry(2, 2, 5);
+        final RealVector b = new ArrayRealVector(new double[]{5, 6, 1});
+        final QRDecomposition qrDecomposition = new QRDecomposition(A);
+        final RRQRDecomposition rrqrDecomposition = new RRQRDecomposition(A);
+        final SingularValueDecomposition svd = new SingularValueDecomposition(A);
+        final RealVector xQR = qrDecomposition.getSolver().solve(b);
+        System.out.printf(""QR solution: %s\n"", xQR.toString());
+        final RealVector xRRQR = rrqrDecomposition.getSolver().solve(b);
+        System.out.printf(""RRSQ solution: %s\n"", xRRQR.toString());
+        final RealVector xSVD = svd.getSolver().solve(b);
+        System.out.printf(""SVD solution: %s\n"", xSVD.toString());
+
+produces
+
+QR solution: {-3,575,212,378,628,897; 1,462,586,882,166,368; -1,300,077,228,592,326.5}
+RRSQ solution: {5,200,308,914,369,308; -2,127,399,101,332,898; 1,891,021,423,407,021}
+SVD solution: {0.5050344462; 1.0206677266; -0.2405935347}
+
+Showing that QR and RRQR algorithms fail to find the least-squares solution. This can also be verified by calculating the dot product between columns of A and A*x - b:
+
+// x = xQR, xRRQR or xSVD
+final RealVector r = A.operate(x).subtract(b);
+        for (int i = 0; i < x.getDimension(); ++i) {
+            final RealVector columnVector = A.getColumnVector(i);
+            assertEquals(name, 0.0, r.dotProduct(columnVector), tolerance);
+        }
+
+Only SVD method passes this test with decent tolerance (1E-14 or so).",,,,,,,,,,,,21/Feb/14 11:41;roman.werpachowski;math-1101-bug.java;https://issues.apache.org/jira/secure/attachment/12630290/math-1101-bug.java,,,,1.0,,,,,,,,,,,,,,,,,,,2014-02-21 13:50:56.408,,,false,,,,,,,,,,,,374975,,,Mon May 19 15:13:24 UTC 2014,,,,,,0|i1sm8v:,375274,,,,,,,,,21/Feb/14 11:41;roman.werpachowski;Attached test code for convenience.,"21/Feb/14 13:50;luc;I am not sure to understand. The matrix is exactly singular here, which is correctly identified if you pass a threshold of about 2e-16 to the QRDecomposition constructor (without passing it, the default threshold is an exact 0). With the default 0 threshold, the last diagonal element is really small (8.88e-16) and using it implies computing big values.
+
+As all dimensions are 3, I don't understand were you intend to have a least squares solution. What is attempted here seems to be computing a full linear solution of a singular problem.","21/Feb/14 23:19;roman.werpachowski;In this case the description of QRDecomposition.getSolver() is misleading, since it says:
+
+""Get a solver for finding the A × X = B solution in least square sense."" (same for RRQRDecomposition).
+
+Also the documentation in http://commons.apache.org/proper/commons-math/userguide/linear.html says that the QR decomposition method can handle any matrix and return a least squares solution.
+
+If the QRDecomposition works better with non-zero threshold, then it may be worth considering changing the default threshold value from zero, since the current default behaviour is not what the user might expect based on the documentation.
+
+Finally, it is always possible to have a least squares solution of || A * x - b ||^2, because the norm is bounded from below by zero and diverges to infinity as the norm of x goes to infinity. The solution may not be unique though. Also note that the SVD solver returns a much more sensible solution, which minimizes || A * x - b ||^2.","23/Feb/14 11:15;luc;Documentation has been improved as of r1570994, both in the javadoc and in the user guide.
+
+Concerning the default threshold to 0, the decision to keep this value was taken when discussing issue MATH-664.
+
+Our implementation of QR decomposition does not try to circumvent singular matrices by itself. I am not sure about this feature as it may fool the user into thinking everything is OK when in fact the matrix was singular and an approximate solution was found when the user expected an exact one.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,
+Inconsistency between the init method and the other ones in step and event handlers,MATH-965,12641364,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,luc,luc,luc,08/Apr/13 12:52,19/May/14 15:13,08/Jun/19 22:44,08/Apr/13 14:42,3.2,,,,3.3,,,0,,,,,"The EventHandler and StepHandler interfaces allow user code to be called by ODE integrators at some points. Both interfaces provide an ""init"" method which get the initial state as a double array ""y0"".
+The ""g"" and ""eventOccurred"" methods also get a double array ""y"" corresponding to current state. The size of the array in these two methods correspond only to the primary state whereas in the ""init"" methods it holds both the primary state and the secondary states.
+
+It would be better to always provide the complete state (primary and secondary) in all methods, so users can also trigger events based on secondary states.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,321780,,,Mon May 19 15:13:24 UTC 2014,,,,,,0|i1jipb:,322125,,,,,,,,,08/Apr/13 14:42;luc;Fixed in subversion repository as of r1465654.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+Confused by the API docs for org.apache.commons.math3.analysis.function,MATH-1022,12663388,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,dtonhofer,dtonhofer,13/Aug/13 09:57,19/May/14 15:13,08/Jun/19 22:44,13/Aug/13 16:48,3.2,,,,3.3,,,0,,,,,"Something is wrong or unclear...
+
+We read:
+
+http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/analysis/function/Logistic.Parametric.html
+
+   ""Parametric function where the input array contains the parameters
+    of the logit function, ordered as follows: ""
+
+ --> But the ""logit"" function is not the ""logistic"" function.
+
+http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/analysis/function/Sigmoid.Parametric.html
+
+   ""Parametric function where the input array contains the parameters of
+   the logit function, ordered as follows: ""
+
+ --> But the ""logit"" function is not the ""sigmoid"" function, and what is
+     the difference between the Logistic Function snd the Sigmoid function?
+
+http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/analysis/function/Logit.Parametric.html
+
+   ""Parametric function where the input array contains the parameters of
+    the logit function, ordered as follows: ""
+
+ --> That sounds correct.
+
+
+References:
+
+http://en.wikipedia.org/wiki/Logistic_function
+http://en.wikipedia.org/wiki/Logit
+http://en.wikipedia.org/wiki/Sigmoid_function
+
+",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-08-13 10:52:17.974,,,false,,,,,,,,,,,,343389,,,Mon May 19 15:13:24 UTC 2014,,,,,,0|i1n7wf:,343693,,,,,,,,,"13/Aug/13 10:15;dtonhofer;Must be a copy-paste issue, at least in large parts.
+
+See also the description of Logistic.Parametric in 
+
+http://commons.apache.org/proper/commons-math/apidocs/org/apache/commons/math3/analysis/function/Logistic.html
+
+which doesn't match the constructor of ""Logistic"" at all.
+
+","13/Aug/13 10:52;erans;Thanks for the report. The Javadoc is fixed in revision 1513430.
+
+bq. Must be a copy-paste issue, at least in large parts.
+
+A pure copy/paste bug, indeed.
+
+bq. [...] and what is the difference between the Logistic Function snd the Sigmoid function?
+
+Extracted from [Wikipedia|http://en.wikipedia.org/wiki/Sigmoid_function]:
+""Often, sigmoid function refers to the special case of the logistic function [...]""
+","13/Aug/13 15:59;dtonhofer;In furtherance of which: 
+
+References to articles are alternately to Wikipedia or Wolfram's Mathworld. Might there be a need to standardize?","13/Aug/13 16:15;erans;bq. Might there be a need to standardize?
+
+If you wish so.
+You could start a discussion about this on the ""dev"" ML.
+
+If you agree, I'll set this issue to ""Resolved"".
+","13/Aug/13 16:17;dtonhofer;Go for Resolved, then.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,
+QR factorization fails in revealing rank-deficient matrix,MATH-1100,12696286,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Invalid,,albert_triv,albert_triv,20/Feb/14 16:06,19/May/14 15:13,08/Jun/19 22:44,21/Feb/14 10:03,3.2,,,,3.3,,,0,,,,,"given a matrix that has not full rank, the method getSolver().isNonSingular() of the class QRDecomposition returns true.","Java HotSpot(TM) Client VM (build 19.1-b02, mixed mode, sharing) an windows 7 professional",,,,,,,,,,,20/Feb/14 16:08;albert_triv;QRtest.zip;https://issues.apache.org/jira/secure/attachment/12630083/QRtest.zip,,,,1.0,,,,,,,,,,,,,,,,,,,2014-02-20 16:51:58.953,,,false,,,,,,,,,,,,374762,,,Mon May 19 15:13:20 UTC 2014,,,,,,0|i1skxr:,375062,,,,,,,,,20/Feb/14 16:08;albert_triv;the matrix and the related JUnit test,"20/Feb/14 16:51;luc;In your code, you don't set the singularity threshold as you call new QRDecomposition(M2) with only the matrix as an argument.
+This ends up with using an exact 0 as the threshold.
+
+If you use new QRDecomposition(M2, 2.2e-14), the matrix is corrctly identified as singular. There seem to be two very small values after decomposition on the diagonal of the triangula matrix. One is about 2.05e-14 the other is about 2.2e-14, so depending on the threshold, you should get a rank of 379, 380, or 381.
+
+Do you agree with this analysis?","20/Feb/14 17:07;albert_triv;Thank Luc for your fast reply.
+Given the dimension of the matrix, there is a high probability of a loss 
+of precision in java double calculations, and so that small values 
+appear in the diagonal of the triangular factor.
+I agree with your analysis and I will try to use the threshold.
+Thank you again,
+best regards
+
+
+-- 
+Alberto Trivellato
+
+","21/Feb/14 10:03;luc;As per comments above, specifying the threshold allows to correctly identify the rank.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,
+NPE when calling SubLine.intersection() with non-intersecting lines,MATH-988,12650507,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,andreashuber,andreashuber,02/Jun/13 13:06,19/May/14 15:13,08/Jun/19 22:44,03/Jun/13 07:17,3.0,3.1,3.1.1,3.2,3.3,,,0,,,,,"When calling SubLine.intersection() with two lines that not intersect, then a NullPointerException is thrown in Line.toSubSpace(). This bug is in the twod and threed implementations.
+
+The attached patch fixes both implementations and adds the required test cases.
+
+",,,,,,,,,,,,02/Jun/13 13:07;andreashuber;SubLineIntersection.patch;https://issues.apache.org/jira/secure/attachment/12585757/SubLineIntersection.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-06-03 07:17:01.331,,,false,,,,,,,,,,,,330834,,,Mon May 19 15:13:20 UTC 2014,,,,,,0|i1l2qf:,331167,,,,,,,,,02/Jun/13 13:07;andreashuber;This patch fixes both implementations and adds test cases.,"03/Jun/13 07:17;luc;Fixed in subversion repository as of r1488866.
+Patch applied with minor whitespace changes.
+
+Thanks for the report and for the patch.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,
+twod.PolygonsSet.getSize produces NullPointerException if BSPTree has no nodes,MATH-1117,12708180,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,Telcontar,Telcontar,14/Apr/14 03:02,19/May/14 15:13,08/Jun/19 22:44,26/Apr/14 16:57,3.2,,,,3.3,,,0,,,,,"org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.getSize() uses a tree internally:
+
+final BSPTree<Euclidean2D> tree = getTree(false);
+
+However, if that tree contains no data, it seems that the reference returned is null, which causes a subsequent NullPointerException.
+
+Probably an exception with a message (""tree has no data"") would clarify that this is an API usage error.","Mac OS 10.9, Java 6, 7",,,,,,,,,,,14/Apr/14 03:04;Telcontar;Report3.java;https://issues.apache.org/jira/secure/attachment/12640014/Report3.java,14/Apr/14 06:12;Telcontar;Report3_1.java;https://issues.apache.org/jira/secure/attachment/12640029/Report3_1.java,,,2.0,,,,,,,,,,,,,,,,,,,2014-04-26 16:57:06.591,,,false,,,,,,,,,,,,386503,,,Mon May 19 15:13:19 UTC 2014,,,,,,0|i1ukzb:,386767,,,,,,,,,14/Apr/14 03:04;Telcontar;JUnit test to reproduce problem.,"14/Apr/14 06:12;Telcontar;Just calling the constructor with the right numbers produces the same effect, for example this one-liner:
+
+new org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet(0.0d, 0.0d, 0.0d, 10.3206397147574d);","26/Apr/14 16:57;luc;The two problems you report are completely different from each other.
+
+The first report is really a wrong API use. The call did not fulfill the constraints that were already given in
+the javadoc, i.e. that the provided tree MUST have proper Boolean attributes at leaf nodes. There is no
+verification here for performance reasons (it would imply walking the full trees all the time). I really don't
+think it would be a good idea to do such verifications. So I only improved the javadoc of the constructor
+to make it more clear this constructor is for expert use only (building a tree is difficult) and that there is
+no verifications, adding in the documentation that failing to provide appropriate arguments is the
+responsibility of users.
+
+In fact, general users should never use this specific constructor, but should rely on the other ones which
+are there precisely to avoid this kind of errors : the other constructors ensure the tree is correct before
+calling this constructor.
+
+The second one is a real problem, I have fixed it (see r1590251).
+
+Please reopen the issue if you do not agree with the fix for the first problem, as it is documentation only.","28/Apr/14 00:12;Telcontar;Thanks for clarifying this one. I guess making these constructors package-private may break existing code so the documentation is the best way to warn the user.
+By the way, the new documentation has a typo in ""task"" (currently ""taks""). The same typo is also in PolyhedronsSet.java. Of course that's easy to fix :-)","28/Apr/14 06:49;luc;Yes, these constructors are used outside of their package. Typically, the constructor for polygons (in 2D) is called from the split method in SubPlane and also from an internal class in OutlineExtractor, both in the 3D package. As the methods have been public for a while, they may also be used from user code. The call from the split method is a very important one: it is used a very large number of times as part of building 3D BSP trees, and here the tree has been built using a complex algorithm to ensure it is correct, so we don't want to visit all its leafs to check it.
+
+Thanks for the hint about the typos, I have fixed them now.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,
+Stack overflow in Beta.regularizedBeta,MATH-1067,12681737,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,florian.erhard,florian.erhard,28/Nov/13 10:47,19/May/14 15:13,08/Jun/19 22:44,28/Nov/13 11:42,3.2,,,,3.3,,,0,easyfix,performance,,,"In org.apache.commons.math3.special.Beta.regularizedBeta(double,double,double,double,int), the case
+
+ } else if (x > (a + 1.0) / (a + b + 2.0)) {
+      ret = 1.0 - regularizedBeta(1.0 - x, b, a, epsilon, maxIterations);
+} 
+
+is prone to infinite recursion: If x is approximately the tested value, then 1-x is approximately the tested value in the recursion. Thus, due to loss of precision after the subtraction, this condition can be true for the recursive call as well.
+
+Example:
+double x= Double.longBitsToDouble(4597303555101269224L);
+double a= Double.longBitsToDouble(4634227472812299606L);
+double b = Double.longBitsToDouble(4642050131540049920L);
+System.out.println(x > (a + 1.0) / (a + b + 2.0));
+System.out.println(1-x>(b + 1.0) / (b + a + 2.0));
+System.out.println(1-(1-x)>(a + 1.0) / (a + b + 2.0));
+
+Possible solution: change the condition to
+x > (a + 1.0) / (a + b + 2.0) && 1-x<=(b + 1.0) / (b + a + 2.0)",Java build 1.7.0_45-b18,3600,3600,,0%,3600,3600,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-11-28 11:42:52.441,,,false,,,,,,,,,,,,361001,,,Mon May 19 15:13:19 UTC 2014,,,,,,0|i1q8av:,361300,,,,,,,,,"28/Nov/13 11:42;erans;Thanks for the report, and the fix!
+Committed in revision 1546350.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+EigenDecomposition may not converge for certain matrices,MATH-1051,12676947,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,tn,tn,31/Oct/13 20:01,19/May/14 15:13,08/Jun/19 22:44,31/Oct/13 20:06,3.2,,,,3.3,,,0,,,,,"Jama-1.0.3 contains a bugfix for certain matrices where the original code goes into an infinite loop.
+
+The commons-math translations would throw a MaxCountExceededException, so fails to compute the eigen decomposition.
+
+Port the fix from jama to CM.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-05-19 15:13:19.905,,,false,,,,,,,,,,,,356323,,,Mon May 19 15:13:19 UTC 2014,,,,,,0|i1pfev:,356611,,,,,,,,,31/Oct/13 20:06;tn;Fixed in r1537611.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+Incorrect linear system solution,MATH-1094,12691235,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Invalid,,bvk256,bvk256,25/Jan/14 23:00,26/Jan/14 19:42,08/Jun/19 22:44,26/Jan/14 19:42,3.2,,,,,,,0,patch,,,,"Firstly I would like to point out that I'm not very proficient in linear algebra, but in my opinion the following behavior should not occur. When I solve the following linear system by hand it has no solution, but in commons math using QRDecomposition it outputs  x1= 7.5 x2 = 5.5","Oracle JDK7
+Linux x86-64",,,,,,,,,,,25/Jan/14 23:03;bvk256;Main.java;https://issues.apache.org/jira/secure/attachment/12625226/Main.java,,,,1.0,,,,,,,,,,,,,,,,,,,2014-01-26 11:35:44.623,,,false,,,,,,,,,,,,369980,,,Sun Jan 26 11:35:44 UTC 2014,,,,,,0|i1rrmn:,370282,,,,,,,,,"26/Jan/14 11:35;luc;I think the behaviour is correct.
+
+The getSolver method for QR decomposition provides a solver for A X = B in the least squares sense.
+
+This means the X comuted by the solver is minimizes || A X - B ||, it does not find 0, only a minumum norm.
+In your case, the system is rectangular, so there is no way a true solution can be achieved.
+
+I have verified (using simple loops and gnuplot countour plots) that indeed the x = 7.5, y = 5.5 does minimizes the norm, which is 39.0.",,,,,,,,,,,,,,,,,,,,
+Use analytical function for UniformRealDistribution.inverseCumulativeProbability,MATH-957,12639427,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,evanward1,evanward1,27/Mar/13 19:18,07/Apr/13 09:21,08/Jun/19 22:44,28/Mar/13 10:25,3.2,,,,3.2,,,0,,,,,"The inverse CDF is currently solved by a root finding function. It would be much simpler (and faster) to use the analytical expression. This would save the user from having to set the inverseCumAccuracy correctly.
+
+I've attached a patch that implements this.",,,,,,,,,,,,27/Mar/13 19:20;evanward1;uniform.patch;https://issues.apache.org/jira/secure/attachment/12575749/uniform.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-03-28 07:02:43.363,,,false,,,,,,,,,,,,319897,,,Sun Apr 07 09:21:45 UTC 2013,,,,,,0|i1j72f:,320238,,,,,,,,,27/Mar/13 19:20;evanward1;Implementation and test case attached.,"28/Mar/13 07:02;dhendriks;bq. Implementation and test case attached.
+
+At line 63: ""new  Well19937c()"": there are two spaces after 'new'... Line 79 as well.
+","28/Mar/13 10:25;luc;Fixed in subversion repository as of r1462018.
+
+Thanks for the report and for the patch.",07/Apr/13 09:21;luc;Closing issue as version 3.2 has been released on 2013-04-06.,,,,,,,,,,,,,,,,,
+LevenbergMarquardtOptimizer reports 0 iterations,MATH-949,12637239,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,evanward1,evanward1,15/Mar/13 18:11,07/Apr/13 09:20,08/Jun/19 22:44,20/Mar/13 11:38,3.2,,,,3.2,,,0,,,,,"The method LevenbergMarquardtOptimizer.getIterations() does not report the correct number of iterations; It always returns 0. A quick look at the code shows that only SimplexOptimizer calls BaseOptimizer.incrementEvaluationsCount()
+
+I've put a test case below. Notice how the evaluations count is correctly incremented, but the iterations count is not.
+
+{noformat}
+    @Test
+    public void testGetIterations() {
+        // setup
+        LevenbergMarquardtOptimizer otim = new LevenbergMarquardtOptimizer();
+
+        // action
+        otim.optimize(new MaxEval(100), new Target(new double[] { 1 }),
+                new Weight(new double[] { 1 }), new InitialGuess(
+                        new double[] { 3 }), new ModelFunction(
+                        new MultivariateVectorFunction() {
+                            @Override
+                            public double[] value(double[] point)
+                                    throws IllegalArgumentException {
+                                return new double[] { FastMath.pow(point[0], 4) };
+                            }
+                        }), new ModelFunctionJacobian(
+                        new MultivariateMatrixFunction() {
+                            @Override
+                            public double[][] value(double[] point)
+                                    throws IllegalArgumentException {
+                                return new double[][] { { 0.25 * FastMath.pow(
+                                        point[0], 3) } };
+                            }
+                        }));
+
+        // verify
+        assertThat(otim.getEvaluations(), greaterThan(1));
+        assertThat(otim.getIterations(), greaterThan(1));
+    }
+
+{noformat}",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-03-16 14:47:46.652,,,false,,,,,,,,,,,,317731,,,Sun Apr 07 09:20:57 UTC 2013,,,,,,0|i1itp3:,318072,,,,,,,,,"16/Mar/13 14:47;erans;Actually, the number of iterations is used in the ""optim.linear"" package while the number of evaluations is used in the ""optim.nonlinear"" package. The counters were both moved to a unique base class in order to reduce the amount of code duplication.
+
+It seems indeed that now we should indeed update the iterations counter in every optimizer implementation.
+
+We could also take both limits (evaluations and iterations) into account but I'm not sure that would be useful. I think that it would be confusing; some time ago, we agreed that the number of evaluations is a better measure of an optimization algorithm (at least when the evaluation is more costly than the optimization's bookkeeping).
+","19/Mar/13 14:53;erans;Iteration counter is now incremented (revision 1458323). Could you please check that the behaviour is what you'd expect?
+
+
+","19/Mar/13 17:21;evanward1;I can confirm that I get reasonable values now. For the above test case I get 24 iterations and 42 evaluations. I'm not an expert, so I don't know if these are the right numbers...
+
+Thanks for the fast fix!",07/Apr/13 09:20;luc;Closing issue as version 3.2 has been released on 2013-04-06.,,,,,,,,,,,,,,,,,
+Line.revert() is imprecise,MATH-938,12635361,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Major,Fixed,,evanward1,evanward1,05/Mar/13 16:10,07/Apr/13 09:19,08/Jun/19 22:44,06/Mar/13 09:00,3.2,,,,3.2,,,0,,,,,"Line.revert() only maintains ~10 digits for the direction. This becomes an issue when the line's position is evaluated far from the origin. A simple fix would be to use Vector3D.negate() for the direction.
+
+Also, is there a reason why Line is not immutable? It is just comprised of two vectors.",,1800,1800,,0%,1800,1800,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-03-06 09:00:43.616,,,false,,,,,,,,,,,,315854,,,Sun Apr 07 09:19:58 UTC 2013,,,,,,0|i1ii4n:,316197,,,,,,,,,"05/Mar/13 16:16;evanward1;Test Case:
+
+{noformat} 
+    @Test
+    public void testRevert() {
+        // setup
+        Line line = new Line(new Vector3D(1653345.6696423641,
+                6170370.041579291, 90000), new Vector3D(1650757.5050732433,
+                6160710.879908984, 0.9));
+        Vector3D expected = line.getDirection().negate();
+
+        // action
+        Line reverted = line.revert();
+
+        // verify
+        assertArrayEquals(expected.toArray(),
+                reverted.getDirection().toArray(), 0);
+    }
+{noformat}","06/Mar/13 09:00;luc;Fixed in subversion repository as of r1453218.
+
+Line should be immutable, and in fact we want to make all of the Hyperplane/SubHyperplane/Embedding/BSPTree instances immutable, but this is a large incompatible change. So it will occur only at a major release (hopefully 4.0).
+
+Thanks for reporting the issue.",07/Apr/13 09:19;luc;Closing issue as version 3.2 has been released on 2013-04-06.,,,,,,,,,,,,,,,,,,
+Add support for embedding Tex in javadoc and site docs via MathJax,MATH-1006,12657664,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,psteitz,psteitz,15/Jul/13 03:40,09/May/17 09:01,08/Jun/19 22:44,19/Jul/13 19:37,3.2,,,,3.3,,,0,,,,,"It would be convenient to be able to embed Tex expressions in javadoc, xdocs and apt.  This can be accomplished via the [MathJax|http://www.mathjax.org/] javascript display engine.  MathJax can be integrated into javadoc by passing a -header option to the doclet that points to the MathJax javascript sources.  Both maven and ant support this via configuration.  Once pom.xml (maven) and build.xml (ant) are modified to make the MathJax functions available, javadoc can embed Tex expressions by using standard Tex escapes: &#92;\( ... &#92;\) for inline, &#92;\[ ... &#92;\] for formulas.",,,,,,,,,,,,15/Jul/13 04:57;psteitz;mathjax.patch;https://issues.apache.org/jira/secure/attachment/12592276/mathjax.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-07-15 14:00:42.095,,,false,,,,,,,,,,,,337884,,,Fri Jul 19 19:37:23 UTC 2013,,,,,,0|i1ma2v:,338206,,,,,,,,,"15/Jul/13 04:57;psteitz;First attempt at a patch to activate this.  Works when javadoc is explicitly invoked in maven, but not via the site goal.","15/Jul/13 14:00;sebb;mvn javadoc:javadoc uses the BUILD section; mvn site uses the REPORTING section.
+
+Generally if one wants to generate a report as part of site generation and stand-alone, the configuration has to appear it two places.
+
+See for example the apache-rat-plugin configuration in CP32.","15/Jul/13 14:45;psteitz;Thanks, Sebb!
+
+So I guess what I need to do is put in twice. I will do that and commit if there are no objections.",17/Jul/13 22:43;psteitz;Fixed in r1504314.,19/Jul/13 19:31;psteitz;Reopening to add site docs to scope.  This can be enabled by adding a <head> element to site.xml.,19/Jul/13 19:37;psteitz;head element added to site.xml in r1504975,,,,,,,,,,,,,,,
+NullPointerException not advertized in Javadoc,MATH-1116,12708179,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,Telcontar,Telcontar,14/Apr/14 02:51,25/Jan/16 20:27,08/Jun/19 22:44,19/May/15 11:47,3.2,,,,3.6,4.0,,0,javadoc,,,,"The following statement produces a NullPointerException:
+
+new org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer().getWeight();
+
+The documentation does not seem to indicate that other data must be set before getWeight is used (at least I could not find that information). In this case, weightMatrix is still null because it has not been initialized.
+
+This call should probably throw an IllegalStateException, which makes it clear that this API usage is incorrect.
+
+This test uses LevenbergMarquardtOptimizer but any instantiable subclass of MultivariateVectorOptimizer probably works the same way.
+","Mac OS 10.9, Java 6, 7",,,,,,,,,,,16/Apr/14 06:47;Telcontar;IllegalStateB.java;https://issues.apache.org/jira/secure/attachment/12640400/IllegalStateB.java,14/Apr/14 02:51;Telcontar;Report2.java;https://issues.apache.org/jira/secure/attachment/12640012/Report2.java,07/May/15 06:43;Telcontar;Report6.java;https://issues.apache.org/jira/secure/attachment/12731096/Report6.java,07/May/15 06:43;Telcontar;Report7.java;https://issues.apache.org/jira/secure/attachment/12731097/Report7.java,4.0,,,,,,,,,,,,,,,,,,,2014-04-14 13:03:29.073,,,false,,,,,,,,,,,,386502,,,Mon Jan 25 20:27:57 UTC 2016,,,,,,0|i1ukz3:,386766,,,,,,,,,14/Apr/14 02:51;Telcontar;JUnit test to reproduce this issue.,"14/Apr/14 06:28;Telcontar;getTarget() instead of getWeight() also produces a NPE:
+
+new org.apache.commons.math3.optim.nonlinear.vector.jacobian.LevenbergMarquardtOptimizer().getTarget();","14/Apr/14 13:03;erans;This is wrong usage; you cannot get something before your set it. ;-)
+In this class, those data must be passed as argument to the ""optimize"" method; the requirements are documented in parent classes, where ""optimize"" is defined.
+Anyway, this class, and the whole package, is going to be deprecated in release 3.3. The replacement is available in the development version.
+","14/Apr/14 23:33;Telcontar;Thank you for the quick feedback.
+There are a number of other classes that are not going to be deprecated in 3.3, which have the same issue. For example, there are five cases where I have found a one-liner that shows the problem:
+
+    new org.apache.commons.math3.random.ValueServer().resetReplayFile();
+    new org.apache.commons.math3.stat.regression.GLSMultipleLinearRegression().estimateErrorVariance();
+    new org.apache.commons.math3.random.EmpiricalDistribution().getGeneratorUpperBounds();
+    new org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression().calculateHat();
+    new org.apache.commons.math3.stat.correlation.PearsonsCorrelation().getCorrelationStandardErrors();
+
+I can post these in separate bug reports if there is interest, along with a few cases that are multiple lines.
+
+I think it would be good to do something about these cases:
+
+(1) Deprecate the constructors that build incomplete instances, or
+(2) throw an IllegalStateException or a NullPointerException with an error message (""xy needs to be set""), or
+(3) make the constructors non-public, or
+(4) add a comment such as in NordSieckStepInterpolator:
+http://commons.apache.org/proper/commons-math/javadocs/api-3.2/org/apache/commons/math3/ode/sampling/NordsieckStepInterpolator.html#NordsieckStepInterpolator%28%29
+
+That comment clearly puts the blame on the user if a NullPointerException happens. However, it would be nice to have this also in the executable (as an exception message, perhaps).","15/Apr/14 09:40;erans;I don't think that it'necessary to open a new report if adding ""@throws"" tag would fix the issue.
+","15/Apr/14 10:13;erans;For those:
+
+{quote}
+new org.apache.commons.math3.random.ValueServer().resetReplayFile();
+new org.apache.commons.math3.random.EmpiricalDistribution().getGeneratorUpperBounds();
+new org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression().calculateHat();
+{quote}
+
+NullPointerException is advertized in revision 1587494.
+
+bq. new org.apache.commons.math3.stat.correlation.PearsonsCorrelation().getCorrelationStandardErrors();
+
+The Javadoc contained a warning for this one.
+
+bq. new org.apache.commons.math3.stat.regression.GLSMultipleLinearRegression().estimateErrorVariance();
+
+This method is defined in the parent class.
+
+bq. I think it would be good to do something about these cases [...]
+
+I agree. In fact I don't see the an advantage in constructing an incomplete instance and having to call afterwards what looks like a constructor (i.e. ""newSampleData"") that reallocates and reinitializes everything.
+Perhaps, you could raise this design issue on the ""dev"" ML.
+","16/Apr/14 06:47;Telcontar;Two more tests that show a similar issue; one is a one-liner:
+
+    new org.apache.commons.math3.optim.nonlinear.scalar.noderiv.NelderMeadSimplex(new double[] {1.0d, 1.0d}).getPoint(1);","16/Apr/14 06:48;Telcontar;Thanks. I've added another attachment that shows two more similar cases, after removing deprecated classes and trying to simplify the tests. The attachment IllegalStateB.java appears above, along with the one-liner for the shorter of the two tests.","16/Apr/14 16:29;erans;Actually the whole contents of the ""optim"" package will be replaced with the approach that has been implemented in package ""o.a.c.m.fitting.leastsquares"".
+","07/May/15 06:42;Telcontar;In general, the need to initialize newly constructed objects with more data is now documented, but we have found two cases where a NullPointerException is thrown because of missing data.
+
+The documentation should be updated to reflect this. This is similar to issues report in MATH-1116 but concerns classes that are not going to be deprecated (as far as we can tell).
+
+    org.apache.commons.math3.ode.nonstiff.HighamHall54Integrator var1 = new org.apache.commons.math3.ode.nonstiff.HighamHall54Integrator(0.0d, 0.0d, 0.0d, 0.0d);
+    double[] var2 = new double[] { 0.0d };
+    var1.computeDerivatives(0.0d, var2, var2); // NPE
+
+    new org.apache.commons.math3.stat.correlation.SpearmansCorrelation().getCorrelationMatrix(); // NPE",07/May/15 06:43;Telcontar;Self-contained unit test to reproduce NullPointerException on HighamHall54Integrator (the need to initialize it further is not documented yet).,07/May/15 06:43;Telcontar;Self-contained unit test to reproduce NullPointerException on SpearmansCorrelation (the need to initialize it further is not documented yet).,"14/May/15 02:14;Telcontar;This particular issue (SpearmansCorrelation) has been fixed upstream, see bug 1224: https://issues.apache.org/jira/browse/MATH-1224",19/May/15 11:47;luc;Fixed in git repository for the remaining part (ODE package).,25/Jan/16 20:27;luc;Closing all resolved issues that were included in 3.6 release.,,,,,,
+BOBYQAOptimizerTest has two failing tests,MATH-1057,12677282,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,srowen,srowen,03/Nov/13 18:33,19/May/14 15:13,08/Jun/19 22:44,08/Nov/13 15:20,3.2,,,,3.3,,,0,,,,,"I see two test failures, in both the copies of BOBYQAOptimizerTest:
+
+{code}
+Failed tests: 
+  BOBYQAOptimizerTest.testAckley:209->doTest:282->doTest:338 expected:<0.0> but was:<1.047765607609108E-8>
+  BOBYQAOptimizerTest.testAckley:208->doTest:281->doTest:336 expected:<0.0> but was:<1.047765607609108E-8>
+
+Tests in error: 
+  BOBYQAOptimizerTest.testDiffPow:187->doTest:282->doTest:322 » TooManyEvaluations
+  BOBYQAOptimizerTest.testDiffPow:186->doTest:281->doTest:326 » TooManyEvaluations
+{code}
+
+(This predated the patches I've worked on so I don't think it's me!)
+
+I tried on Mac OS X and Linux and see the same, so don't think it is an environment issue. I'll see if a little digging can uncover the issue from a recent commit.",Mac OS X 10.9 and also Linux 3.4 kernel; Java 7; Maven 3.1.1,,,,,,,,,,,03/Nov/13 20:45;srowen;MATH-1057.patch;https://issues.apache.org/jira/secure/attachment/12611836/MATH-1057.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-11-03 19:41:40.706,,,false,,,,,,,,,,,,356657,,,Mon May 19 15:13:35 UTC 2014,,,,,,0|i1phhj:,356947,,,,,,,,,"03/Nov/13 19:07;srowen;Hmm, I show that this fails even from the first time the test was added in r1420684. Anyone else seeing the same? if not, what platform I wonder?","03/Nov/13 19:41;tn;Tests fail when run with jdk 1.5 in my environment.
+
+Running them with java 1.6 or 1.7 is successful.","03/Nov/13 20:22;tn;For the testDiffPow testcase, I further debugged with the two different jdks, and after iteration 2219 the objective function output changes.
+
+The difference/error then accumulates and results that the algorithm converges much slower. I could track down the problem to the Math implementation, most likely the sqrt or exp. Changing all the Math calls to our own FastMath solves the problem and the test executes correctly for all jdks.
+
+I wonder why we use Math in the first place, as normally we eat our own dog-food and use FastMath.
+
+btw. the problem also is existent in the 3.2 release so not at all related to your previous patch.",03/Nov/13 20:45;srowen;Here's a patch implementing your change. Yes it fixes the failure for testDiffPow for me too and sounds like a good change. Not sure about the other. Maybe the tolerance needs to be loosened?,"03/Nov/13 20:57;tn;With all my different jdks I used to test the problems, I only had failures with the testDiffPow and testsDiffPow methods, never with the testAckley.
+
+What is your environment?","03/Nov/13 21:13;srowen;Oh I see -- see above, Java 7 on OS X 10.9 and on Linux.","03/Nov/13 21:21;tn;Yes, but what exact jvm?
+
+I use the following:
+
+java version ""1.7.0_25""
+OpenJDK Runtime Environment (IcedTea 2.3.10) (7u25-2.3.10-1ubuntu0.12.04.2)
+OpenJDK Server VM (build 23.7-b01, mixed mode)
+","03/Nov/13 21:29;tn;Ah ok, now I get the same error, strange that I did not see it before.
+In this case I think it would be fine to change the epsilon to 1e-7 but I would like to understand why we get different results for jdk 1.5 and 1.7 here.","03/Nov/13 21:37;tn;Ok I understand now.
+The difference was happening before, when we used Math.xxx calls, which returned different results for different jdk versions.
+
+Now, when using FastMath, the result is of course consistent with all jdks, as FastMath is a pure java implementation. The result for this test has change slightly and a epsilon of 1e-7 should be used to compensate the for change imho.
+
+@Gilles: in case you read here, as you have done most of the work on this optimizer, do you think that the switch from Math to FastMath is ok, or was there a specific reason why Math was used in this case?","03/Nov/13 21:42;srowen;For the record, my java versions:
+
+OS X:
+{code}
+java version ""1.7.0_45""
+Java(TM) SE Runtime Environment (build 1.7.0_45-b18)
+Java HotSpot(TM) 64-Bit Server VM (build 24.45-b08, mixed mode)
+{code}
+
+Linux:
+{code}
+java version ""1.7.0_45""
+OpenJDK Runtime Environment (amzn-2.4.3.2.32.amzn1-x86_64 u45-b15)
+OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)
+{code}
+","03/Nov/13 22:32;erans;The extreme sensitivity of some tests was noticed quite some time ago. The main problem is that we introduced this algorithm into CM although the code was nowhere near to something a Java programmer can understand. And this was already after I performed extensive work to modify the code that had been auto-generated from the original FORTRAN implementation.
+Further code readability improvements were stalled due to 
+tests failing after seemingly innocuous changes; hence the need for expert advice in order to know what is actually to be expected from the tests and by how much the tolerance can be lowered (while still retaining the ability to catch erroneous changes during the code rewrite).","08/Nov/13 15:20;tn;Fixed in r1540075.
+
+Thanks for your patch!
+For now I did only update the test classes as this seems to be sufficient.
+I created another issue to replace calls to Math.xxx with calls to FastMath.xxx throughout CM.","20/Jan/14 08:26;Gwendal;Hello,
+
+Sorry to post a message on this Resolved bug, but I appear to have the exact same problem with commons-math3-3.2. Here are the interesting parts of my Maven output:
+------------------------------------------------------------------------------------------
+testDiffPow(org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest)  Time elapsed: 2.662 sec  <<< ERROR!
+org.apache.commons.math3.exception.TooManyEvaluationsException: illegal state: maximal count (12,000) exceeded: evaluations
+	at org.apache.commons.math3.optim.BaseOptimizer$MaxEvalCallback.trigger(BaseOptimizer.java:213)
+	at org.apache.commons.math3.util.Incrementor.incrementCount(Incrementor.java:156)
+	at org.apache.commons.math3.optim.BaseOptimizer.incrementEvaluationCount(BaseOptimizer.java:162)
+	at org.apache.commons.math3.optim.nonlinear.scalar.MultivariateOptimizer.computeObjectiveValue(MultivariateOptimizer.java:115)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizer.bobyqb(BOBYQAOptimizer.java:823)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizer.bobyqa(BOBYQAOptimizer.java:329)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizer.doOptimize(BOBYQAOptimizer.java:241)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizer.doOptimize(BOBYQAOptimizer.java:49)
+	at org.apache.commons.math3.optim.BaseOptimizer.optimize(BaseOptimizer.java:143)
+	at org.apache.commons.math3.optim.BaseMultivariateOptimizer.optimize(BaseMultivariateOptimizer.java:66)
+	at org.apache.commons.math3.optim.nonlinear.scalar.MultivariateOptimizer.optimize(MultivariateOptimizer.java:64)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:322)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:282)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.testDiffPow(BOBYQAOptimizerTest.java:187)
+
+testDiffPow(org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest)  Time elapsed: 2.907 sec  <<< ERROR!
+org.apache.commons.math3.exception.TooManyEvaluationsException: illegal state: maximal count (12,000) exceeded: evaluations
+	at org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateOptimizer.computeObjectiveValue(BaseAbstractMultivariateOptimizer.java:108)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizer.bobyqb(BOBYQAOptimizer.java:828)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizer.bobyqa(BOBYQAOptimizer.java:334)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizer.doOptimize(BOBYQAOptimizer.java:246)
+	at org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateOptimizer.optimizeInternal(BaseAbstractMultivariateOptimizer.java:206)
+	at org.apache.commons.math3.optimization.direct.BaseAbstractMultivariateOptimizer.optimize(BaseAbstractMultivariateOptimizer.java:145)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:326)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:281)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.testDiffPow(BOBYQAOptimizerTest.java:186)
+
+testAckley(org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest)  Time elapsed: 0.025 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<0.0> but was:<1.047765607609108E-8>
+	at org.junit.Assert.fail(Assert.java:93)
+	at org.junit.Assert.failNotEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:443)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:336)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:281)
+	at org.apache.commons.math3.optimization.direct.BOBYQAOptimizerTest.testAckley(BOBYQAOptimizerTest.java:208)
+
+
+
+testAckley(org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest)  Time elapsed: 0.025 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<0.0> but was:<1.047765607609108E-8>
+	at org.junit.Assert.fail(Assert.java:93)
+	at org.junit.Assert.failNotEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:443)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:338)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.doTest(BOBYQAOptimizerTest.java:282)
+	at org.apache.commons.math3.optim.nonlinear.scalar.noderiv.BOBYQAOptimizerTest.testAckley(BOBYQAOptimizerTest.java:209)
+
+
+Failed tests: 
+  BOBYQAOptimizerTest.testAckley:208->doTest:281->doTest:336 expected:<0.0> but was:<1.047765607609108E-8>
+  BOBYQAOptimizerTest.testAckley:209->doTest:282->doTest:338 expected:<0.0> but was:<1.047765607609108E-8>
+
+Tests in error: 
+  BOBYQAOptimizerTest.testDiffPow:186->doTest:281->doTest:326 » TooManyEvaluations
+  BOBYQAOptimizerTest.testDiffPow:187->doTest:282->doTest:322 » TooManyEvaluations
+------------------------------------------------------------------------------------------
+
+I am using Fedora 20 x86_64 with kernel 3.12.7 and with java-1.7.0-openjdk-1.7.0.60-2.4.4.1.fc20.x86_64.",20/Jan/14 08:54;srowen;The error is indeed reported against 3.2 and fixed for 3.3. Are you saying you see this in HEAD?,"20/Jan/14 09:03;Gwendal;I've simply downloaded this source archive : http://apache.mirrors.multidist.eu//commons/math/binaries/commons-math3-3.2-bin.tar.gz
+
+Then I tried to compile it with Maven, and I obtained these errors.
+
+I thought the problem was (theoretically) fixed in 3.3. Maybe I misunderstood?","20/Jan/14 09:11;srowen;Yes, but you show you are working with 3.2. Look at what you downloaded. ","20/Jan/14 09:20;Gwendal;Oh, right! I misread 3.3 instead of 3-3... My apologies! I will try to be more careful in the future.
+
+Thanks a lot for answering this, and sorry again!","20/Jan/14 11:13;ebourg;It might be a good idea to rename the source archive for the next releases to commons-math-3.x-bin.tar.gz, that's indeed confusing.",20/Jan/14 13:20;srowen;Yeah I see the point but the artifact is now called 'math3' as it was not backwards compatible with 2.x and was sometimes necessary to deploy together. So it really is math3 3.2.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,
+MathInternalError when calculating barycenter of PolyhedronsSet,MATH-1060,12677708,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Cannot Reproduce,,iperera,iperera,06/Nov/13 01:55,19/May/14 15:13,08/Jun/19 22:44,23/Feb/14 15:36,3.2,,,,3.3,,,0,,,,,"I'm not sure if I could replicate this well enough to be useful - I am trying to construct a PolyhedronsSet from a collection of Planes using RegionFactory.buildConvex(). The input planes are created from running QHull - I don't have the actual normals but I can add them to this report if I run into this again.
+
+Exception in thread ""KQML-Dispatcher-1"" org.apache.commons.math3.exception.MathInternalError: illegal state: internal error, please fill a bug report at https://issues.apache.org/jira/browse/MATH
+	at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.followLoop(PolygonsSet.java:736)
+	at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.getVertices(PolygonsSet.java:613)
+	at org.apache.commons.math3.geometry.euclidean.twod.PolygonsSet.computeGeometricalProperties(PolygonsSet.java:523)
+	at org.apache.commons.math3.geometry.partitioning.AbstractRegion.getSize(AbstractRegion.java:413)
+	at org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet$FacetsContributionVisitor.addContribution(PolyhedronsSet.java:188)
+	at org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet$FacetsContributionVisitor.visitInternalNode(PolyhedronsSet.java:170)
+	at org.apache.commons.math3.geometry.partitioning.BSPTree.visit(BSPTree.java:263)
+	at org.apache.commons.math3.geometry.partitioning.BSPTree.visit(BSPTree.java:262)
+	at org.apache.commons.math3.geometry.partitioning.BSPTree.visit(BSPTree.java:262)
+	at org.apache.commons.math3.geometry.euclidean.threed.PolyhedronsSet.computeGeometricalProperties(PolyhedronsSet.java:135)
+	at org.apache.commons.math3.geometry.partitioning.AbstractRegion.getBarycenter(AbstractRegion.java:428)
+","Ubuntu, Java 1.7.0",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-11-08 12:51:18.381,,,false,,,,,,,,,,,,357083,,,Mon May 19 15:13:29 UTC 2014,,,,,,0|i1pk3j:,357373,,,,,,,,,"06/Nov/13 22:49;iperera;I realized that this issue came up when trying to create a Convex polyhedron with very thin triangles. Since this is an edge case that should probably be avoided, I changed this to Minor.","08/Nov/13 12:51;luc;Such cases may occur when the lines that form the polygon boundaries are almost parallel and intersection location cannot be computed reliably. This is a numerical issue due to limited accuracy of double precision numbers.
+
+We cannot do anything about this without a way to reproduce the error. If you could provide us a test case reproducing it (a small one if possible), we could look at it.","23/Feb/14 15:36;luc;Without further information from the original poster, this is issue is closed as unable to reproduce.",14/Apr/14 02:39;Telcontar;JUnit test to reproduce NullPointerException.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,
+EigenDecomposition.Solver should consider tiny values 0 for purposes of determining singularity,MATH-1045,12675022,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,srowen,srowen,22/Oct/13 13:10,19/May/14 15:13,08/Jun/19 22:44,29/Oct/13 15:55,3.2,,,,3.3,,,0,eigenvalue,singular,,,"EigenDecomposition.Solver tests for singularity by comparing eigenvalues to 0 for exact equality. Elsewhere in the class and in the code, of course, very small values are considered 0. This causes the solver to consider some singular matrices as non-singular.
+
+The patch here includes a test as well showing the behavior -- the matrix is clearly singular but isn't considered as such since one eigenvalue are ~1e-14 rather than exactly 0.
+
+(What I am not sure of is whether we should really be evaluating the *norm* of the imaginary eigenvalues rather than real/imag components separately. But the javadoc says the solver only supports real eigenvalues anyhow, so it's kind of moot since imag=0 for all eigenvalues.)",,,,,,,,,,,MATH-1049,23/Oct/13 10:09;srowen;MATH-1045.patch;https://issues.apache.org/jira/secure/attachment/12609836/MATH-1045.patch,22/Oct/13 14:23;srowen;MATH-1045.patch;https://issues.apache.org/jira/secure/attachment/12609658/MATH-1045.patch,30/Oct/13 13:54;srowen;MATH-1045_2.patch;https://issues.apache.org/jira/secure/attachment/12611064/MATH-1045_2.patch,,3.0,,,,,,,,,,,,,,,,,,,2013-10-22 14:38:02.314,,,false,,,,,,,,,,,,354644,,,Mon May 19 15:13:29 UTC 2014,,,,,,0|i1p52n:,354933,,,,,,,,,"22/Oct/13 14:38;erans;Isn't the code in this class (and others similarly) supposed to work for a matrix with very small entries too? I mean that, if all eigenvalues are of the order of, say, EPSILON / 10, should the matrix be considered singular right away?","22/Oct/13 15:23;srowen;That's a good point. If you make the example matrix non-singular, but then divide elements by 1e12, it will report it as singular. This seems wrong. On the other hand it seems a bit undesirable to return an 'inverse' in this case -- it's dominated by the inverse of that tiny eigenvalue, which is huge, and the result is pretty unreliable. 
+
+I'm a bit out of my depth here but I wonder if it's more reasonable to examine the eigenvalues in sorted order and examine ratio of one to the next. When that ratio is below epsilon it makes more sense to declare it ""0"".
+
+I could also see this being a case of ""caller beware"". That's the more conservative thing here.","22/Oct/13 17:59;erans;bq. On the other hand it seems a bit undesirable to return an 'inverse' in this case – it's dominated by the inverse of that tiny eigenvalue, which is huge, and the result is pretty unreliable. 
+
+This could be case-dependent and the code should perhaps be able to detect and accept input that can return a reliable result. In r1534709, I've committed an example that seems to work, even as the eigenvalues are quite small indeed.
+
+bq. it's more reasonable to examine the eigenvalues in sorted order and examine ratio
+
+That's an interesting idea.
+Could you try and see whether it would let the new test pass, while intercepting the singular matrix of your test?
+","23/Oct/13 10:09;srowen;On a little more research, it seems the thing to do is look at the ratio with the largest eigenvalue. Attached is a new patch where your new test and my (2) new tests all pass.
+
+Comments welcome from linear algebra experts but I think this is at least as principled as the existing code.
+
+We could also let the user specify the zero threshold as in the QRDecomposition class.","23/Oct/13 10:54;erans;bq. We could also let the user specify the zero threshold as in the QRDecomposition class.
+
+That would be best, I also think.
+However, there is a practical problem in that there is currently a (deprecated) constructor with the required signature. :(
+Could you raise this issue on the ""dev"" ML, and ask confirmation on how to proceed?  I seem to recall that such a (functionally non-compatible) change would now be acceptable, even in a minor release.
+","23/Oct/13 21:02;tn;I just realized that in the case of a non-symmetric matrix, the eigenvalues are not sorted by value.
+The reason is that for the two cases, symmetric and non-symmetric there are completely different ways to do the decomposition.
+
+So you should not rely on that a particular order of the eigenvalues before we change that first.","24/Oct/13 09:32;srowen;These are good points, as well as the comments from the thread on commons-dev -- Ted in particular notes that you can use the threshold in the decomposition itself to simply stop computing eigenvalues when they get small.
+
+Now, these more advanced changes are near the limit of my ability and I am not sure I feel confident making them. I propose these additional changes be considered in another issue: (maybe) moving a threshold parameter, maybe modifying the decomposition.
+
+The patch here does I think represent a small, distinct positive change, in that it employs a reasonable test for singularity after the fact.","24/Oct/13 11:25;tn;Sure np.
+
+I think we are just collecting all relevant information in order to decide how to proceed. The necessary changes can then be done, e.g. by myself or another maintainer.","25/Oct/13 16:04;erans;bq. I propose these additional changes be considered in another issue
+
+I agree.
+","29/Oct/13 15:55;erans;Applied in revision 1536766.
+
+I created MATH-1049 for discussing further improvements.
+","29/Oct/13 21:08;tn;We need to change the behavior for non-symmetric matrices as the eigenvalues are not sorted in this case.
+This patch relies on a descending sort order to determine if the decomposed matrix is singular, so this may fail in such a case.
+
+I will create a separate issue for this as it makes sense to always sort the eigenvalues imho.","30/Oct/13 10:34;erans;bq. [...] this may fail [...]
+
+For this issue, I could add a loop in order to find the one with largest absolute value. WDYT?
+But I have no idea how to construct a matrix for a unit test that would exhibit the problem.
+","30/Oct/13 11:56;srowen;Yes, this is a good point. It's safest to find the largest eigenvalue (by absolute value) with a loop I think.
+
+The final matrix in testUnsymmetric(), which is unsymmetric, shows this.
+
+The symmetric matrix in testSquareRootNonPositiveDefinite() also shows this -- the last eigenvalue is the most negative, but is the largest in absolute value.","30/Oct/13 12:50;erans;Would you mind creating a patch?
+","30/Oct/13 13:54;srowen;Ah right, I should have said that these show out-of-order eigenvalues but that's not what we need to check. We need one that puts a very small eigenvalue first. That's easy to generate as something like
+
+[ d 0 ]
+[ 1 1 ]
+
+for tiny d. Patch attached.","30/Oct/13 14:17;erans;Thank you. Committed in revision 1537099.
+","31/Oct/13 14:07;srowen;This is a separate issue, but so minor not sure if it merits another JIRA. While looking at this code I noticed this loop at EigenDecomposition:945 that does nothing:
+
+        // Vectors of isolated roots
+        for (int i = 0; i < n; i++) {
+            if (i < 0 | i > n - 1) {
+                for (int j = i; j < n; j++) {
+                    matrixP[i][j] = matrixT[i][j];
+                }
+            }
+        }
+
+The 'if' can never be true. (Not to mention non-short-circuit boolean op there.)","31/Oct/13 14:27;erans;bq. issue [...] so minor not sure if it merits another JIRA
+
+That's certainly worth a report!
+Thanks.
+","31/Oct/13 19:48;tn;This is an artifact from the original Jama source code.
+
+There was a similar code construct, which has been removed when the code has been translated, but this one remained. Imho it is safe to remove this part also.
+
+While checking this I have seen there was a new release of Jama last November with a bugfix for possible infinite loops. Need to check if our code is also affected, but most likely.","31/Oct/13 20:08;tn;Removed the spurious code fragment in r1537616.
+
+Created and fixed also MATH-1051 to port a bugfix from Jama-1.0.3 to CM.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.
+Distribution tests are mostly meaningless due to high tolerance,MATH-1037,12670489,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,dievsky,dievsky,25/Sep/13 14:09,19/May/14 15:13,08/Jun/19 22:44,11/Oct/13 20:47,3.2,,,,3.3,,,0,,,,,"The tolerance used for value comparison in {{IntegerDistributionAbstractTest}} is {{1E-4}}. However, most values being compared are much smaller, so they are considered equal even if they otherwise differ by orders of magnitude. For example, a typo in {{GeometricDistributionTest}} puts 29 in the test points instead of 19, while the test probability value is correctly given for 19. The test passes, disregarding the fact that {{2.437439e-05}} (test value for 19) and {{1.473826e-07}} (actual value for 29) differ almost hundredfold.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-09-26 16:23:22.364,,,false,,,,,,,,,,,,350318,,,Mon May 19 15:13:28 UTC 2014,,,,,,0|i1oein:,350611,,,,,,,,,26/Sep/13 16:23;psteitz;Thanks for reporting this.  This is bad and the example calls it out.  The Geometric distribution test needs to be fixed. I am inclined to get rid of the default and make getTolerance abstract so tests have to set it explicitly.,"11/Oct/13 20:38;tn;Actually, the tolerance value has been overridden in the GeometricDistributionTest, but unfortunately, the base class seems to ignore it: instead of accessing the tolerance value by calling getTolerance(), the class accesses the field directly.
+
+I will fix this together with the typo in the GeometricDistributionTest.","11/Oct/13 20:47;tn;Fixed in r1531413.
+
+Thanks for the report!",14/Oct/13 10:08;dievsky;Glad to be of help!,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,
+"Beta, LogNormalDistribution, WeibullDistribution give slightly wrong answer for extremely small args due to log/exp inaccuracy",MATH-1058,12677292,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,srowen,srowen,03/Nov/13 21:47,19/May/14 15:13,08/Jun/19 22:44,05/Nov/13 13:52,3.2,,,,3.3,,,0,exp,expm1,log,log1p,"Background for those who aren't familiar: math libs like Math and FastMath have two mysterious methods, log1p and expm1. log1p(x) = log(1+x) and expm1(x) = exp(x)-1 mathetmatically, but can return a correct answer even when x was small, where floating-point error due to the addition/subtraction introduces a relatively large error.
+
+There are three instances in the code that can employ these specialized methods and gain a measurable improvement in accuracy. See patch and tests for an example -- try the tests without the code change to see the error.",,,,,,,,,,,,03/Nov/13 21:49;srowen;MATH-1058.patch;https://issues.apache.org/jira/secure/attachment/12611838/MATH-1058.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-11-05 13:52:10.308,,,false,,,,,,,,,,,,356667,,,Mon May 19 15:13:28 UTC 2014,,,,,,0|i1phjr:,356957,,,,,,,,,"05/Nov/13 13:52;erans;Thanks.
+Committed in revision 1538998.
+",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+"MultidimensionalCounter does not throw ""NoSuchElementException""",MATH-1088,12689265,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,erans,erans,erans,16/Jan/14 15:21,19/May/14 15:13,08/Jun/19 22:44,16/Jan/14 15:27,3.2,,,,3.3,,,0,,,,,"The iterator should throw when ""next()"" is called even though ""hasNext()"" would return false.
+",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-05-19 15:13:27.172,,,false,,,,,,,,,,,,368232,,,Mon May 19 15:13:27 UTC 2014,,,,,,0|i1rgw7:,368537,,,,,,,,,16/Jan/14 15:27;erans;Revision 1558833.,19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,,
+Small error in PoissonDistribution.nextPoisson() algorithm,MATH-1056,12677275,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,srowen,srowen,03/Nov/13 14:19,19/May/14 15:13,08/Jun/19 22:44,08/Nov/13 23:31,3.2,,,,3.3,,,0,,,,,"Here's a tiny bug I noticed via static inspection, since it flagged the integer division. PoissonDistribution.java:325 says:
+
+{code:java}
+final double a1 = FastMath.sqrt(FastMath.PI * twolpd) * FastMath.exp(1 / 8 * lambda);
+{code}
+
+The ""1 / 8 * lambda"" is evidently incorrect, since this will always evaluate to 0. I rechecked the original algorithm (http://luc.devroye.org/devroye-poisson.pdf) and it should instead be:
+
+{code:java}
+final double a1 = FastMath.sqrt(FastMath.PI * twolpd) * FastMath.exp(1 / (8 * lambda));
+{code}
+
+(lambda is a double so there is no int division issue.) This matches a later expression.
+
+I'm not sure how to evaluate the effect of the bug. Better to be correct of course; it may never have made much practical difference.",,,,,,,,,,,,03/Nov/13 14:20;srowen;MATH-1056.patch;https://issues.apache.org/jira/secure/attachment/12611822/MATH-1056.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-11-03 21:37:53.65,,,false,,,,,,,,,,,,356650,,,Mon May 19 15:13:23 UTC 2014,,,,,,0|i1phfz:,356940,,,,,,,,,"03/Nov/13 21:37;psteitz;Good catch, Sean!   I played a little with this today to see if fixing it allowed me to increase sensitivity in the nextPossionConsistency test in RandomDataGeneratorTest.  I did not succeed, which is unfortunate as this definitely looks like a bug.  I am +1 for committing the patch, but would really like to get a test that fails before and succeeds after.
+
+The nextPossionConsistency test is a ChiSquare-based test that looks at the binned distribution of values generated by nextPoission (which is now implemented in the distribution class itself).  When the test was developed, we had not yet implemented the G test, which may work better for homogeneity testing in this kind of setting.  It might be interesting to experiment with G tests to get a pre/post fail/fix here.  Another thing to dig into is exactly what generated values for what means will be materially impacted by the bug.  That might allow us to set up a specific G or Chi-square test that will consistently fail.","08/Nov/13 16:13;tn;I did take a look at this myself, and the introduced error is so small that it is very difficult to make a reasonable test that outlines this.
+
+Due to the fact that the wrong code is only executed when a PoissonDistribution with mean >= 40 is used, the error is <= 3e-3. Now when looking at the iteration that constructs the sample, it looks at random numbers [0, 1) and does different things dependent on whether the random number is smaller or larger than some of these pre-computed values. I did not do further analysis of the expected failure from such a small difference, but it must be *very* small compared to an ideal poisson distribution.
+
+btw. we have there several variables that are calculated each time nextPoisson() is called, although they are fixed with the given mean (which is immutable for the distribution), thus could be cached to improve performance.","08/Nov/13 23:31;psteitz;Patch applied in r1540217.  I have still not been able to produce a test case showing real impact; but the pre-patch code clearly departs from the intent of the algorithm, so best to fix.","08/Nov/13 23:49;psteitz;Forgot to respond to Thomas' observation about repeat computations.  The problem is that the actual parameter to nextPoisson can't be eliminated, i.e., it is not always the mean. nextPoisson is (conditionally) called recursively by itself when computing y2 with actual parameter lambdaFractional.  That means all of the variables set at the beginning need to be recomputed in that case.  I guess we could test the actual parameter value against the mean and used cached values in that case, but that would make the code a little harder to follow.","09/Nov/13 07:35;tn;But lambdaFractional is always in the range [0, 1) thus your recursive call will just once the other part of the conditional.
+
+nextPoisson(mean) is only called from the sample method, and we could make a nextPoisson() method that decides to call either nextPoissonSmallMean or LargeMean depending on the actual mean value. nextPoissonLargeMean itself calls SmallMean for the fractional part.","09/Nov/13 21:37;psteitz;I see.  Would slightly complicate the code for I am not sure how much benefit, but might be worth doing.  Probably best to open a separate ticket for this.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,
+GaussNewtonOptimizer convergence on singularity,MATH-993,12653421,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,choeger,choeger,18/Jun/13 11:40,19/May/14 15:13,08/Jun/19 22:44,28/Jun/13 10:23,3.2,,,,3.3,,,0,,,,,"I am (ab-)using the GaussNewtonOptimizer as a MultivariateFunctionSolver (as I could not find one in commons.math). Recently I stumbled upon an interesting behavior in one of my test cases: If a function is defined in a way that yields a minimum (a root in my case) at a singular point, the solver crashes. This is because of the following lines in doOptimize():
+
+catch (SingularMatrixException e) {
+                throw new ConvergenceException(LocalizedFormats.UNABLE_TO_SOLVE_SINGULAR_PROBLEM);
+            }
+
+I would propose to add a convergence check into the catch-phrase, so the solver returns the solution in that special case.",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-06-18 11:58:47.146,,,false,,,,,,,,,,,,333699,,,Mon May 19 15:13:23 UTC 2014,,,,,,0|i1lkcn:,334027,,,,,,,,,"18/Jun/13 11:58;erans;Could you please provide a unit test showing the desired behaviour? Thanks.
+
+bq. I would propose to add a convergence check into the catch-phrase, [...]
+
+At first sight, it seems that would suffice to move the convergence check so that it happens _before_ the code block that can potentially raise the exception.
+","28/Jun/13 10:23;erans;Proposed change committed in revision 1497713.
+All unit tests still pass, but obviously your use-case is not tested.",19/May/14 15:13;luc;Closing all resolved issue now available in released 3.3 version.,,,,,,,,,,,,,,,,,,
+EmpiricalDistributionTest fails if path contains spaces,MATH-955,12639082,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Minor,Fixed,,evanward1,evanward1,26/Mar/13 12:26,07/Apr/13 09:21,08/Jun/19 22:44,26/Mar/13 15:12,3.2,,,,3.2,,,0,,,,,"testLoad fails at loading the file because URL replaces the spaces with ""%20""
+
+I've attached a patch that converts the URL to a URI before passing it to File. ( see http://stackoverflow.com/questions/8928661/how-to-avoid-getting-url-encoded-paths-from-url-getfile )
+
+Thanks in advance,
+Evan",,,,,,,,,,,,26/Mar/13 12:26;evanward1;empiricalTest.patch;https://issues.apache.org/jira/secure/attachment/12575510/empiricalTest.patch,,,,1.0,,,,,,,,,,,,,,,,,,,2013-03-26 12:59:02.456,,,false,,,,,,,,,,,,319552,,,Sun Apr 07 09:21:30 UTC 2013,,,,,,0|i1j4xr:,319893,,,,,,,,,"26/Mar/13 12:59;erans;I think that the ""load(URL)"" method should be deprecated.
+
+The user could easily use ""load(File)"":
+{noformat}
+load(new File(url.toURI());
+{noformat}
+","26/Mar/13 15:12;luc;Fixed in subversion repository as of r1461172.
+
+Thanks for the report and for the patch.",07/Apr/13 09:21;luc;Closing issue as version 3.2 has been released on 2013-04-06.,,,,,,,,,,,,,,,,,,
+Spelling mistake in org.apache.commons.math3.fitting ,MATH-1111,12702431,Bug,Closed,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Trivial,Fixed,,aurellem,aurellem,19/Mar/14 17:38,19/Mar/14 18:42,08/Jun/19 22:44,19/Mar/14 18:34,3.2,,,,3.3,,,0,,,,,"in the paragraph containing : 
+""should pass through sample points, and were the objective function is the"" 
+
+at http://commons.apache.org/proper/commons-math/javadocs/api-3.2/org/apache/commons/math3/fitting/package-summary.html
+
+""were"" should be ""where""",,60,60,,0%,60,60,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2014-03-19 18:34:36.13,,,false,,,,,,,,,,,,380770,,,Wed Mar 19 18:42:48 UTC 2014,,,,,,0|i1tlsf:,381049,,,,,,,,,"19/Mar/14 18:34;erans;Revision 1579343.
+",19/Mar/14 18:42;aurellem;:),,,,,,,,,,,,,,,,,,,
+LinearInterpolator Misconception,MATH-972,12646213,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Trivial,Not A Problem,,oskar_hertwig,oskar_hertwig,06/May/13 13:25,10/Aug/13 22:21,08/Jun/19 22:44,10/Aug/13 22:21,3.2,,,,,,,0,,,,,"The method interpolate() of the class LinearInterpolator return a polynomialSplineFunction althought a piecewiseContinuousFunction have to be returned.
+
+This cause a bug. Indeed when the interpolated serie is localy constant the linear interpolation should lead to constant value between this points. This is not possible when the returned object is a PolynomialSplineFunction
+",All,7200,7200,,0%,7200,7200,,,,,07/May/13 14:42;oskar_hertwig;PiecewiseLinearFunction.java;https://issues.apache.org/jira/secure/attachment/12582100/PiecewiseLinearFunction.java,07/May/13 14:42;oskar_hertwig;Test.java;https://issues.apache.org/jira/secure/attachment/12582099/Test.java,,,2.0,,,,,,,,,,,,,,,,,,,2013-05-06 14:28:45.558,,,false,,,,,,,,,,,,326571,,,Tue May 07 15:29:31 UTC 2013,,,,,,0|i1kc8v:,326916,,,,,,,,,"06/May/13 14:28;erans;Could you please upload a unit test showing the problem?
+","07/May/13 14:40;oskar_hertwig;Hi Gilles,
+
+First of all tanks for your quick response.
+
+I went a little bit too fast in my bug report and it appears I screw up and your code is ok. (The code is in test.java)
+
+Nevertheless I am stilling interrogating myself about the object returned by Linear Interpolator. Indeed, the function returned by a linear interpolator should not be derivable on the entire domain (on each knots points) although a Polynomial Spline Function is always derivable inside the definition domain.
+
+Consequently your solution allows using the Derivative Method with no restriction although exceptions should be raised in some points. (After test your code returns the derivative number at right)
+
+So I am asking to you if it wouldn’t be better that linear Interpolator returns PiecewiseLinearFunction (I add the code is in PiecewiseLinearFunction.java) which implements UnivariateFunction but not DifferentiableUnivariateFunction. In another hand I am aware that my solution doesn’t allow the use of DifferentiableUnivariateSolver.
+
+If you find my suggestion is too purist. I have no problem for closing the ticket.
+
+Kinds regard.
+
+
+
+
+
+
+
+
+
+","07/May/13 15:14;erans;bq. [...] about the object returned by LinearInterpolator [...] should not be derivable on the entire domain [...]
+
+Strictly speaking it is not, since the ""interpolate"" method in ""UnivariateInterpolator"" is defined to return a ""UnivariateFunction"".
+The actual object used is an ""implementation detail"" which users should not rely on.
+
+At first sight, your ""PiecewiseLinearFunction"" is just another name for a special case of our ""PolynomialSplineFunction"" (where all its components have degree 1). IMHO, it doesn't warrant the code duplication.
+
+It seemed that the name ""PolynomialSplineFunction"" is at the origin of the confusion.
+","07/May/13 15:29;oskar_hertwig;Ok, That's clear. Thank you for your time. The issue is closed for me.
+
+
+
+",,,,,,,,,,,,,,,,,
+"Interface ""RandomGenerator"" is missing ""nextLong(long)"" method",MATH-963,12640779,Bug,Resolved,MATH,Commons Math,software,issues@commons.apache.org,,http://commons.apache.org/math/,Trivial,Won't Fix,,erans,erans,04/Apr/13 14:34,05/Apr/13 21:40,08/Jun/19 22:44,05/Apr/13 21:40,3.2,,,,,,,0,api-change,,,,"There is a method ""nextInt(int)"" but not ""nextLong(long)"".
+
+The ""BitsStreamGenerator"" class already implements it.
+",,,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2013-04-04 17:14:02.575,,,false,,,,,,,,,,,,321238,,,Fri Apr 05 10:57:55 UTC 2013,,,,,,0|i1jfdb:,321583,,,,,,,,,"04/Apr/13 17:14;psteitz;The reason the method is missing from the interface is that it is not present in j.u.Random and RandomGenerator is supposed to be a straight replacement for j.u.Random.  It might be better to just add it to the abstract class, with a decent impl like what exists in the abstract bitstream generator.  We should probably also replace the default impl of nextInt(int) with something better if we can figure this out.  If we can find a good way to provide a good default impl just based on nextBytes, then I guess I am +0 on adding this.  If not, I don't think it is a good idea to force all RandomGenerators to implement something or inherit a not so great default.","04/Apr/13 22:21;erans;bq. [...] RandomGenerator is supposed to be a straight replacement for j.u.Random.
+
+In what sense?
+""j.u.Random"" not being an interface (CM's ""RandomGenerator"" is one, and thus cannot extend the former), a user code cannot pass an instance of ""RandomGenerator"" in place of ""j.u.Random"".
+
+If the goal is for ""RandomGenerator"" to provide identically named methods, this is fine but nothing forbids CM to be more complete and add other methods.
+
+If the goal (for whatever reason) is to exactly mimic the contents of ""j.u.Random"", I would change this issue to ask for the removal of the additional ""setSeed"" methods that exist in ""RandomGenerator"" but not in ""j.u.Random"".
+
+bq. better to just add it to the abstract class
+
+Then, what about removing the interface (i.e. merging) and keep only the abstract class?
+","05/Apr/13 02:04;psteitz;While you can't use a RandomGenerator instance directly to replace a Random, you can use a RandomAdaptor.  That is really what led to tearing off the interface from Random.  I use this so would not like to drop the interface.
+
+I am OK with adding the method (in 4.0) if someone can come up with a good default impl to be added to AbstractRandomGenerator.  ""Good"" means similar to what AbstractBitstreamGenerator does.","05/Apr/13 10:19;erans;bq. [...] you can use a RandomAdaptor. That is really what led to tearing off the interface from Random.
+
+If, as it looks like, ""RandomAdaptor"" is a bridge from ""RandomGenerator"" to ""j.u.Random"", it does not need to implement the ""RandomGenerator"" API.
+This is what a bridge is for: change from one API to another. Hence, it is also not necessary to mimic the target API.
+
+If ""RandomGenerator"" were an abstract class, you'd be able to use it in the same way with ""RandomAdaptor"".
+
+It seems that the purpose of ""RandomAdaptor"" being also a ""RandomGenerator"" is for the _same_ object reference to be passed both to code that expects a ""j.u.Random"" and to code that expects a ""RandomGenerator"".
+I find it better to not mix the two types in this way.
+","05/Apr/13 10:57;erans;bq. [...] good default impl to be added to AbstractRandomGenerator. ""Good"" means similar to what [...]BitstreamGenerator does.
+
+What about using the same? :)
+",,,,,,,,,,,,,,,,
