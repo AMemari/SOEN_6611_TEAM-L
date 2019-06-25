@@ -1,1 +1,3 @@
-
+Link to calculate spearman correlation: https://www.wessa.net/rwasp_spearman.wasp#output
+We have calculated the correlation between Maintainability Index and Post release defect density using the spearman correlation by taking
+the rank for each version data and applying the coefficient formula
