@@ -1,0 +1,793 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Fix Version/s,Due Date,Votes,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Duplicate),Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Flags),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+Can't execute subquery when use parameters,DBUTILS-128,12962955,Bug,Open,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Blocker,,,inthink,inthink,27/Apr/16 09:42,20/Apr/17 01:23,08/Jun/19 23:42,,1.5,1.6,,,0,bug,oracle,subquery,"Oracle Database: 
+```
+SQL> desc dept
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPTNO                                    NOT NULL NUMBER(2)
+ DNAME                                              VARCHAR2(14)
+ LOC                                                VARCHAR2(13)
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+````
+
+SQL
+```
+select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?
+```
+
+Java
+```
+String sql=""select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?"";
+
+Emp e=(Emp) qr.query(sql,  new BeanHandler(Emp.class),7902);
+```
+
+ERROR: 
+```
+java.sql.SQLException: ORA-00904: ""EMP"":  invalid identifier
+ Query: select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=? Parameters: [7902]
+	at org.apache.commons.dbutils.AbstractQueryRunner.rethrow(AbstractQueryRunner.java:392)
+	at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:351)
+	at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:289)
+```
+
+driver: ojdbc7.jar
+
+When execute on database or use pure JDBC, It's correct.
+Please fixed.","Database: Oracle
+
+SQL: select e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname from emp e,dept d where e.deptno=d.deptno and e.empno=?
+",,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-05-06 00:52:49.024,,,false,,,,,Important,,,,,,,,9223372036854775807,,,Fri May 06 02:57:33 UTC 2016,,,,,,0|i2wt9b:,9223372036854775807,,,,,,,,,06/May/16 00:52;ggregory;Can you please provide the DML for the tabkes and a unit test for working and failure use vases?,"06/May/16 02:57;inthink;*After my test, an error occurs when using ojdbc7.jar*
+
+h2. Environment:
+- ORACLE12C
+- ojdbc7.jar
+
+h2. SQL Script:
+
+{code:title=SQL.sql|borderStyle=solid}
+CREATE TABLE DEPT
+(
+  DEPTNO NUMBER(2) NOT NULL PRIMARY KEY,
+  DNAME VARCHAR2(14 BYTE) NULL ,
+  LOC VARCHAR2(13 BYTE) NULL 
+);
+
+
+INSERT INTO DEPT VALUES (10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO DEPT VALUES (20, 'RESEARCH', 'DALLAS');
+INSERT INTO DEPT VALUES (30, 'SALES', 'CHICAGO');
+INSERT INTO DEPT VALUES (40, 'OPERATIONS', 'BOSTON');
+
+
+CREATE TABLE EMP
+( 
+  EMPNO NUMBER(4,0) PRIMARY KEY,
+  ENAME VARCHAR2(10),
+  JOB VARCHAR2(9),
+  MGR NUMBER(4,0),
+  HIREDATE DATE,
+  SAL NUMBER(7,2),
+  COMM NUMBER(7,2),
+  DEPTNO NUMBER(2,0)
+);
+
+
+INSERT INTO EMP VALUES (7369, 'SMITH', 'CLERK', 7902, TO_DATE('19801218000000', 'YYYYMMDDHH24MISS'), 1200, NULL, 20);
+INSERT INTO EMP VALUES (7499, 'ALLEN', 'SALESMAN', 7698, TO_DATE('19810220000000', 'YYYYMMDDHH24MISS'), 1900, 300, 30);
+INSERT INTO EMP VALUES (7521, 'WARD', 'SALESMAN', 7698, TO_DATE('19810222000000', 'YYYYMMDDHH24MISS'), 1550, 500, 30);
+INSERT INTO EMP VALUES (7566, 'JONES', 'MANAGER', 7839, TO_DATE('19810402000000', 'YYYYMMDDHH24MISS'), 3275, NULL, 20);
+INSERT INTO EMP VALUES (7654, 'MARTIN', 'SALESMAN', 7698, TO_DATE('19810928000000', 'YYYYMMDDHH24MISS'), 1550, 1400, 30);
+INSERT INTO EMP VALUES (7698, 'BLAKE', 'MANAGER', 7839, TO_DATE('19810501000000', 'YYYYMMDDHH24MISS'), 3150, NULL, 30);
+INSERT INTO EMP VALUES (7782, 'CLARK', 'MANAGER', 7839, TO_DATE('19810609000000', 'YYYYMMDDHH24MISS'), 3150, NULL, 10);
+INSERT INTO EMP VALUES (7788, 'SCOTT', 'ANALYST', 7566, TO_DATE('19870419000000', 'YYYYMMDDHH24MISS'), 3300, NULL, 20);
+INSERT INTO EMP VALUES (7839, 'KING', 'PRESIDENT', NULL, TO_DATE('19811117000000', 'YYYYMMDDHH24MISS'), 5700, NULL, 10);
+INSERT INTO EMP VALUES (7844, 'TURNER', 'SALESMAN', 7698, TO_DATE('19810908000000', 'YYYYMMDDHH24MISS'), 1800, 0, 30);
+INSERT INTO EMP VALUES (7876, 'ADAMS', 'CLERK', 7788, TO_DATE('19870523000000', 'YYYYMMDDHH24MISS'), 1400, NULL, 20);
+INSERT INTO EMP VALUES (7900, 'JAMES', 'CLERK', 7698, TO_DATE('19811203000000', 'YYYYMMDDHH24MISS'), 1250, NULL, 30);
+INSERT INTO EMP VALUES (7902, 'FORD', 'ANALYST', 7566, TO_DATE('19811203000000', 'YYYYMMDDHH24MISS'), 3300, NULL, 20);
+INSERT INTO EMP VALUES (7934, 'MILLER', 'CLERK', 7782, TO_DATE('19820123000000', 'YYYYMMDDHH24MISS'), 2000, NULL, 10);
+
+commit;
+{code}
+
+
+h2. Java JUnit Test Case
+{code:title=Bar.java|borderStyle=solid}
+import static org.junit.Assert.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.junit.Test;
+import com.cpy.ems.entity.Emp;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+
+public class DBUtilsSubqueryTest {
+
+	// C3P0
+	ComboPooledDataSource ds = new ComboPooledDataSource();
+	
+	String sql=""select ""
+			+ ""		e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,""
+			+ ""		(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname ""
+			+ ""from ""
+			+ ""		emp e,dept d ""
+			+ ""where ""
+			+ ""		e.deptno=d.deptno ""
+			+ ""		and e.empno=?"";
+	
+	int empno = 7902;
+	
+	@Test
+	public void testJDBC() throws SQLException {
+		// Use JDBC, It's correct!
+		Connection con=ds.getConnection();
+		PreparedStatement pstmt=con.prepareStatement(sql);
+		pstmt.setObject(1, empno);
+		pstmt.executeQuery();
+		con.close();
+		
+	}
+	
+	@Test // ERRORS
+	public void testDBUtils() throws SQLException {
+		// Use DBUtils, when use params it's incorrect
+		// Exception: java.sql.SQLException: ORA-00904: ""EMP"": invalid identifier
+		QueryRunner qr=new QueryRunner(ds);
+		//qr.query(sql2, rsh, params)
+		qr.query(sql, new BeanHandler<Emp>(Emp.class),empno);
+	}
+
+	@Test
+	public void testDBUtils2() throws SQLException {
+		// Use JDBC, do not use params, It's correct!
+		String sql2=""select ""
+				+ ""		e.empno,e.ename,e.job,e.hiredate,e.mgr,e.sal,e.comm,d.dname,""
+				+ ""		(select e2.ename from emp e2 where e2.empno=e.mgr) as mgrname ""
+				+ ""from ""
+				+ ""		emp e,dept d ""
+				+ ""where ""
+				+ ""		e.deptno=d.deptno ""
+				+ ""		and e.empno=7902"";
+		QueryRunner qr=new QueryRunner(ds);
+		//qr.query(sql2, rsh)
+		qr.query(sql2, new BeanHandler<Emp>(Emp.class));
+	}
+}
+{code}",,,,,,,,,,,,,,,,,,,,,,,,,,
+QueryRunner cannot correctly insert unicode characters in Oracle Database. ,DBUTILS-130,13007642,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Critical,Incomplete,,kalebAkale,kalebAkale,26/Sep/16 17:09,16/Feb/19 21:01,08/Jun/19 23:42,16/Feb/19 21:01,1.5,,,,0,,,,"I have used queryRunner to insert unicode characters succesfully in MSSQL and IBM DB2. I was not able to successfully insert unicode into Oracle. Instead I see the reversed questions mark are inserted, in place of the acutal data. This is the code. The below code works fine If I'm using SQL Server 2016 or IBM DB2 10.5. 
+
+	
+Here is a sample java code I'm using. The followoing code works perfectly if executed against SQL Server database. 
+
+to create the table use create table TEST (test NCLOB) 
+
+
+package DatabaseTesting;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.dbutils.QueryRunner;
+
+public class DatabaseConnection {
+    
+	public enum DatabaseType{
+		Oracle,
+		MSSQLServer,
+		DB2,
+	}
+	
+	private static Connection con;
+    private static String DriverName;
+    private static String JDBCUrl;
+    private static String _username;
+    private static String _password;
+    private static DatabaseType currDatabaseType;
+    
+	public DatabaseConnection(String Driver, String url, String username, String password){
+		
+	   con = null;
+	   
+	   DriverName = Driver;
+	   JDBCUrl = url;
+	   _username = username;
+	   _password = password;
+	   String message = """";
+	   if (Driver.contains(""OracleDriver"")){
+		   currDatabaseType = DatabaseType.Oracle;
+		   message = ""Connected to Oracle Database"";
+	   }
+	   else if (Driver.contains(""SQLServerDriver"")){
+		   currDatabaseType = DatabaseType.MSSQLServer;
+		   message = ""Connected to MSSQL Database"";
+	   }
+	   else if (Driver.contains(""DB2Driver"")){
+		   currDatabaseType = DatabaseType.DB2;  
+		   message = ""Connected to DB2 Database"";
+	   }  
+	   else{
+		   return;   
+	   }
+	   
+	   try {
+
+		   con = DriverManager.getConnection(
+				   JDBCUrl, _username,
+					_password);
+		   
+		   System.out.println(message);
+		   
+
+		} catch (SQLException e) {
+
+			System.out.println(""Connection Failed! Check output console"");
+			e.printStackTrace();
+			return;
+
+		}
+	}
+	
+	public static Object[][] getBulkWriteParams() throws SQLException{ 
+		List<Object[]> listOfParams = new ArrayList<>(); 
+		String s = ""こんにちは""; 
+		//for(ContentEntry ce:cacheOfExtractedPages){ 
+		try{ 
+		listOfParams.add(new Object []{s}); 
+		} 
+		catch(Exception e){ 
+		int i= 1; 
+
+		} 
+		//} 
+		return listOfParams.toArray(new Object[0][0]); 
+		} 
+	public static void TestQueryRunner(){
+		
+
+		
+			String s = ""こんにちは""; 
+			String SQL = ""insert into TEST VALUES( ?)""; 
+			try{ 
+
+			new QueryRunner(true).batch(con, SQL, getBulkWriteParams()); 
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			} 
+			
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+       DatabaseConnection orasun12 = new DatabaseConnection(""oracle.jdbc.driver.OracleDriver"", 
+    		                                                ""jdbc:oracle:thin:@<your config>"",
+    		                                                ""<your config>"", ""<your config>"");
+       
+     /*  DatabaseConnection DB2 =  new DatabaseConnection(""com.ibm.db2.jcc.DB2Driver"",
+    		                                            ""jdbc:db2://<your config>"",
+    		                                            ""<your config>"", ""<your config>"");
+    	*/	   
+       
+       DatabaseConnection MSSQL =  new DatabaseConnection(""com.microsoft.sqlserver.jdbc.SQLServerDriver"",
+                                                          ""jdbc:sqlserver://<your config>"",
+                                                          ""<your config>"", ""<your config>"");
+       MSSQL.TestQueryRunner();
+	}
+
+}
+",,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-09-30 22:49:56.88,,,false,,,,,,,,,,,,,9223372036854775807,,,Sat Feb 16 21:01:14 UTC 2019,,,,,,0|i3439z:,9223372036854775807,,,,,,,,,26/Sep/16 19:05;kalebAkale;Can somebody please help me with this? It is very urgent.,30/Sep/16 22:49;michael-o;Reconstruct the very same example with JDBC first.,16/Feb/19 21:01;michael-o;No simple reduced usecase has been tried.,,,,,,,,,,,,,,,,,,,,,,,,,
+com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'WHERE',DBUTILS-102,12610728,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Critical,Not A Problem,,mario444,mario444,06/Oct/12 21:45,07/Oct/12 17:21,08/Jun/19 23:42,07/Oct/12 17:21,1.4,1.5,,,0,,,,"I have some sql with one parameter (typ). Using prepared statement works good, but using the same sql and DBUtils throw exception. When i remove parameter, DBUtils works good too. JUnit test below.
+
+{code:java|title=TestDB.java} 
+package com.test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
+public class TestDB {
+	
+	Logger log = Logger.getLogger(TestDB.class);
+
+	@Test
+	public void dbutils() throws SQLException {
+		QueryRunner q = new QueryRunner(MyDataSource.getInstance());
+		List<Import2> l = q.query(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"", new ResultSetHandler<List<Import2>>(){
+
+			@Override
+			public List<Import2> handle(ResultSet rs) throws SQLException {
+				List<Import2> l = new ArrayList<Import2>();
+				while(rs.next()) {
+					Import2 i = new Import2();
+					i.setTyp(rs.getString(""typ""));
+					i.setId(rs.getLong(""id""));
+					l.add(i);
+				}
+				return l;
+			}
+
+			
+		}, new Object[]{""TYPE1""});
+		log.info(l);
+	}
+	
+	@Test
+	public void jdbc() throws SQLException {
+		Connection c = MyDataSource.getInstance().getConnection();
+		PreparedStatement pst = c.prepareStatement(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"");
+		pst.setString(1, ""TYPE1"");
+		ResultSet rs = pst.executeQuery();
+		List<Import2> l = new ArrayList<Import2>();
+		while(rs.next()) {
+			Import2 i = new Import2();
+			i.setTyp(rs.getString(""typ""));
+			i.setId(rs.getLong(""id""));
+			l.add(i);
+		}
+		log.info(l);
+	}
+
+	class Import2 {
+		String typ;
+		Long id;
+		public String getTyp() {
+			return typ;
+		}
+		public void setTyp(String typ) {
+			this.typ = typ;
+		}
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		
+	}
+}
+{code} 
+
+Exception:
+
+{code:java} 
+java.sql.SQLException: com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'WHERE'. Query: select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10 Parameters: [TYPE1]
+		at org.apache.commons.dbutils.AbstractQueryRunner.rethrow(AbstractQueryRunner.java:363)
+		at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:350)
+		at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:288)
+		at com.test.TestDB.dbutils(TestDB.java:24)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+		at java.lang.reflect.Method.invoke(Unknown Source)
+		at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
+		at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+		at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
+		at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+		at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+		at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+		at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+		at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+		at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+		at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+		at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+		at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+		at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+{code} 
+
+Test Model
+
+{code}
+CREATE TABLE import2 (
+    id integer IDENTITY NOT NULL,
+    typ nvarchar(20),
+);
+{code}
+",Windows 7; SQL Server 2012 Express Edition; Microsoft JDBC Driver 4.0 for SQL Server,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2012-10-07 01:53:09.579,,,false,,,,,,,,,,,,,244881,,,Sun Oct 07 17:21:11 UTC 2012,,,,,,0|i05ukf:,32049,,,,,,,,,"07/Oct/12 01:53;sebb;Syntax error in test case:
+
+"") a where""
+
+Note the spurious ""a"" character.","07/Oct/12 05:30;mario444;I think, Exception applies to the first ""where"", but ok... let query be:
+{code}select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) as x{code}
+I get the same exception using DbUtils.","07/Oct/12 07:17;mario444;I've tested Spring JdbcTemplate with the same query and works good. Sample code below.
+
+{code}
+@Test
+public void spring() {
+	 JdbcTemplate  jdbcTemplate  =  new  JdbcTemplate(DecyzjeDataSource.getInstance());
+	 List<Import2> l = jdbcTemplate.query(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"",  new Object[]{""TYPE1""}, new RowMapper<Import2>(){
+
+		@Override
+		public Import2 mapRow(ResultSet arg0, int arg1) throws SQLException {
+			Import2 i = new Import2();
+			i.setId(arg0.getLong(""id""));
+			i.setTyp(arg0.getString(""typ""));
+			return i;
+		}
+		 
+	 });
+	 log.info(l);
+}
+{code}","07/Oct/12 13:21;wspeirs;I think this is simply a meta-data issue. Have you tried using the following constructor: http://commons.apache.org/dbutils/apidocs/org/apache/commons/dbutils/QueryRunner.html#QueryRunner(javax.sql.DataSource, boolean)
+
+Basically, the SQL server driver has a bug/issue with parameter metadata in some queries. If you tell DBUtils to stop using parameter metadata, then it should work without issue.","07/Oct/12 17:21;mario444;Yes! That's it. Thank You very much William.
+Using parameter pmdKnownBroken = true do the trick.
+{code}QueryRunner q = new QueryRunner(MyDataSource.getInstance(), true);{code}",,,,,,,,,,,,,,,,,,,,,,,
+getParameterMetaData  Exception,DBUTILS-122,12758808,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,,dingli,dingli,02/Dec/14 01:53,15/Dec/14 18:45,08/Jun/19 23:42,15/Dec/14 18:45,1.5,1.6,,,0,,,,"using ojdbc6.jar to connect to Oracle,  we get ""ORA-00942 table or view not exist"" exception.  after dive into dbutils code, we found  the exception is throw from  
+org.apache.commons.dbcp.DelegatingPreparedStatement.getParameterMetaData
+
+this is a oracle bug , but dbutils should ignore it and continue processing
+
+in the AbstractQueryRunner.java
+
+method :  fillStatement
+
+if (!pmdKnownBroken) {
+            pmd = stmt.getParameterMetaData();
+            int stmtCount = pmd.getParameterCount();
+            int paramsCount = params == null ? 0 : params.length;
+
+            if (stmtCount != paramsCount) {
+                throw new SQLException(""Wrong number of parameters: expected ""
+                        + stmtCount + "", was given "" + paramsCount);
+            }
+        }
+
+the code should catch the exception and set pmdKnownBroken to true and continue
+
+
+another suggestion:
+can the AbstractQueryRunner provide a method to set pmdKnownBroken in addtion to constructor ?","Windows, JDK6",,,,,,,,,DBUTILS-117,,,0.0,,,,,,,,,,,,,,,,,,,2014-12-15 18:41:40.774,,,false,,,,,,,,,,,,,9223372036854775807,,,Mon Dec 15 18:41:40 UTC 2014,,,,,,0|i22y7r:,9223372036854775807,,,,,,,,,"15/Dec/14 18:41;sebb;As noted, this is an Oracle bug.
+
+It does not make sense for DBUTILS to allow for this, as it would potentially mask other errors.
+
+The proper solution is for Oracle to fix the bug.
+
+A work-round is to create the class specifying that pmd is known to be broken.",,,,,,,,,,,,,,,,,,,,,,,,,,,
+BeanProcessor not returning nanoseconds,DBUTILS-118,12686732,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,britter,feysal,feysal,30/Dec/13 09:12,20/Jul/14 08:48,08/Jun/19 23:42,16/Jul/14 16:08,1.5,,1.6,,0,,,,"We are calling an SP to retrieve a timestamp from the DB but the mapping of the nano seconds is not being done correctly. Only milliseconds are being returned although the SP is returning the nano seconds.
+After debugging through the apache db utils, we found that in the class BeanProcessor (method callSetter), the setting of timestamp is not being done properly:
+
+{code:java}
+if (""java.sql.Timestamp"".equals(targetType)) {
+     value = new java.sql.Timestamp(((java.util.Date) value).getTime());
+ }
+{code}
+
+We have modified the codes as follows so as to get the nano seconds:
+
+{code:java}
+if (""java.sql.Timestamp"".equals(targetType))
+{
+ int nanos = ((Timestamp) value).getNanos(); 
+value = new java.sql.Timestamp(((Timestamp) value).getTime());
+ ((Timestamp) value).setNanos(nanos); 
+} 
+{code}
+
+Can you please provide a fix as soon as possible. (v1.6 would be great)
+",,,,,,,,,,,19/May/14 20:41;dcremonini;vcs-diff8964305076305734485.patch;https://issues.apache.org/jira/secure/attachment/12645631/vcs-diff8964305076305734485.patch,,1.0,,,,,,,,,,,,,,,,,,,2014-05-19 20:41:41.2,,,false,,,,,,,,,,,,,365725,,,Wed Jul 16 16:08:55 UTC 2014,,,,,,0|i1r1if:,366032,,,,,,,,,19/May/14 20:41;dcremonini;Plese find attached patch. Tests were modified to check the suggested implementation.,21/May/14 05:49;feysal;Can you please advise when a new version will be available.,16/Jul/14 15:36;britter;[~feysal] I'm currently working on the open issues and expect to cut Dbutil 1.6 RC1 anytime this week.,16/Jul/14 16:08;britter;Fixed in rev. 16110066. Thanks for contributing!,,,,,,,,,,,,,,,,,,,,,,,,
+Order of columns not retained in BasicRowProcessor with HashMap,DBUTILS-114,12676846,Bug,Closed,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,Fixed,britter,michael-o,michael-o,31/Oct/13 11:37,20/Jul/14 08:48,08/Jun/19 23:42,16/Jul/14 17:20,1.5,,1.6,,0,,,,The {{CaseInsensitiveHashMap}} extends {{HashMap}}. This means that the order of columns defined in a select query is not retained when one wants to iterate over the entry set. This be changed to {{LinkedHashMap}}.,,,,,,,,,,,31/Oct/13 11:38;michael-o;DBUTILS-114.patch;https://issues.apache.org/jira/secure/attachment/12611374/DBUTILS-114.patch,,1.0,,,,,,,,,,,,,,,,,,,2014-05-08 09:07:18.381,,,false,,,,,,,,,,,,,356222,,,Wed Jul 16 17:20:03 UTC 2014,,,,,,0|i1pesf:,356510,,,,,,,,,31/Oct/13 11:38;michael-o;Simple patch fixed this issue.,08/May/14 09:07;britter;How do you feel about changing the name of the extension to CaseInsensitiveLinkedHashMap as well?,"13/May/14 06:09;michael-o;Actually, there are two options:
+
+1. {{CaseInsensitiveMap}}
+2. {{CaseInsensitiveLinkedHashMap}}
+
+I favor the first because it describes the contract but the actual implementation is not of interest, in my opinion.
+
+Have a look at [Commons Collections|http://commons.apache.org/proper/commons-collections/javadocs/api-release/org/apache/commons/collections4/map/CaseInsensitiveMap.html].",16/Jul/14 17:20;britter;Fixed in r1611088. Thanks for the patch!,,,,,,,,,,,,,,,,,,,,,,,,
+Error handling possible getParameterMetaData() results,DBUTILS-117,12682375,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Minor,Fixed,,wadimx,wadimx,03/Dec/13 12:54,29/Jan/18 17:29,08/Jun/19 23:42,04/Jun/15 23:58,1.5,,1.6,,3,easyfix,newbie,,"Error in fillStatement method of AbstractQueryRunner class.
+There is no try...catch statement near pmd = stmt.getParameterMetaData();
+So method fails instead of automaticallye turning pmdKnownBroken to true.",,3600,3600,,0%,3600,3600,,,,28/Jul/14 12:46;carabolic;DBUTILS-117-tests.patch;https://issues.apache.org/jira/secure/attachment/12658126/DBUTILS-117-tests.patch,16/Jul/14 14:51;carabolic;DBUTILS-117.patch;https://issues.apache.org/jira/secure/attachment/12656044/DBUTILS-117.patch,2.0,,,,,,,,,,,,,,,,,,,2014-07-16 14:50:02.938,,,false,,,,,,,,,,,,,361632,,,Mon Jan 29 17:29:36 UTC 2018,,,,,,0|i1qc6v:,361930,,,,,,,,,"16/Jul/14 14:50;carabolic;I've had the same issue, when using Oracle DB 12 and DbUtils 1.5/1.6-SNAPSHOT (see attached stacktrace).
+
+{noformat}
+java.sql.SQLSyntaxErrorException: ORA-00904: ""A"".""TABLE_NAME"": invalid identifier
+
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:461)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:394)
+	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:386)
+	at oracle.jdbc.driver.T4CTTIfun.processError(T4CTTIfun.java:1039)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:681)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:256)
+	at oracle.jdbc.driver.T4C8Odscrarr.doODNY(T4C8Odscrarr.java:93)
+	at oracle.jdbc.driver.T4CPreparedStatement.doDescribe(T4CPreparedStatement.java:958)
+	at oracle.jdbc.driver.OracleStatement.describe(OracleStatement.java:7290)
+	at oracle.jdbc.driver.OracleResultSetMetaData.<init>(OracleResultSetMetaData.java:58)
+	at oracle.jdbc.driver.OracleStatement.getResultSetMetaData(OracleStatement.java:7243)
+	at oracle.jdbc.driver.OraclePreparedStatement.getMetaData(OraclePreparedStatement.java:5718)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.getMetaData(OraclePreparedStatementWrapper.java:5291)
+	at oracle.jdbc.driver.OracleParameterMetaData.getParameterMetaData(OracleParameterMetaData.java:76)
+	at oracle.jdbc.driver.OraclePreparedStatement.getParameterMetaData(OraclePreparedStatement.java:18509)
+	at oracle.jdbc.driver.OraclePreparedStatementWrapper.getParameterMetaData(OraclePreparedStatementWrapper.java:5449)
+	at org.apache.commons.dbutils.AbstractQueryRunner.fillStatement(AbstractQueryRunner.java:222)
+{noformat}
+
+As a change I have wrapped call to {{ParameterMetaData.getParameterCount()}} in a try-catch-block and set {{pmdKnownBroken}} to {{true}}.
+
+Please let me know if anythings needs to be changed.","16/Jul/14 14:51;carabolic;First patch
+
+Wraps the {{getParameterMetaData()}} in try-catch-block and sets {{pmdKnownBroken}} accordingly.","16/Jul/14 17:24;britter;The problem here is, that the SQLException from {{Statement.getParameterMetaData()}} may be thrown for different reasons, for example if the Statement has already been closed. How do we make the distinction?","17/Jul/14 09:26;carabolic;Yes you're right. But it already does that at the near bottom of {{AbstractQueryRunner#fillStatement(PreparedStatement, Object...)}} where it tries to get the parameter types.
+
+I don't really see a problem with the proposed approach. Even in the event of a {{SQLException}} that is legit, i.e. not related to broken {{ParameterMetaData}}, it will be re-thrown eventually. The real magic happens in the call to {{stmt.setObject(...)}} and if there is something wrong with the connection this will cause a proper {{SQLException}}.","18/Jul/14 09:00;britter;Nice assement! We're currently releasing 1.6, so this won't make it into the release, but I have no problem with including this in 1.7 or 1.6.1. However, it would be nice if you could provide some junit tests for your patch.
+
+Best regards, and thanks for your interest in this component!
+Benedikt","28/Jul/14 11:49;carabolic;Thanks for the nice words. Too bad it won't make it into 1.6, but I can live with SNAPSHOT.
+
+The problem with unit tests is, that the reported defect is highly driver dependent. Naturally I have a unit test, but I could only reproduce it with Oracle 12c, thus it needs a real connection. Is there already some way to mock a connection? Should I create a new {{AbstractQueryRunnerTest}} class along with {{MockPreparedStatement}} that produces an {{SQLException}} on {{getParameterMetaData()}}?
+
+I'd be more than happy to provide everything that is needed to properly fix this issue but I might need some advice on how to proceed from here.","28/Jul/14 12:45;carabolic;Ok I figured it out. I was looking for {{AbstractQueryRunnerTest.java}} when actually all test logic is in {{QueryRunnerTest.java}}, my bad.
+
+I have now created two new junit test cases (see {{DBUTILS-117-tests.java}}). What do you think?","11/Dec/14 17:56;terefang;using the Crate.io jdbc driver i get:
+
+Exception in thread ""main"" java.lang.NullPointerException
+	at org.apache.commons.dbutils.AbstractQueryRunner.fillStatement(AbstractQueryRunner.java:226)
+
+i would propose the followinf fix:
+
+{code:java}
+if (!pmdKnownBroken) {
+            pmd = stmt.getParameterMetaData();
+            if(pmd!=null) {
+             int stmtCount = pmd.getParameterCount();
+             int paramsCount = params == null ? 0 : params.length;
+ 
+             if (stmtCount != paramsCount) {
+                 throw new SQLException(""Wrong number of parameters: expected ""
+                         + stmtCount + "", was given "" + paramsCount);
+             }
+            }
+            else {
+                        pmdKnownBroken = true;
+            }
+        }
+{code}","12/Dec/14 07:29;britter;bq. using the Crate.io jdbc driver
+
+This looks more like a missing feature in the PreparedStatement implementation of crate.io (https://github.com/crate/crate-jdbc/blob/master/src/main/java/io/crate/client/jdbc/CratePreparedStatement.java#L439). I propose, that you report a feature request there. The JavaDoc of PreparedStatement doesn't state that it is legal for a PreparedStatement to return null from getParameterMetaData().","12/Dec/14 11:39;sebb;However, nor does the Javadoc state that null is not allowed.
+
+It only says it throws:
+
+bq.     SQLException - if a database access error occurs or this method is called on a closed PreparedStatement
+
+So what should the library do if it does not support the method?
+It would be ambiguous to return a ParameterMetaData with a count of 0, because then one cannot distinguish it from a statement which has no parameters.
+
+Note that there is example code [1] which explicitly checks for null. I'm sure there are others.
+
+Whether null is explicitly allowed or not, clearly it is considered a possibility, so I agree the code should check for it.
+
+[1] http://www.java2s.com/Code/JavaAPI/java.sql/PreparedStatementgetParameterMetaData.htm","12/Dec/14 12:29;terefang;thanks Sebb but also ...
+
+if getParameterMetaData() would throw an SQL-(Unsupported-)Exception the handling would also have to be fixed.
+
+the crate driver marks itself as jdbc-incomplient anyway in [1], which prompts me to expect null pointers.
+
+also jdbc-spec-level 2.0/3.0/4.0 cannot be checked with ease so its either try/catch or check for null pointer.
+
+[1] https://github.com/crate/crate-jdbc/blob/master/src/main/java/io/crate/client/jdbc/CrateDriver.java#L92","14/Dec/14 18:59;britter;bq. So what should the library do if it does not support the method?
+
+I would expect the driver to throw [SQLFeatureNotSupportedException|https://docs.oracle.com/javase/7/docs/api/java/sql/SQLFeatureNotSupportedException.html].
+
+I'm tempted to close this as won't fix. We simply can not checked for null on every place where an incomplete jdbc implementation my return null.","15/Dec/14 10:57;sebb;bq. I would expect the driver to throw SQLFeatureNotSupportedException.
+
+This is a subclass of SQLException.
+
+However the Javadoc for getParameterData() states:
+
+bq. SQLException - if a database access error occurs or this method is called on a closed PreparedStatement
+
+Is an unsupported feature really a database access error?
+
+So the Javadoc for getParameterData() is inconclusive. It does not say what should happen if the method is not supported.
+
+Therefore I think Commons should take steps to support implementations if it can easily do so.
+It already supports SQLFeatureNotSupportedException because it catches SQLException.
+[Though whether that is the correct thing to so is another matter, as there are other reasons for SQLException that are nothing to do with lack of support for getParameterData(), i.e. it may incorrectly assume it is not supported]
+
+It's clear from existing published code that returning null is an expected response, so I think DBUtils should support that.
+It's a very simple change. What harm can it do?","15/Dec/14 14:21;britter;Sure we can add a safety need. I just don't want to get in a mode, where we implement work arounds for missing driver features. Sebb, do you want to take care of this then?","15/Dec/14 16:05;sebb;I agree that working around random bugs in driver implementations is not sustainable. However in this case it seems to be common behaviour for drivers, and there is no indication that the behaviour is disallowed; nor is the fix difficult, nor does it have side effects. I will fix it.","15/Dec/14 16:13;sebb;Fix the NPE issue:
+
+URL: http://svn.apache.org/r1645683
+Log:
+DBUTILS-117 Error handling possible getParameterMetaData() results
+
+Modified:
+    commons/proper/dbutils/trunk/src/changes/changes.xml
+    commons/proper/dbutils/trunk/src/main/java/org/apache/commons/dbutils/AbstractQueryRunner.java
+","15/Dec/14 16:29;sebb;However, the original issue (as per the description) remains.
+
+The initial call to getParameterMetaData() needs to allow for catching at least SQLFeatureNotSupportedException, possibly other types of SQLE as well.
+The example quoted in the description was SQLSyntaxErrorException (which seems a bit odd).
+
+Should the code catch every SQLEx ? Ideally not, as that might mask genuine errors.","15/Dec/14 18:34;sebb;Looks like the SQLSyntaxErrorException is caused by an Oracle bug in ojdbc7 [1]
+
+I don't think we should allow for that; it's easy enough for the user to set pmdKnownbroken to true in such cases.
+
+[1] http://stackoverflow.com/questions/22629438/sqlsyntaxerrorexception-when-using-like-with-ojdbc7-jar","15/Dec/14 18:39;sebb;URL: http://svn.apache.org/r1645716
+Log:
+DBUTILS-117 Error handling possible getParameterMetaData() results
+- handle SQLFeatureNotSupportedException
+
+Modified:
+    commons/proper/dbutils/trunk/src/changes/changes.xml
+    commons/proper/dbutils/trunk/src/main/java/org/apache/commons/dbutils/AbstractQueryRunner.java","17/Apr/15 01:48;thecarlhall;[~sebb@apache.org], do you feel like this issue is as resolved as it will get given the changes you've made already?","28/May/15 16:23;Alexander Kirsch;Just for your interest. We faced a lot of Problems with the Oracle 12c JDBC driver which did not occur with the Oracle 11g JDBC Driver. 
+
+PreparedStatement.getParameterMetaData();
+
+caused a lot of problems. Some of this problems fixed by Oracle with Patch 20692348 for Version 12.1.0.2. We still have Problems with java.sql.ParameterMetaData.getParameterCount() which do not always return the right number of parameters if the parameters are surrounded bei round parenthesis.",04/Jun/15 23:58;sebb;Assuming fixed.,"16/Aug/16 17:13;robert.huffman@gmail.com;There is a problem on Maven Central. I am running into this defect using commons-dbutils 1.6 from Maven Central.
+
+If you look on the GitHub mirror, the call to getParameterMetaData in AbstractQueryRunner.fillStatement is surrounded by a try/catch.
+
+However, if you look at the sources jar on Maven Central  the source does not match. There is no try/catch in fillStatement. See http://repo1.maven.org/maven2/commons-dbutils/commons-dbutils/1.6/commons-dbutils-1.6-sources.jar
+
+","16/Aug/16 22:26;ggregory;[~rhuffman]:
+
+In version 1.6, there is no try-catch around {{getParameterMetaData()}}, please see  https://svn.apache.org/repos/asf/commons/proper/dbutils/tags/DBUTILS_1_6/src/main/java/org/apache/commons/dbutils/AbstractQueryRunner.java
+
+Gary
+","17/Aug/16 04:40;robert.huffman@gmail.com;Yeah, I finally put that together after I posted. I was confused by the
+branching (or lack thereof) on the GitHub mirror. I made the bad assumption
+that the branch 'trunk' is the last 'released' version.
+
+
+
+On Tue, Aug 16, 2016 at 3:27 PM, Gary Gregory (JIRA) <jira@apache.org>
+
+","24/Nov/16 10:48;fabrice.dutron@gmail.com;I have the same type of problem with getParameterMetaData method on oracle7.jar release 12.1.0.2 and DbUtil release 1.6.
+
+I have a table with a ""f"" inside and Oracle does not like this and my dba does not want to change the table name...
+
+There is an Oracle bug open for this bug (number 19583576) but it should only be corrected in the 12.2 release. Indeed if I do this : 
+
+{noformat}
+java -classpath ./ojdbc7-12.1.0.2.jar oracle.jdbc.driver.OracleParameterMetaDataParser ""SELECT   PRU_PER_ID , PRU_PRF_ID  FROM sys_profil_users where pru_tts_created_by = :param0_String and pru_tts_updated_by = :param1_String""
+SQL:SELECT   PRU_PER_ID , PRU_PRF_ID  FROM sys_profil_users where pru_tts_created_by = :param0_String and pru_tts_updated_by = :param1_String
+  SqlKind:SELECT, Parameter Count=2
+  Parameter SQL: SELECT pru_tts_updated_by FROM sys_prof
+{noformat}
+
+We can see that the table name is limited to ""sys_prof"" !
+
+When I use DbUtil, this generate me a ""ORA-00942: table or view does not exist"" error when calling the getParameterMetaData method.
+
+When I check the code of my 1.6 release of DbUtil I do not have the try catch. I use the pom :
+
+{code:xml}
+<scm>
+<connection>scm:svn:http://svn.apache.org/repos/asf/commons/proper/dbutils/tags/DBUTILS_1_6</connection>
+<developerConnection>scm:svn:https://svn.apache.org/repos/asf/commons/proper/dbutils/tags/DBUTILS_1_6</developerConnection>
+<url>http://svn.apache.org/viewvc/commons/proper/dbutils/tags/DBUTILS_1_6</url>
+</scm>
+ {code}
+
+If I look into the magnifest of the jar file :
+{code}
+Manifest-Version: 1.0
+Export-Package: org.apache.commons.dbutils;version=""1.6"",org.apache.co
+ mmons.dbutils.handlers;version=""1.6"",org.apache.commons.dbutils.wrapp
+ ers;version=""1.6""
+Implementation-Title: Apache Commons DbUtils
+Built-By: britter
+Tool: Bnd-2.1.0.20130426-122213
+Implementation-Vendor: The Apache Software Foundation
+Implementation-Vendor-Id: org.apache
+Specification-Title: Apache Commons DbUtils
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-SymbolicName: org.apache.commons.dbutils
+X-Compile-Target-JDK: 1.6
+Implementation-Version: 1.6
+Specification-Vendor: The Apache Software Foundation
+Bundle-Name: Apache Commons DbUtils
+Created-By: Apache Maven Bundle Plugin
+X-Compile-Source-JDK: 1.6
+Bundle-Vendor: The Apache Software Foundation
+Build-Jdk: 1.7.0_60
+Bundle-Version: 1.6.0
+Bnd-LastModified: 1405538584171
+Bundle-ManifestVersion: 2
+Bundle-Description: The Apache Commons DbUtils package is a set of  Ja
+ va utility classes for easing JDBC development.
+Bundle-DocURL: http://commons.apache.org/proper/commons-dbutils/
+Import-Package: javax.sql
+Include-Resource: META-INF/LICENSE.txt=LICENSE.txt,META-INF/NOTICE.txt
+ =NOTICE.txt
+Specification-Version: 1.6
+Implementation-Build: UNKNOWN_BRANCH@r??????; 2014-07-16 19:23:00+0000
+Archiver-Version: Plexus Archiver
+{code}
+
+So, my first question : what should I do in order to have the version with the try catch ?
+
+--- 
+
+Maybe the junit tests of dbUtil are made on a list of database drivers. I mean, some tests against the oracle7 12.1.0.2 driver should says ""Do not go"" 
+
+So my secound question : are there somewhere tests like this ? Or do you mock the driver implementation ?
+
+---
+I saw that there is two others releases in the pipe, 1.7 and 2.0 and I saw nowhere else some db framework block by these oracle driver metadata problems. 
+
+Last question : Do you plan to publish them in the near future and does these releases are still dependant of the metadata provided by the driver ?
+
+Sorry to have been so long, regards
+Fabrice
+
+","24/Nov/16 17:02;fabrice.dutron@gmail.com;I answer to myself :
+*Question 1* : I find the try catch in the master but this catch only an exception of type SQLFeatureNotSupportedException which is an answer to drivers well done but not bugged like Oracle one.
+
+*Question 3* :
+In fact I did not see that the user could specify the pmdKnownBroken parameter in the constructor of the AbstractQuerryRunner. With this parameter enabled, I think that we are working in the mode where we are not dependent with the metadata provider. Until now, all is working but it seems to be less secure with this parameter not enabled. The code impacted is the following :
+{code:java}
+ // VARCHAR works with many drivers regardless
+// of the actual column type. Oddly, NULL and
+// OTHER don't work with Oracle's drivers.
+int sqlType = Types.VARCHAR;
+if (!pmdKnownBroken) {
+    try {
+        sqlType = pmd.getParameterType(i + 1);
+    } catch (SQLException e) {
+        pmdKnownBroken = true;
+    }
+}
+stmt.setNull(i + 1, sqlType);
+{code}
+
+bq. //VARCHAR works with many drivers regardless of the actual column type. Oddly, NULL and OTHER don't work with Oracle's drivers.
+
+Not sur to well understand what's this mean...","29/Jan/18 17:29;MightyDash;Following code also triggers the error:
+{code:java}
+new QueryRunner().update(tenantDB, ""execute as user = 'MY_USER'"");{code}
+ Driver:
+{code:java}
+ <dependency>
+     <groupId>com.microsoft.sqlserver</groupId>
+     <artifactId>mssql-jdbc</artifactId>
+     <version>6.2.2.jre8</version>
+ </dependency>{code}
+Exception thrown:
+{code:java}
+com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'as'.
+SQLState = S0001
+vendorCode = 156{code}
+
+ Work around:
+{code:java}
+new QueryRunner(true).update(tenantDB, ""execute as user = 'MY_USER'"");{code}"
+Multiple calls to getObject on stream columns causes exception,DBUTILS-111,12658536,Bug,Open,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Minor,,,bitlooter,bitlooter,18/Jul/13 14:34,22/Jul/13 17:54,08/Jun/19 23:42,,1.5,,,,0,,,,"I use derby and it doesn't allow more than one call to rs.get[Object|Clob|Blob|AsciiStream|CharacterStream|BinaryStream] on a the same column in a resultset row.
+
+In BeanProcessor.processColumn (and possibly other places in dbutils), there is a null check against rs.getObject at the beginning of the function. When the column being retrieved is a clob/blob column, this will throw an exception on derby because when you make the subsequent get[Object|Clob|Blob|AsciiStream|CharacterStream|BinaryStream] call, it counts as more than one retrieval request.
+
+The fix will be a rewrite to ensure clob/blob/stream columns are retrieved only once per resultset row.
+
+
+You can find more information on the derby team thought process on this issue:
+http://db.apache.org/derby/releases/release-10.6.1.0.html",,43200,43200,,0%,43200,43200,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,338730,,,Mon Jul 22 17:41:20 UTC 2013,,,,,,0|i1mfa7:,339050,,,,,,,,,"22/Jul/13 17:41;bitlooter;I should add that while it would be nice to fix this in the main distribution, one can easily overcome this issue by extending the row processor implementations.",,,,,,,,,,,,,,,,,,,,,,,,,,,

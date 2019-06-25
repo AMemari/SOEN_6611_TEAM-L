@@ -1,0 +1,162 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Due Date,Votes,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Reference),Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment
+com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'WHERE',DBUTILS-102,12610728,Bug,Resolved,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Critical,Not A Problem,,mario444,mario444,06/Oct/12 21:45,07/Oct/12 17:21,08/Jun/19 23:42,07/Oct/12 17:21,1.4,1.5,,0,"I have some sql with one parameter (typ). Using prepared statement works good, but using the same sql and DBUtils throw exception. When i remove parameter, DBUtils works good too. JUnit test below.
+
+{code:java|title=TestDB.java} 
+package com.test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
+public class TestDB {
+	
+	Logger log = Logger.getLogger(TestDB.class);
+
+	@Test
+	public void dbutils() throws SQLException {
+		QueryRunner q = new QueryRunner(MyDataSource.getInstance());
+		List<Import2> l = q.query(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"", new ResultSetHandler<List<Import2>>(){
+
+			@Override
+			public List<Import2> handle(ResultSet rs) throws SQLException {
+				List<Import2> l = new ArrayList<Import2>();
+				while(rs.next()) {
+					Import2 i = new Import2();
+					i.setTyp(rs.getString(""typ""));
+					i.setId(rs.getLong(""id""));
+					l.add(i);
+				}
+				return l;
+			}
+
+			
+		}, new Object[]{""TYPE1""});
+		log.info(l);
+	}
+	
+	@Test
+	public void jdbc() throws SQLException {
+		Connection c = MyDataSource.getInstance().getConnection();
+		PreparedStatement pst = c.prepareStatement(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"");
+		pst.setString(1, ""TYPE1"");
+		ResultSet rs = pst.executeQuery();
+		List<Import2> l = new ArrayList<Import2>();
+		while(rs.next()) {
+			Import2 i = new Import2();
+			i.setTyp(rs.getString(""typ""));
+			i.setId(rs.getLong(""id""));
+			l.add(i);
+		}
+		log.info(l);
+	}
+
+	class Import2 {
+		String typ;
+		Long id;
+		public String getTyp() {
+			return typ;
+		}
+		public void setTyp(String typ) {
+			this.typ = typ;
+		}
+		public Long getId() {
+			return id;
+		}
+		public void setId(Long id) {
+			this.id = id;
+		}
+		
+	}
+}
+{code} 
+
+Exception:
+
+{code:java} 
+java.sql.SQLException: com.microsoft.sqlserver.jdbc.SQLServerException: Incorrect syntax near the keyword 'WHERE'. Query: select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10 Parameters: [TYPE1]
+		at org.apache.commons.dbutils.AbstractQueryRunner.rethrow(AbstractQueryRunner.java:363)
+		at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:350)
+		at org.apache.commons.dbutils.QueryRunner.query(QueryRunner.java:288)
+		at com.test.TestDB.dbutils(TestDB.java:24)
+		at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+		at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+		at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+		at java.lang.reflect.Method.invoke(Unknown Source)
+		at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:45)
+		at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+		at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:42)
+		at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)
+		at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:263)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+		at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+		at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+		at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+		at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+		at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+		at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+		at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+		at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+		at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+		at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+{code} 
+
+Test Model
+
+{code}
+CREATE TABLE import2 (
+    id integer IDENTITY NOT NULL,
+    typ nvarchar(20),
+);
+{code}
+",Windows 7; SQL Server 2012 Express Edition; Microsoft JDBC Driver 4.0 for SQL Server,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2012-10-07 01:53:09.579,,,false,,,,,,,,,,,,244881,,,Sun Oct 07 17:21:11 UTC 2012,,,,,,0|i05ukf:,32049,,,,,,,,,"07/Oct/12 01:53;sebb;Syntax error in test case:
+
+"") a where""
+
+Note the spurious ""a"" character.","07/Oct/12 05:30;mario444;I think, Exception applies to the first ""where"", but ok... let query be:
+{code}select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) as x{code}
+I get the same exception using DbUtils.","07/Oct/12 07:17;mario444;I've tested Spring JdbcTemplate with the same query and works good. Sample code below.
+
+{code}
+@Test
+public void spring() {
+	 JdbcTemplate  jdbcTemplate  =  new  JdbcTemplate(DecyzjeDataSource.getInstance());
+	 List<Import2> l = jdbcTemplate.query(""select * from (select *, row_number() over( order by id desc ) as row from import2 where typ = ? ) a where row > 10"",  new Object[]{""TYPE1""}, new RowMapper<Import2>(){
+
+		@Override
+		public Import2 mapRow(ResultSet arg0, int arg1) throws SQLException {
+			Import2 i = new Import2();
+			i.setId(arg0.getLong(""id""));
+			i.setTyp(arg0.getString(""typ""));
+			return i;
+		}
+		 
+	 });
+	 log.info(l);
+}
+{code}","07/Oct/12 13:21;wspeirs;I think this is simply a meta-data issue. Have you tried using the following constructor: http://commons.apache.org/dbutils/apidocs/org/apache/commons/dbutils/QueryRunner.html#QueryRunner(javax.sql.DataSource, boolean)
+
+Basically, the SQL server driver has a bug/issue with parameter metadata in some queries. If you tell DBUtils to stop using parameter metadata, then it should work without issue.","07/Oct/12 17:21;mario444;Yes! That's it. Thank You very much William.
+Using parameter pmdKnownBroken = true do the trick.
+{code}QueryRunner q = new QueryRunner(MyDataSource.getInstance(), true);{code}"
+fillStatement should handle BLOBS and alikes correctly,DBUTILS-90,12553792,Bug,Open,DBUTILS,Commons DbUtils,software,issues@commons.apache.org,,http://commons.apache.org/dbutils/,Major,,,hceylan@batoo.org,hceylan@batoo.org,03/May/12 16:03,18/Apr/15 19:07,08/Jun/19 23:42,,1.4,,,0,"According to JDBC Spec http://docs.oracle.com/javase/6/docs/api/java/sql/PreparedStatement.html#setObject(int, java.lang.Object)
+certain types cannot be passed to setObject.
+
+DBUtils currently uses setObject for all the types.","$ uname -a
+Linux ceylan 3.2.0-24-generic #38-Ubuntu SMP Tue May 1 16:18:50 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+$ java -version 
+java version ""1.7.0_03""
+OpenJDK Runtime Environment (IcedTea7 2.1.1pre) (7~u3-2.1.1~pre1-1ubuntu2)
+OpenJDK 64-Bit Server VM (build 22.0-b10, mixed mode)
+",,,,,,,,,DBUTILS-55,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,238001,,,2012-05-03 16:03:56.0,,,,,,0|i19xm7:,266080,,,,,,,,,,,,,

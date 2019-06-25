@@ -1,0 +1,1861 @@
+Summary,Issue key,Issue id,Issue Type,Status,Project key,Project name,Project type,Project lead,Project description,Project url,Priority,Resolution,Assignee,Reporter,Creator,Created,Updated,Last Viewed,Resolved,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Affects Version/s,Fix Version/s,Component/s,Due Date,Votes,Labels,Labels,Labels,Description,Environment,Original Estimate,Remaining Estimate,Time Spent,Work Ratio,Σ Original Estimate,Σ Remaining Estimate,Σ Time Spent,Security Level,Outward issue link (Duplicate),Outward issue link (Reference),Outward issue link (Supercedes),Attachment,Attachment,Custom field (Attachment count),Custom field (Blog - New Blog Administrators),Custom field (Blog - New Blog PMC),Custom field (Blog - Write access),Custom field (Blog Administrator?),Custom field (Blogs - Admin for blog),Custom field (Blogs - Email Address),Custom field (Blogs - Existing Blog Access Level),Custom field (Blogs - Existing Blog Name),Custom field (Blogs - New Blog Write Access),Custom field (Blogs - Username),Custom field (Bug Category),Custom field (Bugzilla - Email Notification Address),Custom field (Bugzilla - List of usernames),Custom field (Bugzilla - PMC Name),Custom field (Bugzilla - Project Name),Custom field (Bugzilla Id),Custom field (Change Category),Custom field (Complexity),Custom field (Date of First Response),Custom field (Discovered By),Custom field (Docs Text),Custom field (Enable Automatic Patch Review),Custom field (Epic Link),Custom field (Existing GitBox Approval),Custom field (External issue ID),Custom field (External issue URL),Custom field (Flags),Custom field (Git Notification Mailing List),Custom field (Git Repository Import Path),Custom field (Git Repository Name),Custom field (Git Repository Type),Custom field (GitHub Options),Custom field (Github Integration),Custom field (Github Integrations - Other),Custom field (Global Rank),Custom field (INFRA - Subversion Repository Path),Custom field (Initial Confluence Contributors),Custom field (Last public comment date),Custom field (Machine Readable Info),Custom field (New-TLP-TLPName),Custom field (Priority),Custom field (Project),Custom field (Protected Branch),Custom field (Rank),Custom field (Rank (Obsolete)),Custom field (Severity),Custom field (Severity),Custom field (Source Control Link),Custom field (Space Description),Custom field (Space Key),Custom field (Space Name),Custom field (Test and Documentation Plan),Custom field (Testcase included),Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment,Comment
+"signature change of applyRules(java.util.Calendar, java.lang.StringBuffer) is not binary compatible",LANG-1245,12978572,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Blocker,Fixed,chonton,chonton,chonton,14/Jun/16 05:15,19/Oct/16 15:24,08/Jun/19 23:15,15/Jun/16 17:40,3.5,,,,,,3.5,lang.time.*,,0,,,,"add back method
+ java.lang.StringBuffer applyRules(java.util.Calendar, java.lang.StringBuffer)",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed Jun 15 17:40:52 UTC 2016,,,,,,0|i2zf1r:,9223372036854775807,,,,,,,,,15/Jun/16 17:40;chonton;Commit [10ebb32ce1806821518f52074f0d171fab20b3ea|https://github.com/apache/commons-lang/commit/10ebb32ce1806821518f52074f0d171fab20b3ea],,,,,,,,,,,,,,,
+After version Commons-lang3.4 DateFormatUtils has a bug,LANG-1462,13237655,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,,,elunlng,elunlng,05/Jun/19 06:49,05/Jun/19 06:49,08/Jun/19 23:14,,3.5,3.6,3.7,3.8,3.8.1,3.9,,lang.time.*,,0,,,,"The code is as follows ：
+
+Calendar cale = Calendar.getInstance();
+ System.out.println(""Old time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+ cale.setTimeZone(TimeZone.getTimeZone(""JST""));
+ System.out.println(""New time is "" + DateFormatUtils.format(cale, ""yyyyMMddHHmmss""));
+
+ 
+
+The results of commons-lang3 3.4：
+
+Old time is 20190605144536
+New time is 20190605154536
+
+ 
+
+The results of the version after commons-lang3 3.4:
+
+Old time is 20190605144536
+New time is 20190605144536
+
+ 
+
+We found that the time zone setting was invalidated when it was formatted
+
+ ",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,2019-06-05 06:49:22.0,,,,,,0|z03fgg:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,,
+WordUtils.wrap throws StringIndexOutOfBoundsException,LANG-1292,13023739,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Critical,Fixed,dmjones500,mhankus,mhankus,28/Nov/16 14:00,22/Dec/16 15:25,08/Jun/19 23:15,01/Dec/16 19:32,3.5,,,,,,3.6,,,0,,,,"
+Running following line of code results in StringIndexOutOfBoundsException (in 3.5 release)
+{code}
+WordUtils.wrap(""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",70);
+{code}
+
+{code}
+java.lang.StringIndexOutOfBoundsException: String index out of range: -1
+
+	at java.lang.String.substring(String.java:1967)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:328)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:176)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:100)
+	at pl.netpr.commons.string.TextToolsTest.testWrap(TextToolsTest.java:245)
+	
+{code}
+
+It worked fine with 3.4 releae. 
+
+
+
+
+
+",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-11-28 21:58:04.242,,,false,,,,,,,,,,,,,9223372036854775807,,,Thu Dec 01 19:31:31 UTC 2016,,,,,,0|i36ufr:,9223372036854775807,,,,,,,,,28/Nov/16 21:58;pascalschumacher;caused by this commit: https://github.com/apache/commons-lang/commit/0fe9685c8a78ba2d780a3ec1e1a323990dc6d218,"01/Dec/16 19:31;dmjones500;Thanks for reporting this. Now fixed:
+
+{quote}
+Repository: commons-lang
+Updated Branches:
+ refs/heads/master 8c1a0d2ee -> a08ec31db
+
+
+Fixes LANG-1292: WordUtils.wrap throws StringIndexOutOfBoundsException
+
+Project: http://git-wip-us.apache.org/repos/asf/commons-lang/repo
+Commit: http://git-wip-us.apache.org/repos/asf/commons-lang/commit/a08ec31d
+Tree: http://git-wip-us.apache.org/repos/asf/commons-lang/tree/a08ec31d
+Diff: http://git-wip-us.apache.org/repos/asf/commons-lang/diff/a08ec31d
+{quote}",,,,,,,,,,,,,,
+StringUtils#normalizeSpace normalizeSpace should not replace non-breaking spaces with normal whitespace,LANG-1282,13017830,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,pascalschumacher,pascalschumacher,03/Nov/16 21:25,14/Nov/17 17:41,08/Jun/19 23:15,,3.5,,,,,,,,,1,,,,"As of 3.4 StringUtils#normalizeSpace does not normalize non-breaking whitespace anymore. Therefore it shouldn't replace a non-breaking whitespace white breaking whitespace, but both assertions succeed:
+
+{code}
+assertEquals(""a b"", StringUtils.normalizeSpace(""a\u00A0b""));
+assertEquals(""a  b"", StringUtils.normalizeSpace(""a\u00A0 b""));
+{code}
+
+source: https://github.com/apache/commons-lang/pull/184",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-12-04 08:35:43.087,,,false,,,,,,,,,,,,,9223372036854775807,,,Tue Nov 14 17:41:13 UTC 2017,,,,,,0|i35tz3:,9223372036854775807,,,,,,,,,"04/Dec/16 08:35;dmjones500;I agree with this. 
+
+If {{Character.isWhitespace()}} is the test, then the Javadocs also need to be updated to make this crystal clear. The current documentation waffles on a bit about XML vs Java white-space conventions; IMO we should just concisely explain what this method does.","14/Nov/17 17:41;dh_gis;IMO StringUtils#normalizeSpace should be idempotent, i.e.
+{code:java}
+String s = ""a\u00A0 b"";
+assertEquals(StringUtils.normalizeSpace(s), StringUtils.normalizeSpace(StringUtils.normalizeSpace(s)));
+{code}
+Hence non-breaking spaces should not be replaced by normal spaces. Simply remove the replacement in the following line
+{code:java}
+newChars[count++] = (actualChar == 160 ? 32 : actualChar);
+{code}
+
+",,,,,,,,,,,,,,
+"ConstructorUtils.invokeConstructor(Class, Object...) regression",LANG-1350,13094842,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,,bjkail,bjkail,15/Aug/17 19:25,10/Nov/17 16:41,08/Jun/19 23:15,21/Aug/17 15:29,3.5,3.6,,,,,3.7,lang.reflect.*,,0,,,,"As of LANG-1115, the following test program no longer works:
+{noformat}
+public class ConstructorUtilsTest {
+	@Test
+	public void test() throws Exception {
+		ConstructorUtils.invokeConstructor(TestCtor.class, new A() {}, new B[0]);
+	}
+
+	public static class TestCtor {
+		public TestCtor(A a, B... b) {}
+	}
+
+	public static class A {}
+	public static class B {}
+}
+{noformat}",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-08-19 18:10:54.981,,,false,,,,,,,,,,,,,9223372036854775807,,,Sat Aug 26 12:59:37 UTC 2017,,,,,,0|i3itjz:,9223372036854775807,,,,,,,,,19/Aug/17 18:10;ggregory;Patches welcome ;-),"20/Aug/17 18:26;githubbot;GitHub user bjkail opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/283
+
+    LANG-1350: Fix varargs array invokeConstructor
+
+    If ConstructorUtils.invokeConstructor(Class, Object...) is invoked with an array of arguments whose classes do not match a constructor exactly (for example, a subclass is used) and an array is used for a varargs parameter, then the array is not matched to the varargs parameter type.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/bjkail/commons-lang LANG-1350
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/283.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #283
+    
+----
+commit a54613f4c8774c34a9942b3ffe93d803fcc452cd
+Author: Brett Kail <bjkail@gmail.com>
+Date:   2017-08-20T18:25:41Z
+
+    LANG-1350: Fix varargs array invokeConstructor
+    
+    If ConstructorUtils.invokeConstructor(Class, Object...) is invoked with
+    an array of arguments whose classes do not match a constructor exactly
+    (for example, a subclass is used) and an array is used for a varargs
+    parameter, then the array is not matched to the varargs parameter type.
+
+----
+","20/Aug/17 18:34;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/12913326/badge)](https://coveralls.io/builds/12913326)
+    
+    Coverage increased (+0.01%) to 95.194% when pulling **a54613f4c8774c34a9942b3ffe93d803fcc452cd on bjkail:LANG-1350** into **05d9518038ae8d2ac9f11b91b731f47b909a9bad on apache:master**.
+
+","20/Aug/17 18:34;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/12913326/badge)](https://coveralls.io/builds/12913326)
+    
+    Coverage increased (+0.01%) to 95.194% when pulling **a54613f4c8774c34a9942b3ffe93d803fcc452cd on bjkail:LANG-1350** into **05d9518038ae8d2ac9f11b91b731f47b909a9bad on apache:master**.
+
+",21/Aug/17 15:29;ggregory;In Git master. Please verify and fix.,"26/Aug/17 10:21;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/283
+  
+    Thanks for the pull request! :+1: 
+    
+    It was merged by @garydgregory in https://github.com/apache/commons-lang/commit/cc94767e7eabdfcf9d1cab1d8d1d8556864394c6
+    
+    It would be nice if you could close the pull request.
+    
+    Thanks!
+","26/Aug/17 12:59;githubbot;Github user bjkail closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/283
+",,,,,,,,,
+ArrayUtils.toArray(T... items) has unsafe use of varargs,LANG-1295,13027421,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,dmjones500,dmjones500,12/Dec/16 11:09,08/Sep/17 17:10,08/Jun/19 23:15,,3.5,,,,,,,lang.*,,0,,,,"{{ArrayUtils.toArray(T... items)}} is marked as {{@SafeVarargs}}, but I suspect the use of the varargs is unsafe.
+
+An example, drawn heavily from [this StackOverflow answer|http://stackoverflow.com/a/14252221/474189], demonstrates this:
+
+{code:java}
+static <T> T[] arrayOfTwo(T a, T b) {
+    return ArrayUtils.toArray(a, b);
+}
+
+@Test
+public void testBadVarArgs() throws Exception {
+    @SuppressWarnings(""unused"") // Need to assign to trigger exception
+    String[] result = arrayOfTwo(""foo"", ""bar"");
+}
+{code}
+
+the above code throws an exception: {{java.lang.ClassCastException: [Ljava.lang.Object; cannot be cast to [Ljava.lang.String;}}.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-12-12 22:48:54.081,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed May 24 19:54:26 UTC 2017,,,,,,0|i37h5z:,9223372036854775807,,,,,,,,,"12/Dec/16 14:29;dmjones500;Unfortunately, this method seems to do exactly what you're not supposed to do with varargs.
+
+We may have to deprecate this and warn people off using it.
+
+I'm going to create another issue for the {{addAll}} method, since the solution (and discussion thereof) is likely to be different.","12/Dec/16 22:48;pascalschumacher;A version of commons-lang containing this method with the @SafeVarargs annotation has not been released yet, so the annotation can just be removed.","14/Dec/16 05:48;dmjones500;Agreed, but the bigger question on this issue and LANG-1296 is can we fix the underlying problem and, if not, how best to cope with that.","18/Dec/16 07:20;dmjones500;The only solution I can think of here is to deprecate the original method and instead offer:
+
+{code:java}
+    @SafeVarargs
+    public static <T> T[] toArrayOf(Class<T> clazz, final T... items) {
+        if (items == null) {
+            return null;
+        }
+        
+        @SuppressWarnings(""unchecked"")
+        T[] result = (T[]) Array.newInstance(clazz, items.length);
+        
+        System.arraycopy(items, 0, result, 0, items.length);
+        return result;
+    }
+{code}
+
+I believe this new method is safe, since it only relies on the items being of type {{T}}, but doesn't care whether {{items}} is a {{T[]}}.
+
+Thoughts and comments on this issue very welcome!",20/Jan/17 16:53;pascalschumacher;As I first step I have just removed the SafeVarargs annotation from the method.,"24/May/17 19:54;joehni;I am definitely -1 for deprecation. We have a lot of unit tests for this method, that demonstrate, what actually works (incl. indirect generic calls). In the case above, you get a compiler warning for the return value of the method arrayOfTwo if the @SafeVarargs is missing.",,,,,,,,,,
+ArrayUtils.addAll() has unsafe use of varargs,LANG-1296,13027464,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,dmjones500,dmjones500,12/Dec/16 14:33,08/Sep/17 17:10,08/Jun/19 23:15,,3.5,,,,,,,lang.*,,0,,,,"{{ArrayUtils.addAll()}} is marked as {{@SafeVarargs}}, but I suspect the use of the varargs is unsafe.
+
+An example, drawn heavily from [this StackOverflow answer|http://stackoverflow.com/a/14252221/474189], demonstrates this:
+
+{code:java}
+static <T> T[] arrayOfTwo(T a, T b) {
+   return ArrayUtils.addAll(null, a, b);
+}
+
+@Test
+public void testBadVarArgs() throws Exception {
+   @SuppressWarnings(""unused"") // Need to assign to trigger exception
+   String[] result = arrayOfTwo(""foo"", ""bar"");
+}
+{code}
+
+the above code throws an exception: {{java.lang.ClassCastException: [Ljava.lang.Object; cannot be cast to [Ljava.lang.String;}}.
+
+Here, the {{null}} input array causes the method to return a clone of the vararg array. This is what triggers the problem.
+
+I faced a similar issue when adding the {{ArrayUtils.insert(...)}} methods and I solved it by returning {{null}} if the input array is {{null}}. We can't do this here without breaking behaviour.",,,,,,,,,,,LANG-1295,,,,0.0,,,,,,,,,,,,,,,,,,,2016-12-12 22:48:00.568,,,false,,,,,,,,,,,,,9223372036854775807,,,Fri Jan 20 16:50:44 UTC 2017,,,,,,0|i37hfj:,9223372036854775807,,,,,,,,,"12/Dec/16 22:48;pascalschumacher;A version of commons-lang containing this method with the @SafeVarargs annotation has not been released yet, so the annotation can just be removed.",20/Jan/17 16:50;pascalschumacher;I have just removed the SafeVarargs annotation from the method.,,,,,,,,,,,,,,
+RandomStringUtils#random can enter infinite loop if end parameter is to small,LANG-1287,13021776,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,pascalschumacher,pascalschumacher,18/Nov/16 15:41,12/Jun/17 12:04,08/Jun/19 23:15,18/Nov/16 15:53,3.5,,,,,,3.6,lang.*,,0,,,,"{quote}I faced that the random method can cause an infinite loop. It can be caused if the end parameter is too low for generating either numbers (< 48) or letters (<65). I added some exception tests to make the cases clear. Basically, if we call the random function with for example numbers = true && end < 48 the validation for Character.isDigit(ch) will fail and we increment count count++.{quote}
+
+Ivan Morozov https://github.com/apache/commons-lang/pull/211",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,2016-11-18 15:41:33.0,,,,,,0|i36ibj:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,,
+NullPointerException in FastDateParser$TimeZoneStrategy,LANG-1285,13021044,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,ilgrosso,ilgrosso,16/Nov/16 06:06,12/Jun/17 12:04,08/Jun/19 23:15,16/Nov/16 20:47,3.5,,,,,,3.6,lang.time.*,,0,,,,"It seems that after LANG-1186 was fixed, and before 3.5 went out, the bug was re-introduced.
+
+One of my customers is getting the following error (I am actually not able to reproduce it) with 3.5:
+
+{code}
+java.lang.NullPointerException
+        at org.apache.commons.lang3.time.FastDateParser$TimeZoneStrategy.<init>(FastDateParser.java:869)
+        at org.apache.commons.lang3.time.FastDateParser.getLocaleSpecificStrategy(FastDateParser.java:637)
+        at org.apache.commons.lang3.time.FastDateParser.getStrategy(FastDateParser.java:606)
+        at org.apache.commons.lang3.time.FastDateParser.access$100(FastDateParser.java:73)
+        at org.apache.commons.lang3.time.FastDateParser$StrategyParser.letterPattern(FastDateParser.java:234)
+        at org.apache.commons.lang3.time.FastDateParser$StrategyParser.getNextStrategy(FastDateParser.java:220)
+        at org.apache.commons.lang3.time.FastDateParser.init(FastDateParser.java:167)
+        at org.apache.commons.lang3.time.FastDateParser.<init>(FastDateParser.java:153)
+        at org.apache.commons.lang3.time.FastDateFormat.<init>(FastDateFormat.java:394)
+        at org.apache.commons.lang3.time.FastDateFormat.<init>(FastDateFormat.java:378)
+        at org.apache.commons.lang3.time.FastDateFormat$1.createInstance(FastDateFormat.java:100)
+        at org.apache.commons.lang3.time.FastDateFormat$1.createInstance(FastDateFormat.java:97)
+        at org.apache.commons.lang3.time.FormatCache.getInstance(FormatCache.java:81)
+        at org.apache.commons.lang3.time.FastDateFormat.getInstance(FastDateFormat.java:128)
+{code}","Centos 7, en_GB locale",,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-11-16 06:09:42.993,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed Nov 16 20:46:51 UTC 2016,,,,,,0|i36dsv:,9223372036854775807,,,,,,,,,"16/Nov/16 06:09;githubbot;GitHub user ilgrosso opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/212
+
+    [LANG-1285] Replicate the fix for LANG-1186
+
+    
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/ilgrosso/commons-lang master
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/212.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #212
+    
+----
+commit b61c9b3594bec226dd26ef9af966ebaa6ebf78dc
+Author: Francesco Chicchiriccò <ilgrosso@apache.org>
+Date:   2016-11-16T06:07:43Z
+
+    [LANG-1285] Replicate the fix for LANG-1186
+
+----
+","16/Nov/16 06:11;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/212
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8847626/badge)](https://coveralls.io/builds/8847626)
+    
+    Coverage increased (+0.0004%) to 93.563% when pulling **b61c9b3594bec226dd26ef9af966ebaa6ebf78dc on ilgrosso:master** into **0f6a292a29fedd49741310cd517ac4ba907bf8d4 on apache:master**.
+
+","16/Nov/16 20:46;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/212
+","16/Nov/16 20:46;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/212
+  
+    Thanks! 👍
+",,,,,,,,,,,,
+LocaleUtils#toLocale does not support language followed by UN M.49 numeric-3 area code followed by variant,LANG-1320,13064380,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,britter,britter,britter,17/Apr/17 10:49,12/Jun/17 12:04,08/Jun/19 23:15,17/Apr/17 10:58,3.5,,,,,,3.6,lang.*,,0,,,,"Follow up for LANG-1312:
+
+It is possible to parse ""en_001"" but not ""en_001_US"". When parsing a string with three segments, it should be possible to use UN M.49 area codes as well.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,Mon Apr 17 10:58:06 UTC 2017,,,,,,0|i3dotz:,9223372036854775807,,,,,,,,,17/Apr/17 10:58;britter;Fixed in fb4803623b8f089a8dfd265a68461f4283e7ffad,,,,,,,,,,,,,,,
+MethodUtils.invokeMethod throws ArrayStoreException if using varargs arguments and smaller types than the method defines,LANG-1310,13039464,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,eicki,eicki,01/Feb/17 13:36,12/Jun/17 12:04,08/Jun/19 23:15,19/Mar/17 16:17,3.5,,,,,,3.6,lang.reflect.*,,1,,,,"Since release 3.5 and due to the changes of LANG-1115 an ArrayStoreException occurs on MethodUtils.invokeMethod if using varargs arguments and smaller types than the method defines (e.g. int vs long).
+
+{code}
+  @Test
+  public void testMethodUtilsInvokeMethodVarArgs () throws Exception {
+    MyObject object = new MyObject ();
+    MethodUtils.invokeMethod (object, ""doSomething"", 1);
+  }
+
+  public static class MyObject {
+    public void doSomething (long... args) {
+      System.out.println (""doSomething"");
+    }
+  }
+{code}
+
+throws 
+
+{code}
+java.lang.ArrayStoreException
+	at java.lang.System.arraycopy(Native Method)
+	at org.apache.commons.lang3.reflect.MethodUtils.getVarArgs(MethodUtils.java:497)
+	at org.apache.commons.lang3.reflect.MethodUtils.toVarArgs(MethodUtils.java:463)
+	at org.apache.commons.lang3.reflect.MethodUtils.invokeMethod(MethodUtils.java:234)
+	at org.apache.commons.lang3.reflect.MethodUtils.invokeMethod(MethodUtils.java:270)
+	at org.apache.commons.lang3.reflect.MethodUtils.invokeMethod(MethodUtils.java:147)
+{code}
+
+In 3.4. a NoSuchMethodException had been thrown, but in 3.5 the code now finds the matching method but fails then with above exception.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-03-12 16:35:26.696,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Mar 19 16:17:35 UTC 2017,,,,,,0|i39grb:,9223372036854775807,,,,,,,,,"12/Mar/17 16:35;drajakumar;The issue is because in the below line from method getVarArgs (in MethodUtils class)
+
+System.arraycopy(args, methodParameterTypes.length - 1, varArgsArray, 0, varArgLength);
+
+for the example shared in the ticket 
+args is of type java.lang.Integer and varArgsArray is of type java.lang.Long
+
+and hence the exception ArrayStoreException is thrown.
+
+The reason for args to be of type java.lang.Integer is because at the top of the execution of invokeMethod, in the below line, when args is passed (which is nothing but 1 a primitive type) is considered as  java.lang.Integer and not primitive type int
+final Class<?>[] parameterTypes = ClassUtils.toClass(args);
+
+parameterTypes in this case is java.lang.Integer and not primitive type int.
+
+This is the inference made on this so far.
+
+Working on it further, will update the ticket with more details/fix.","13/Mar/17 16:52;githubbot;GitHub user drajakumar opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/256
+
+    fix for LANG-1310
+
+    
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/drajakumar/commons-lang master
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/256.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #256
+    
+----
+
+----
+","14/Mar/17 13:35;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/256
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/10583606/badge)](https://coveralls.io/builds/10583606)
+    
+    Coverage increased (+0.06%) to 94.588% when pulling **6daa417fe9826d0bfa9c2366fc520a1519e8579f on drajakumar:master** into **39a2a6fa38c5e4d1293e00f98a89698a962d6775 on apache:master**.
+
+","14/Mar/17 15:32;githubbot;Github user jvz commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/256#discussion_r105941464
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java ---
+    @@ -110,32 +114,32 @@ private void privateStuff() {
+     
+             @SuppressWarnings(""unused"")
+             private String privateStringStuff() {
+    -        	return ""privateStringStuff()"";
+    +         return ""privateStringStuff()"";
+    --- End diff --
+    
+    Think you could fix the formatting here?
+","14/Mar/17 20:30;githubbot;Github user Abrasha commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/256#discussion_r106018789
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java ---
+    @@ -357,16 +369,23 @@ public void testInvokeMethod() throws Exception {
+             assertEquals(""foo(int)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.BYTE_ONE));
+             assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    -                NumberUtils.LONG_ONE));
+    -        assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.DOUBLE_ONE));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(int, String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     5, ""a"", ""b"", ""c""));
+    -
+    +        assertEquals(""foo(long...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    +                1L, 2L));
+    +        
+    +        try {
+    +            MethodUtils.invokeMethod(testBean, ""foo"",
+    +                    1, 2);
+    +            fail(""should throw NoSuchMethodException"");
+    +        } catch (final NoSuchMethodException e) {
+    --- End diff --
+    
+    Maybe it will be better to extract it to another test method with expected exception?
+    
+    ```
+    @Test(expected = NoSuchMethodException.class)
+    public void methodName(){
+    
+    }
+    ```
+","14/Mar/17 20:49;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/256
+  
+    @drajakumar It's really great to get a pull request for this. :+1:  
+    
+    I took a look at this issue some time ago, but gave up trying to solve it. Sadly I'm too tired for a review at the moment. I will get back to you in a few days, if nobody has reviewed/merged the pull request already.
+","14/Mar/17 20:50;githubbot;Github user PascalSchumacher commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/256#discussion_r106023700
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java ---
+    @@ -357,16 +369,23 @@ public void testInvokeMethod() throws Exception {
+             assertEquals(""foo(int)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.BYTE_ONE));
+             assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    -                NumberUtils.LONG_ONE));
+    -        assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.DOUBLE_ONE));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(int, String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     5, ""a"", ""b"", ""c""));
+    -
+    +        assertEquals(""foo(long...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    +                1L, 2L));
+    +        
+    +        try {
+    +            MethodUtils.invokeMethod(testBean, ""foo"",
+    +                    1, 2);
+    +            fail(""should throw NoSuchMethodException"");
+    +        } catch (final NoSuchMethodException e) {
+    --- End diff --
+    
+    In general I agree, but commons lang has a lot similar tests, so it's o.k/more consistent with existing code. 
+","14/Mar/17 21:13;githubbot;Github user Abrasha commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/256#discussion_r106028522
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java ---
+    @@ -357,16 +369,23 @@ public void testInvokeMethod() throws Exception {
+             assertEquals(""foo(int)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.BYTE_ONE));
+             assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    -                NumberUtils.LONG_ONE));
+    -        assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.DOUBLE_ONE));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(int, String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     5, ""a"", ""b"", ""c""));
+    -
+    +        assertEquals(""foo(long...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    +                1L, 2L));
+    +        
+    +        try {
+    +            MethodUtils.invokeMethod(testBean, ""foo"",
+    +                    1, 2);
+    +            fail(""should throw NoSuchMethodException"");
+    +        } catch (final NoSuchMethodException e) {
+    --- End diff --
+    
+    @PascalSchumacher what do you think about refactoring existing tests? Or it is fine to community? I can take care about it
+","18/Mar/17 11:29;githubbot;Github user Claudenw commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/256#discussion_r106778971
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java ---
+    @@ -357,16 +369,23 @@ public void testInvokeMethod() throws Exception {
+             assertEquals(""foo(int)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.BYTE_ONE));
+             assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    -                NumberUtils.LONG_ONE));
+    -        assertEquals(""foo(double)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     NumberUtils.DOUBLE_ONE));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     ""a"", ""b"", ""c""));
+             assertEquals(""foo(int, String...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+                     5, ""a"", ""b"", ""c""));
+    -
+    +        assertEquals(""foo(long...)"", MethodUtils.invokeMethod(testBean, ""foo"",
+    +                1L, 2L));
+    +        
+    +        try {
+    +            MethodUtils.invokeMethod(testBean, ""foo"",
+    +                    1, 2);
+    +            fail(""should throw NoSuchMethodException"");
+    +        } catch (final NoSuchMethodException e) {
+    --- End diff --
+    
+    I find that the expect exception works well only with very short tests.  In this case if any of the earlier method calls throws the NoSuchMethodException the test will not fail.  In my opinion the current construct is the better one.
+","18/Mar/17 11:50;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/256
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/10660236/badge)](https://coveralls.io/builds/10660236)
+    
+    Coverage increased (+0.04%) to 94.571% when pulling **2ef748c444b50ccce4819d876225cd134a903139 on drajakumar:master** into **39a2a6fa38c5e4d1293e00f98a89698a962d6775 on apache:master**.
+
+","18/Mar/17 11:53;githubbot;Github user drajakumar commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/256
+  
+    the comment on indentation from@jvz is fixed now.
+","19/Mar/17 16:15;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/256
+","19/Mar/17 16:15;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/256
+  
+    Thanks! :+1: 
+",19/Mar/17 16:17;pascalschumacher;Thanks for reporting and thanks for the pull request!,,
+java.lang.StringIndexOutOfBoundsException resulting in WordUtils.wrap,LANG-1302,13030113,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Duplicate,dmjones500,developer1011,developer1011,22/Dec/16 13:49,12/Jun/17 12:04,08/Jun/19 23:15,22/Dec/16 15:25,3.5,,,,,,3.6,,,0,,,,"Commons-lang3:3.5
+
+Issue code:
+String appName = ""Google Play Store"";
+appName = WordUtils.wrap(appName, appName.length()/2);
+System.out.println(appName);
+
+Resulting exception:
+Exception in thread ""main"" java.lang.StringIndexOutOfBoundsException: String index out of range: -3
+	at java.lang.String.substring(String.java:1967)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:328)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:176)
+	at org.apache.commons.lang3.text.WordUtils.wrap(WordUtils.java:100)
+	at removedups.Main2.main(Main2.java:32)
+
+This exception does not occur in commons-lang3:3.4 though","Mac, Android, Linux",,,,,,,,,LANG-1292,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-12-22 15:25:03.611,,,false,,,,,Important,,,,,,,,9223372036854775807,,,Thu Dec 22 15:25:03 UTC 2016,,,,,,0|i37xrr:,9223372036854775807,,,,,,,,,"22/Dec/16 15:25;dmjones500;I can't reproduce this from the current trunk. Suspect this is a duplicate of LANG-1292 and is now fixed. Will be released in 3.6.
+
+Thanks for reporting the issue.",,,,,,,,,,,,,,,
+StrBuilder#replaceAll ArrayIndexOutOfBoundsException,LANG-1276,13013460,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,skotsj,skotsj,19/Oct/16 10:17,12/Jun/17 12:04,08/Jun/19 23:15,23/Oct/16 15:07,3.2.1,3.4,3.5,,,,3.6,lang.text.*,,0,,,,"There is a bug in replace for StrBuilder, seems the use of nonupdated buffer and character count is off.
+
+new StrBuilder(""Dear X, hello X."").replaceAll(StrMatcher.stringMatcher(""X""), ""012345678901234567"");
+
+yields
+
+{noformat}
+java.lang.ArrayIndexOutOfBoundsException: 49
+	at org.apache.commons.lang3.text.StrMatcher$StringMatcher.isMatch(StrMatcher.java:372)
+	at org.apache.commons.lang3.text.StrBuilder.replaceImpl(StrBuilder.java:2115)
+	at org.apache.commons.lang3.text.StrBuilder.replace(StrBuilder.java:2088)
+	at org.apache.commons.lang3.text.StrBuilder.replaceAll(StrBuilder.java:2049)
+{noformat}",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-10-19 11:08:27.283,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Oct 23 15:07:01 UTC 2016,,,,,,0|i3530n:,9223372036854775807,,,,,,,,,"19/Oct/16 11:08;britter;[~skotsj] we just released Commons Lang 3.5 Do you see the same problem with 3.5?
+
+Thank you!",19/Oct/16 11:13;skotsj;Seems to be still present in 3.5,20/Oct/16 06:43;britter;Patches welcome!,"23/Oct/16 02:11;githubbot;GitHub user andyklimczak opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/200
+
+    LANG-1276
+
+    Fix issue of buf using nonupdated buffer in StrBuilder replaceImpl
+    Avoid array OoB error by keeping variable buf consistent with buffer
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/andyklimczak/commons-lang LANG-1276
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/200.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #200
+    
+----
+commit 0dd44493d70188ed6145cdb130537532cbc68522
+Author: Andy Klimczak <andyklimczak@fastmail.com>
+Date:   2016-10-23T01:54:14Z
+
+    LANG-1276
+    Avoid array OOB error by keeping variable buf consistent with buffer in
+    StrBuilder replaceImpl
+
+----
+","23/Oct/16 02:16;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/200
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8463388/badge)](https://coveralls.io/builds/8463388)
+    
+    Coverage increased (+0.02%) to 93.57% when pulling **0dd44493d70188ed6145cdb130537532cbc68522 on andyklimczak:LANG-1276** into **e2dbe55d56bd6c1209276050f527d36717e33e1d on apache:master**.
+
+","23/Oct/16 02:16;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/200
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8463388/badge)](https://coveralls.io/builds/8463388)
+    
+    Coverage increased (+0.02%) to 93.57% when pulling **0dd44493d70188ed6145cdb130537532cbc68522 on andyklimczak:LANG-1276** into **e2dbe55d56bd6c1209276050f527d36717e33e1d on apache:master**.
+
+","23/Oct/16 15:05;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/200
+","23/Oct/16 15:05;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/200
+  
+    Thanks! :+1: 
+",23/Oct/16 15:07;pascalschumacher;Pull request merged. Thanks for the pull request and thanks for reporting!,,,,,,,
+Multiple calls of org.apache.commons.lang3.concurrent.LazyInitializer.initialize() are possible,LANG-1144,12836937,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,ggregory,waldemar,waldemar,10/Jun/15 20:07,12/Jun/17 12:04,08/Jun/19 23:15,23/Oct/16 17:37,3.4,3.5,,,,,3.6,lang.concurrent.*,,0,,,,"It is possible to create a construct, that allows multiple calls of LazyInitializer.initialize, when calculations (which can be very expensive) return null as result. 
+In the Javadoc is described that the initialize method will be called only on the first access
+
+{code:java}
+    /**
+     * Creates and initializes the object managed by this {@code
+     * LazyInitializer}. This method is called by {@link #get()} when the object
+     * is accessed for the first time. An implementation can focus on the
+     * creation of the object. No synchronization is needed, as this is already
+     * handled by {@code get()}.
+     *
+     * @return the managed data object
+     * @throws ConcurrentException if an error occurs during object creation
+     */
+    protected abstract T initialize() throws ConcurrentException;
+{code}
+
+The Junit Test can be something like this:
+*(fix can be appplied from attached patch-file)*
+{code:java}
+package edu.test;
+
+import static org.junit.Assert.assertEquals;
+
+import org.apache.commons.lang3.concurrent.ConcurrentException;
+import org.apache.commons.lang3.concurrent.LazyInitializer;
+import org.junit.Test;
+
+public class LazyInitializerTest {
+
+  private int lazyinitCounter = 0;
+
+  private LazyInitializer<Object> lazyIinit = new LazyInitializer<Object>() {
+
+    @Override
+    protected Object initialize() throws ConcurrentException {
+      lazyinitCounter++;
+      return doSomeVeryExpensiveOperations();
+    }
+  };
+  
+  
+  private Object doSomeVeryExpensiveOperations() {
+    // do db calls
+    // do some complex math calculations
+    // the result of them all is null
+    return null;
+  }
+  
+  
+  @Test
+  public void testInitialization() throws Exception {
+    lazyIinit.get();
+    lazyIinit.get();
+    assertEquals(""Multiple call of LazyInitializer#initialize"", 1, lazyinitCounter);
+  }
+
+}
+
+
+{code}",Java 1.8 on Windows 7 x64,,,,,,,,,,,,10/Jun/15 21:00;waldemar;0001-LANG-1144-allow-nulls-as-return-value.patch;https://issues.apache.org/jira/secure/attachment/12738916/0001-LANG-1144-allow-nulls-as-return-value.patch,22/Oct/16 20:04;ggregory;commons-lang.patch;https://issues.apache.org/jira/secure/attachment/12834824/commons-lang.patch,2.0,,,,,,,,,,,,,,,,,,,2015-06-11 20:03:44.899,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Oct 23 17:37:32 UTC 2016,,,,,,0|i2fwbj:,9223372036854775807,,,,,,,,,"11/Jun/15 20:03;oheger;I do not think that this is really a critical problem. The use case that a longer and complex calculation yields a null result at the end seems a bit odd to me.
+
+And - as you have a demonstrated in your patch - there is an easy work-around for the problem: Just use a special null object or a wrapper type like MutableObject or the new Java 8 type Optional. I would be reluctant to add such means to the current implementation because this increases complexity and is (slightly) less efficient. This is IMHO a too high price for such a corner use case.
+
+What should be done in any case is to add a note to the Javadocs describing this problem.","22/Oct/16 16:47;ggregory;This seems like a valid bug report to me.
+
+I do not think it reasonable to ask user to create a ""special"" null value for a JDBC Connection or Statement, for example:
+
+{code:java}
+LazyInitializer<java.sql.Connection>
+LazyInitializer<java.sql.Statement>
+{code}
+
+Now, I have to go and implement a ""null"" implementation of all the interfaces I want to use? That's not acceptable.
+
+Furthermore, what if I have a {{ComplexSomething}} class with many private final fields that get initialized on construction to create a valid object? I now have to change the class to allow for all null values? Not acceptable either.","22/Oct/16 16:51;ggregory;I wish I had paid more attention when this class was added because {{org.apache.commons.lang3.concurrent.LazyInitializer.get()}} throwing a custom {{ConcurrentException}} does not make sense to me either. That's because if I catch an error while I am building my object, it might have nothing to do with concurrency. The fact that the LI class helps me deal with concurrency matters, yes. This should be an {{IllegalStateException}}. We could change this for 4.0 I suppose.","22/Oct/16 17:19;ggregory;Proposed patch. You could do away with the Null class and just use a ""new Object()"" as the null value.",22/Oct/16 20:04;ggregory;Patch that follows the same double lock idiom.,"23/Oct/16 16:13;oheger;The patch looks good to me, but I would propose to make the special noInit object even *static*.
+
+Regarding exception handling: I think, the currently implemented solution is in-line with the approach taken by the JDK. See for instance {{Future.get()}}, which throws an {{ExecutionException}}. There is also some support for the exception type in the {{ConcurrentUtils}} class.","23/Oct/16 17:37;ggregory;In Git master. 
+
+Please verify and close.",,,,,,,,,
+RandomStringUtils' random method goes into an infinite loop,LANG-1284,13020016,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Won't Fix,pascalschumacher,anedumar,anedumar,11/Nov/16 03:45,25/May/17 12:58,08/Jun/19 23:15,25/May/17 12:58,3.5,,,,,,,,,0,,,,"The following code goes into an infinite loop.
+
+{code}
+RandomStringUtils.random(1, 0, 0, false, true, new char[]{ 'a' })
+{code}
+
+I know it doesn't make sense to pass letters=false and then a letter array, but a bug in the caller's code will make him fall into this trap.
+",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-11-12 07:13:39.541,,,false,,,,,,,,,,,,,9223372036854775807,,,Thu May 25 12:58:36 UTC 2017,,,,,,0|i367gf:,9223372036854775807,,,,,,,,,"12/Nov/16 07:13;dmjones500;I'm not sure if this can be prevented without very inefficient scanning of the input array. Perhaps the best approach here is a warning in the Javadocs.
+
+The Javadocs need a clean up anyway, I can't really understand the opening paragraphs:
+
+{quote}
+If start and end are both 0, start and end are set to ' ' and 'z', the ASCII printable characters, will be used, unless letters and numbers are both false, in which case, start and end are set to 0 and Integer.MAX_VALUE.
+
+If set is not null, characters between start and end are chosen.{quote}",16/Nov/16 22:44;eltonnunes;Maybe the better is a warning in the Javadoc.,25/May/17 12:58;pascalschumacher;RandomStringUtils will be deprecated in commons-lang 3.6 in favor of RandomStringGenerator from commons-text. Please use [RandomStringGenerator|https://commons.apache.org/proper/commons-text/javadocs/api-release/org/apache/commons/text/RandomStringGenerator.html] instead.,,,,,,,,,,,,,
+MultilineRecursiveToStringStyle StackOverflowError when object is an array ,LANG-1319,13062106,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,dmjones500,sergpro,sergpro,06/Apr/17 13:37,19/May/17 20:45,08/Jun/19 23:15,19/May/17 20:45,3.5,,,,,,3.6,lang.builder.*,,1,,,,"
+MultilineRecursiveToStringStyle style = new MultilineRecursiveToStringStyle();
+String result = ToStringBuilder.reflectionToString(new String[] {""1"",""2""}, style);
+
+java.lang.StackOverflowError
+	at org.apache.commons.lang3.builder.ToStringStyle.appendStart(ToStringStyle.java:409)
+	at org.apache.commons.lang3.builder.ToStringBuilder.<init>(ToStringBuilder.java:262)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.<init>(ReflectionToStringBuilder.java:481)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(ReflectionToStringBuilder.java:300)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(ReflectionToStringBuilder.java:157)
+	at org.apache.commons.lang3.builder.RecursiveToStringStyle.appendDetail(RecursiveToStringStyle.java:74)
+	at org.apache.commons.lang3.builder.MultilineRecursiveToStringStyle.reflectionAppendArrayDetail(MultilineRecursiveToStringStyle.java:142)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.reflectionAppendArray(ReflectionToStringBuilder.java:633)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.appendFieldsIn(ReflectionToStringBuilder.java:538)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(ReflectionToStringBuilder.java:711)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(ReflectionToStringBuilder.java:301)
+	at org.apache.commons.lang3.builder.ReflectionToStringBuilder.toString(ReflectionToStringBuilder.java:157)
+	at org.apache.commons.lang3.builder.RecursiveToStringStyle.appendDetail(RecursiveToStringStyle.java:74)
+	at org.apache.commons.lang3.builder.MultilineRecursiveToStringStyle.reflectionAppendArrayDetail(MultilineRecursiveToStringStyle.java:142)",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-05-19 20:45:54.683,,,false,,,,,,,,,,,,,9223372036854775807,,,Fri May 19 20:45:54 UTC 2017,,,,,,0|i3datz:,9223372036854775807,,,,,,,,,19/May/17 20:45;dmjones500;Thanks for the report. Fixed in commit 7587431.,,,,,,,,,,,,,,,
+"org.apache.commons.lang3.time.DateFormatUtils.formatUTC (10L, """") throws java.lang.StringIndexOutOfBoundsException exception",LANG-1327,13068441,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Not A Problem,,glebrito,glebrito,02/May/17 14:23,03/May/17 05:36,08/Jun/19 23:15,03/May/17 05:26,3.4,3.5,,,,,,lang.time.*,,0,,,,"I am calling method formatUTC() of class
+org.apache.commons.lang3.time.DateFormatUtils
+as in this code:
+java.lang.String var2 = org.apache.commons.lang3.time.DateFormatUtils.formatUTC (10L, """")
+In version 3.4, the call is throwing a
+java.lang.StringIndexOutOfBoundsException exception.
+But in version 3.5 it returns an empty string ("""").
+According the documentation, the parameter patter can not be null.
+Is correct this method accept empty string as pattern parameter?",JRE 8,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-05-03 05:26:13.838,,,false,,,,,Important,,,,,,,,9223372036854775807,,,Wed May 03 05:36:37 UTC 2017,,,,,,0|i3edan:,9223372036854775807,,,,,,,,,"03/May/17 05:26;chonton;Empty format is legal, even if non-sensical. Since there are no format specifiers, the output should be an empty string. ","03/May/17 05:36;kinow;(was writing probably at the same time [~chonton] closed the issue. Agree with his comment, but will leave mine here too FWIW)
+
+Looks like that changed indeed from 3.4 to 3.5, but not in DateFormatUtils, but in FastDatePrinter. See:
+
+{noformat}git diff LANG_3_4 master src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java{noformat}
+
+Instead of simply calling the format method, now it's checking which rules it can apply, and in your case not applying anything, and simply returning an empty String.
+
+Adding a note to DateFormatUtils#format(Long, String) for that, would mean adding a note to all other methods that receive a pattern argument iff the behaviour is consistent (i.e. if for all these methods, passing an empty pattern, returns an empty string). However, I would argue that it would make more sense to document an exception, such as StringIndexOutOfBoundsException, rather than document that we won't throw an exception, and instead will return empty.
+
+Passing an empty pattern, users might guess that they will receive an empty date. I would be fine if the consensus was to document all methods stating that an empty pattern will return an empty formatted date but, my preferred solution is to close this as Won't Fix. ",,,,,,,,,,,,,,
+ToStringStyle should not use WeakHashMap as registry,LANG-1322,13065881,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,fillg1,fillg1,21/Apr/17 13:41,21/Apr/17 13:41,08/Jun/19 23:15,,3.5,,,,,,,lang.builder.*,,0,,,,"org.apache.commons.lang3.builderToStringStyle uses a WeakHashMap as REGISTRY to detect that an object was already added to the StringBuilder to avoid recursion for cyclic object graphs. This is used by RecursiveToStringStyle.
+In a low memory situation when the garbage collector starts, the WeakHashMap is cleared and some parts of the potentially cyclic object graph will be logged again.
+We run in this problem, when we accidentally logged an HttpServletRequest and a HttpSession using a ReflectiontoStringBuilder   ",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,2017-04-21 13:41:14.0,,,,,,0|i3dxi7:,9223372036854775807,,,,,,,,,,,,,,,,,,,,,,,,
+FastDateFormat in 3.5 failed test of 3.3.2 while parsing 2014-12-15T19:50:00-05:00,LANG-1305,13031028,Bug,Resolved,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Won't Fix,chonton,nathanael4ever@gmail.com,nathanael4ever@gmail.com,29/Dec/16 07:44,20/Feb/17 03:24,08/Jun/19 23:15,20/Feb/17 03:24,3.5,,,,,,,lang.time.*,,0,,,,"FastDateFormat.getInstance(""yyyy-MM-dd'T'HH:mm:ssZ"", TimeZone.getTimeZone(""GMT-05:00"")).parse(""2014-12-15T19:50:00-05:00"");
+
+This will work on 3.3.2, however, when I upgraded to 3.5 it failed like this:
+
+Exception in thread ""main"" java.text.ParseException: Unparseable date: 2014-12-15T19:50:00-05:00
+
+This made me suprized and I have to carefully check my unit tests to see whether upgrade to 3.5 is reliable.","Windows7, JDK1.8U112",,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-01-28 15:06:39.296,,,false,,,,,,,,,,,,,9223372036854775807,,,Mon Feb 20 03:24:33 UTC 2017,,,,,,0|i383f3:,9223372036854775807,,,,,,,,,"28/Jan/17 15:06;Ayush Chaubey;According to the API the date pattern in FastDateFormat follows SimpleDateFormat.
+In the issue above the specified date is -
+2014-12-15T19:50:00-05:00
+
+whereas it should be -
+2014-12-15T19:50:00-0500
+
+The reason is that letter 'Z' is used to represent RFC 822 time zone and its format is like - 0500","20/Feb/17 03:24;chonton;If you need the colon in the input, then use the 'X' format specifier.  Without the colon, use the 'z' or 'Z' format specifier.  The fact that a prior version of FastDateFormat would accept the colon was a bug.",,,,,,,,,,,,,,
+RandomStringUtils random method can overflow and return characters outside of specified range,LANG-1286,13021590,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,dmjones500,dmjones500,dmjones500,17/Nov/16 21:00,14/Dec/16 06:34,08/Jun/19 23:15,14/Dec/16 06:34,3.5,,,,,,3.6,lang.*,,0,,,,"{{RandomStringUtils.random()}} can overflow and return characters that are outside the range specified by the {{start}} and {{end}} parameters. This is because it casts a random integer in the range {{[start,end)}} to a character, without checking if this will overflow.
+
+Example failing test case:
+
+{code}
+@Test
+public void testCharOverflow() throws Exception {
+    int start = 65535;
+    int end = Integer.MAX_VALUE;
+    
+    @SuppressWarnings(""serial"")
+    Random fixedRandom = new Random() {
+        @Override
+        public int nextInt(int n) {
+            // Prevents selection of 'start' as the character
+            return 1;
+        }
+    };
+    
+    String result = RandomStringUtils.random(1, start, end, false, false, null, fixedRandom);
+    char c = result.charAt(0);
+    assertTrue(c >= start && c < end);
+}
+{code}",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed Dec 14 06:34:34 UTC 2016,,,,,,0|i36h67:,9223372036854775807,,,,,,,,,"14/Dec/16 06:34;dmjones500;Fixed in commit 7f7fa03ea.
+
+The class needs an overhaul to make better use of the code point methods in {{Character}}. I'll work on that in future commits.
+
+{quote}
+Repository: commons-lang
+Updated Branches:
+ refs/heads/master 35c27d025 -> 7f7fa03ea
+
+
+Fix for LANG-1286: RandomStringUtils random method can overflow...
+
+Project: http://git-wip-us.apache.org/repos/asf/commons-lang/repo
+Commit: http://git-wip-us.apache.org/repos/asf/commons-lang/commit/f643b4fa
+Tree: http://git-wip-us.apache.org/repos/asf/commons-lang/tree/f643b4fa
+Diff: http://git-wip-us.apache.org/repos/asf/commons-lang/diff/f643b4fa
+{quote}",,,,,,,,,,,,,,,
+Separated annotations HashCodeExclude and EqualsExclude break the general contract for the hashCode method in java.lang.Object,LANG-1203,12935948,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,,,wildhai,wildhai,02/Feb/16 12:27,04/Dec/16 16:20,08/Jun/19 23:15,,3.5,,,,,,,lang.builder.*,,0,,,,"Since version 3.5-SNAPSHOT the annotations HashCodeExclude and EqualsExclude exist in component [lang.builder.*|https://git-wip-us.apache.org/repos/asf?p=commons-lang.git;a=tree;f=src/main/java/org/apache/commons/lang3/builder;hb=HEAD].
+
+A separated handling of both annotations breaks the general contract for the hashCode method in java.lang.Object (""If two objects are equal according to the equals(Object) method, then calling the hashCode method on each of the two objects must produce the same integer result."").
+
+Rather there should exist only one exclude annotation dedicated to both methods, like 'EqualsAndHashCodeExclude'.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-12-04 16:20:57.483,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Dec 04 16:20:57 UTC 2016,,,,,,0|i2sagv:,9223372036854775807,,,,,,,,,"04/Dec/16 16:20;dmjones500;There may be some reasons why excluding a value from a hash code makes sense. See [this StackOverflow question|http://stackoverflow.com/questions/4748211/java-equal-and-hashcode-based-on-different-fields] for some discussion on that topic.
+
+I think there's an argument for having two annotations:
+
+* HashCodeExclude
+* EqualsAndHashCodeExclude
+
+I can't see how you can exclude something from equals and not from hash code.
+",,,,,,,,,,,,,,,
+DateFormatUtilsTest.testSMTP depends on the default Locale,LANG-1126,12826526,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,britter,britter,britter,01/May/15 09:52,19/Oct/16 07:00,08/Jun/19 23:15,01/May/15 20:09,3.5,,,,,,3.5,lang.time.*,,0,,,,"DateFormatUtilsTest.testSMTP depends on the default Locale and expects this to be Locale.EN. When running the test with the different default Locale (e.g. Locale.GERMANY) it will fail with the following message:
+
+{code}
+org.junit.ComparisonFailure: 
+Expected :Sun, 08 Jun 2003 10:11:12 -0300
+Actual   :So, 08 Jun 2003 10:11:12 -0300
+{code}
+
+Solution: Set the default Locale before the test runs and reset it afterwards.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,Fri May 01 20:09:19 UTC 2015,,,,,,0|i2e6f3:,9223372036854775807,,,,,,,,,"01/May/15 20:09;britter;{code}
+$ git merge LANG-1126 --no-ff
+Merge made by the 'recursive' strategy.
+ src/changes/changes.xml                                              |  1 +
+ src/test/java/org/apache/commons/lang3/time/DateFormatUtilsTest.java | 34 ++++++++++++++++++++--------------
+ 2 files changed, 21 insertions(+), 14 deletions(-)
+{code}",,,,,,,,,,,,,,,
+Performance regression due to cyclic hashCode guard,LANG-1229,12969830,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Fixed,pascalschumacher,marschall,marschall,15/May/16 14:27,08/Jun/16 20:34,08/Jun/19 23:15,08/Jun/16 20:34,3.5,,,,,,3.5,lang.builder.*,,0,,,,"We observed a severe performance regression in HashCodeBuilder in 3.5 trunk compared to 3.4 release. We get about 20% of the throughput in 3.5 trunk for common cases compared to 3.4 release. Previously there was no noticeable overhead of using HashCodeBuilder. Investigating we found the performance degradation was caused by the fix for LANG-456. It causes the method to be too large to be inlined and escape analysis to fail (see LANG-1218 for a related discussion).
+
+We currently do not see a way to keep the 3.4 performance and support cyclic graphs. The append methods have not supported cycles for so long we feel it's de facto part of the contract by now. Since neither the JDK nor the Guava hashCode helper methods support cyclic graphs we don't believe this is an unreasonable assumption. In addition EqualsBuilder#append(Object,Object) doesn't support cycles.
+
+If supporting cycles is a requirement we propose the introduction of new #appendRecursive (or named differently) methods to both HashCodeBuilder and EqualsBuilder that add cycle guards. If that is an acceptable compromise we would be willing to provide patches.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-05-15 18:04:27.95,,,false,,,,,,,,,,,,,9223372036854775807,,,Wed Jun 08 20:33:05 UTC 2016,,,,,,0|i2xziv:,9223372036854775807,,,,,,,,,15/May/16 18:04;ggregory;Or maybe the new method is still called append but takes a boolean indicating support for cycles/recursion.,16/May/16 08:24;marschall;Personally I don't like boolean flags to methods that change the behaviour of methods. Personally I prefer two different methods for two different things. But if a boolean flag is an acceptable compromise then I'll take it.,16/May/16 17:52;marschall;A potential patch https://github.com/apache/commons-lang/pull/142,27/May/16 15:46;pascalschumacher;The patch is missing the new method (maybe call it something similar to #appendWithCycleCheck?).,28/May/16 10:19;marschall;The patch is indeed missing the new method. I'm unsure what to name it.,"05/Jun/16 15:18;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/142
+  
+    To keep the code clean the pull request should also undo the other additions to `HashCodeBuilderTest` done with https://github.com/apache/commons-lang/commit/b5749b4f54b30c0c2050e456c12cfcf516434f13
+","08/Jun/16 20:28;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/142
+","08/Jun/16 20:28;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/142
+  
+    Thanks! :+1: 
+",08/Jun/16 20:33;pascalschumacher;Pull request applied. Thanks. I reopened LANG-456.,,,,,,,
+lang.reflect.FieldUtils.getAllFields() returns false result,LANG-1140,12833926,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Major,Not A Problem,,yungho,yungho,30/May/15 01:01,30/May/15 04:15,08/Jun/19 23:15,30/May/15 04:15,3.5,,,,,,Patch Needed,lang.reflect.*,,0,,,,"JUnit test returns errors below.
+   FieldUtilsTest.testGetAllFields:154 expected:<5> but was:<7>
+   FieldUtilsTest.testGetAllFieldsList:168 expected:<5> but was:<7>
+
+Both methods has a parameter ""FieldUtils.getAllFields(PublicChild.class).length .""
+PublicChild which has 1 field extends Parent which has 4 fields.
+
+I made a dummy class which contains no field, the result of getAllFields() was 1, not 0.
+Lang-3.4 doesn't have this problem.
+
+
+{code:title=PublicChild2.java|borderStyle=solid}
+public class PublicChild2 {
+
+	static final String VALUE = ""child"";
+}
+{code}
+
+{code:title=FieldUtilsTest.java|borderStyle=solid}
+assertEquals(1, PublicChild2.class.getDeclaredFields().length);
+{code}
+
+Result: fails. returns 2","Linux ubuntu 3.16.0-38-generic x86_64 GNU/Linux
+java version ""1.7.0_79""
+OpenJDK Runtime Environment (IcedTea 2.5.5) (7u79-2.5.5-0ubuntu0.14.10.2)
+OpenJDK 64-Bit Server VM (build 24.79-b02, mixed mode)",,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,,,,false,,,,,,,,,,,,,9223372036854775807,,,Sat May 30 04:15:23 UTC 2015,,,,,,0|i2fek7:,9223372036854775807,,,,,,,,,30/May/15 04:15;yungho;Not the problem of lang. The problem was caused by jacoco plugin.,,,,,,,,,,,,,,,
+ThresholdCircuitBreaker checkState method contradicts javadoc/interface,LANG-1333,13072406,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,kinow,vasusridhar,vasusridhar,16/May/17 11:44,15/Jun/17 22:25,08/Jun/19 23:15,,3.5,,,,,,,lang.concurrent.*,,1,,,,"The [ThresholdCircuitBreaker impl |https://github.com/apache/commons-lang/blob/master/src/main/java/org/apache/commons/lang3/concurrent/ThresholdCircuitBreaker.java]
+does not seem to comply with the interface. The [checkState | https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/concurrent/AbstractCircuitBreaker.html#checkState--] method should return whether the circuit is closed or not. However, it returns isOpen(). This contradicts what's given in the java doc example 
+
+Example:
+
+ThresHoldCircuitBreaker breaker = new ThresholdCircuitBreaker(10L);
+
+breaker.incrementAndCheckState(9L) returns false meaning the circuit is closed and the requests should pass through. The checkState method should return true for below example in javadoc to be correct
+{code}/**
+public void handleRequest(Request request) {
+ *     long memoryUsed = estimateMemoryUsage(request);
+ *     if (breaker.incrementAndCheckState(memoryUsed)) {
+ *         // actually handle this request
+ *     } else {
+ *         // do something else, e.g. send an error code
+ *     }
+ * }
+*/{code}",java 8,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-06-15 10:40:09.29,,,false,,,,,,,,,,,,,9223372036854775807,,,Thu Jun 15 22:24:51 UTC 2017,,,,,,0|i3f1qf:,9223372036854775807,,,,,,,,,15/Jun/17 10:40;atulagrawal;Your observation looks correct to me. An easy way is to fix documentation but it wouldn't be natural in terms of code readability.,"15/Jun/17 22:24;kinow;Indeed, good points. We are going to probably re-work some of the circuit breakers for upcoming Java 9 module system. So we might as well update this one too, either adjusting documentation or code. Will think about for a while and re-read the code of all circuit breakers during the next days.
+
+Thanks for reporting a clear and detailed issue.
+Bruno",,,,,,,,,,,,,,
+Javadoc of StringUtils.ordinalIndexOf is contradictory.,LANG-1281,13017670,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,pascalschumacher,aioobe,aioobe,03/Nov/16 14:57,12/Jun/17 12:04,08/Jun/19 23:15,06/Nov/16 11:20,3.5,,,,,,3.6,lang.*,,0,,,,"Javadoc of StringUtils.ordinalIndexOf states the following:
+
+""The code increments the starting index by one, rather than by the length of the match string, so matches may overlap.""
+
+But then gives the following example:
+
+StringUtils.ordinalIndexOf(""aabaabaa"", """", 2) = 0
+
+which clearly indicates that it does *not* increment the starting index by one in case of the empty string.
+
+
+",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-11-03 20:15:28.112,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Nov 06 11:20:58 UTC 2016,,,,,,0|i35szb:,9223372036854775807,,,,,,,,,"03/Nov/16 20:15;githubbot;GitHub user PascalSchumacher opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/205
+
+    LANG-1281: Javadoc of StringUtils.ordinalIndexOf is contradictory
+
+    
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/PascalSchumacher/commons-lang StringUtils#ordialIndexOf_javadoc
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/205.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #205
+    
+----
+commit e5997106b568d321462278911980b8c81d0679e6
+Author: pascalschumacher <pascalschumacher@gmx.net>
+Date:   2016-11-03T20:14:36Z
+
+    LANG-1281: Javadoc of StringUtils.ordinalIndexOf is contradictory
+
+----
+","03/Nov/16 21:52;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    +1
+","03/Nov/16 21:55;githubbot;Github user aioobe commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    But the implementation of the method does NOT increment by 1 if given the empty string. So this change causes the documentation to contradict the implementation.
+","03/Nov/16 22:09;kinow;I had voted +1 for the pull request, but then read the Javadoc again, and now I'm not sure about it :-)
+
+>""The code increments the starting index by one, rather than by the length of the match string, so matches may overlap.""
+
+I'm not sure if there's anything wrong with the above statement for StringUtils#ordinalOf.
+
+> But the implementation of the method does NOT increment by 1 if given the empty string. So this change causes the documentation to contradict the implementation.
+
+Given the empty string, as far as I can tell, the implementation returns (as in the doc) ""the n-th index of the search CharSequence"", which is 0. It never increments the starting index (which is done here https://github.com/apache/commons-lang/blob/ff4497aff8cc9de4e0b2c6e5e23e5b6550f76f29/src/main/java/org/apache/commons/lang3/StringUtils.java#L1477).
+
+As it was given an empty string, this check in ordinalOf method returns the empty string: https://github.com/apache/commons-lang/blob/ff4497aff8cc9de4e0b2c6e5e23e5b6550f76f29/src/main/java/org/apache/commons/lang3/StringUtils.java#L1466","03/Nov/16 22:19;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    `...incrementing the starting index by one after each successful match, so matches may overlap.` For empty String there is no match, so no incrementing is done.
+    
+    Please do not hesitate to suggest better solution for this issue. Thanks!
+","03/Nov/16 22:36;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    I guess we should hide the implementation details and just state `Note: Matches may overlap.`.
+    
+    What do you think?
+","03/Nov/16 22:51;githubbot;Github user aioobe commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    Of course there are matches for the empty string. a) there is both a leading and trailing empty string in ""a"" for instance. b) the implementation doesn't return INDEX_NOT_FOUND when given the empty string.
+    
+    As far as I can tell, the implementation increments the position with 1 each time a match is found, except if the sought string is the empty string, in which case it increments with 0 (conceptually that is; in practice it obviously returns 0 right away for that case, since if it increments by 0 each match, it will never move away from 0).
+    
+    Personally I think the implementation is messy and hard to formalize. It would have been much better if the implementation consistently stuck the idea of incrementing by 1 for each match. This would not rule out the optimization because one would simply return n for the empty search string case.
+    
+    Given the situation I guess it's not an option to change the implementation though, so the only option left is to adjust the documentation to reflect the current behavior. Here are two suggestions:
+    
+    ""increments by 1 unless the search string is the empty string in which case the position is never incremented""
+    
+    or something like
+    
+    ""always returns 0 if the search string is the empty string, otherwise it increments the position by 1 for each match found""
+","04/Nov/16 00:27;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8658876/badge)](https://coveralls.io/builds/8658876)
+    
+    Coverage increased (+0.007%) to 93.563% when pulling **e5997106b568d321462278911980b8c81d0679e6 on PascalSchumacher:StringUtils#ordialIndexOf_javadoc** into **ff4497aff8cc9de4e0b2c6e5e23e5b6550f76f29 on apache:master**.
+
+","04/Nov/16 02:42;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    Oh, now it makes sense @aioobe 
+    
+    I like 
+    
+    ""increments by 1 unless the search string is the empty string in which case the position is never incremented""
+","04/Nov/16 16:23;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    Updated the pull request using ""increments by 1 unless the search string is the empty string in which case the position is never incremented"".
+","04/Nov/16 19:20;githubbot;Github user aioobe commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    Looks good to me, even though I think it's a terrible idea to view empty strings as some form of special strings and treat them differently than other strings.
+","04/Nov/16 19:46;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8673668/badge)](https://coveralls.io/builds/8673668)
+    
+    Coverage increased (+0.02%) to 93.58% when pulling **ac05015befda654b2cd6e7a07c2eca5785d49045 on PascalSchumacher:StringUtils#ordialIndexOf_javadoc** into **ff4497aff8cc9de4e0b2c6e5e23e5b6550f76f29 on apache:master**.
+
+","06/Nov/16 11:20;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/205
+  
+    Thanks everybody!
+","06/Nov/16 11:20;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/205
+",06/Nov/16 11:20;pascalschumacher;Thanks for reporting.,
+Fix test failures in IBM JDK 8 for ToStringBuilderTest,LANG-1337,13077642,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,kinow,kinow,kinow,06/Jun/17 11:37,12/Jun/17 12:04,08/Jun/19 23:15,07/Jun/17 07:58,3.5,,,,,,3.6,lang.*,,0,ibm,ibm-jdk,test,"From the 3.6 thread RC2. We had issues in the release. Two tests failed. One of these tests happened on IBM JDK 8, and was related to time zones. Gary Gregory quickly pointed that the very latest IBM JDK 8 released did not had this issue.
+
+Indeed, I grabbed a JDK 8 from IBM and had this issue, and then after looking for the latest version, I had only one test failing. This test in question was ToStringBuilderTest#testReflectionHierarchyArrayList.
+
+Debugging the test in Eclipse, with the JDK pointing to IBM JDK 8 (and taking care to not let the Eclipse maven integration change it), there is a part of the code that receives an ArrayList object to create a String with reflection.
+
+In Oracle JDK 7, the object contains the default 10 empty positions, and thus the generated String is.
+
+{noformat}
+java.util.ArrayList@761a4a3d[elementData={<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>,<null>},size=0,modCount=0]
+{noformat}
+
+But with IBM JDK 8, the ArrayList is empty, nada, and then I get the following in the Eclipse debugger.
+
+{noformat}
+java.util.ArrayList@761a4a3d[elementData={},size=0,modCount=0]
+{noformat}
+
+The test is - as commented in LANG-727 - a bit flaky. However, the expected string assumes ArrayList will have an initial 10 null values. So the pull request in this issue simply creates an ArrayList with 10 initial capacity :-) a naïve approach, but that I believe fixes this test.
+
+The changes in the pull request linked to this issue have all tests passing with the following set-ups:
+
+{noformat}
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T05:41:47+13:00)
+Maven home: /opt/maven
+Java version: 1.7.0_80, vendor: Oracle Corporation
+Java home: /usr/lib/jvm/java-7-oracle/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: ""linux"", version: ""4.4.0-78-generic"", arch: ""amd64"", family: ""unix""
+---
+java version ""1.7.0_80""
+Java(TM) SE Runtime Environment (build 1.7.0_80-b15)
+Java HotSpot(TM) 64-Bit Server VM (build 24.80-b11, mixed mode)
+
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T05:41:47+13:00)
+Maven home: /opt/maven
+Java version: 1.8.0_131, vendor: Oracle Corporation
+Java home: /usr/lib/jvm/java-8-oracle/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: ""linux"", version: ""4.4.0-78-generic"", arch: ""amd64"", family: ""unix""
+---
+java version ""1.8.0_131""
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T05:41:47+13:00)
+Maven home: /opt/maven
+Java version: 1.8.0, vendor: IBM Corporation
+Java home: /home/kinow/Development/java/ibm-java-x86_64-80/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: ""linux"", version: ""4.4.0-78-generic"", arch: ""amd64"", family: ""unix""
+---
+java version ""1.8.0""
+Java(TM) SE Runtime Environment (build pxa6480sr4fp6-20170518_02(SR4 FP6))
+IBM J9 VM (build 2.8, JRE 1.8.0 Linux amd64-64 Compressed References 20170516_348050 (JIT enabled, AOT enabled)
+J9VM - R28_20170516_1905_B348050
+JIT  - tr.r14.java_20170516_348050
+GC   - R28_20170516_1905_B348050_CMPRSS
+J9CL - 20170516_348050)
+JCL - 20170516_01 based on Oracle jdk8u131-b11
+{noformat}","java version ""1.8.0""
+Java(TM) SE Runtime Environment (build pxa6480sr4fp6-20170518_02(SR4 FP6))
+IBM J9 VM (build 2.8, JRE 1.8.0 Linux amd64-64 Compressed References 20170516_348050 (JIT enabled, AOT enabled)
+J9VM - R28_20170516_1905_B348050
+JIT  - tr.r14.java_20170516_348050
+GC   - R28_20170516_1905_B348050_CMPRSS
+J9CL - 20170516_348050)
+JCL - 20170516_01 based on Oracle jdk8u131-b11
+
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T05:41:47+13:00)
+Maven home: /opt/maven
+Java version: 1.8.0, vendor: IBM Corporation
+Java home: /home/kinow/Development/java/ibm-java-x86_64-80/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: ""linux"", version: ""4.4.0-78-generic"", arch: ""amd64"", family: ""unix""
+
+git sha 551101299da7f75ea5478db1a6bc194963e0ac34",,,,,,,,,,LANG-727,,,,0.0,,,,,,,,,,,,,,,,,,,2017-06-06 11:43:26.714,,,false,,,,,Patch,,,,,,,,9223372036854775807,,,Wed Jun 07 07:58:24 UTC 2017,,,,,,0|i3fx87:,9223372036854775807,,,,,,,,,"06/Jun/17 11:43;githubbot;GitHub user kinow opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/269
+
+    LANG-1337: Fix test failures in IBM JDK 8 for ToStringBuilderTest by specifying the ArrayList initial capacity.
+
+    See https://issues.apache.org/jira/browse/LANG-1337 for issue description and explanation of the changes here.
+    
+    In summary, we specify the ArrayList's initial capacity, this way the String built through reflection has the expected value. Tested with Oracle JDK 7 and 8, and IBM JDK 8.
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/kinow/commons-lang LANG-1337
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/269.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #269
+    
+----
+commit 65b08c4f91a4e5d78eb645b46d06d7a46f8c62dd
+Author: Bruno P. Kinoshita <kinow@apache.org>
+Date:   2017-06-06T11:41:31Z
+
+    LANG-1337: Fix test failures in IBM JDK 8 for ToStringBuilderTest by specifying the ArrayList initial capacity.
+
+----
+","06/Jun/17 12:15;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/11847788/badge)](https://coveralls.io/builds/11847788)
+    
+    Coverage remained the same at 95.17% when pulling **65b08c4f91a4e5d78eb645b46d06d7a46f8c62dd on kinow:LANG-1337** into **551101299da7f75ea5478db1a6bc194963e0ac34 on apache:master**.
+
+","06/Jun/17 14:57;githubbot;Github user sebbASF commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120385458
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +316,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(10);
+    --- End diff --
+    
+    I think that needs a comment.
+    Is the magic number 10 significant?
+    If so, what determines the value?
+    Could it ever change?
+","06/Jun/17 14:59;githubbot;Github user andyklimczak commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    probably related to [this](https://stackoverflow.com/a/34250231)?
+","06/Jun/17 15:00;githubbot;Github user andyklimczak commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120386094
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +316,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(10);
+    --- End diff --
+    
+    probably related to [this](https://stackoverflow.com/a/34250231)?
+","06/Jun/17 15:15;githubbot;Github user sebbASF commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120390348
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +316,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(10);
+    --- End diff --
+    
+    Thanks!
+    
+    If the test fails when the initial size arg is omitted, does that not also affect the behaviour of the method being tested? i.e. do apps also have to ensure that they specify the min size when using ToStringBuilder.reflectionToString() ?
+","07/Jun/17 06:45;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120545692
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +316,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(10);
+    --- End diff --
+    
+    Fair enough on the magic number. I'd thought about that, then noticed a few other tests with numbers. But one broken window doesn't mean I can break another one :-) fixing in another commit.
+","07/Jun/17 06:49;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120546260
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +316,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(10);
+    --- End diff --
+    
+    >If the test fails when the initial size arg is omitted, does that not also affect the behaviour of the method being tested?
+    
+    Not really. The test simply checks the string built for an arraylist through reflection. The issue was caused for believing that the lazy initialization (as @andyklimczak) would work in the same independent of the JVM.
+    
+    What the test is verifying is correct, the current approach could be improved to make the test less flaky.
+","07/Jun/17 06:56;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/11862419/badge)](https://coveralls.io/builds/11862419)
+    
+    Coverage increased (+0.05%) to 95.221% when pulling **0344ca3f2d43e3732bf16370262303be8761a523 on kinow:LANG-1337** into **551101299da7f75ea5478db1a6bc194963e0ac34 on apache:master**.
+
+","07/Jun/17 06:56;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/11862419/badge)](https://coveralls.io/builds/11862419)
+    
+    Coverage increased (+0.05%) to 95.221% when pulling **0344ca3f2d43e3732bf16370262303be8761a523 on kinow:LANG-1337** into **551101299da7f75ea5478db1a6bc194963e0ac34 on apache:master**.
+
+","07/Jun/17 07:13;githubbot;Github user britter commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120549733
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +317,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(arraylistInitialCapacity);
+    --- End diff --
+    
+    Sorry to be nitpicking, but this should be a constant and wie should add a comment referencing JIRA-1337 with an explanation why we need to pass the initial capacity.
+","07/Jun/17 07:15;githubbot;Github user kinow commented on a diff in the pull request:
+
+    https://github.com/apache/commons-lang/pull/269#discussion_r120550160
+  
+    --- Diff: src/test/java/org/apache/commons/lang3/builder/ToStringBuilderTest.java ---
+    @@ -316,7 +317,7 @@ public void testReflectionHierarchyArrayList() {
+             // representation different for IBM JDK 1.6.0, LANG-727
+             assumeFalse(""IBM Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".equals(SystemUtils.JAVA_SPECIFICATION_VERSION));
+             assumeFalse(""Oracle Corporation"".equals(SystemUtils.JAVA_VENDOR) && ""1.6"".compareTo(SystemUtils.JAVA_SPECIFICATION_VERSION) < 0);
+    -        final List<Object> list = new ArrayList<>();
+    +        final List<Object> list = new ArrayList<>(arraylistInitialCapacity);
+    --- End diff --
+    
+    Roger that. Will add a note to myself to fix the other final member variables later... trying to be concise, but I'm clearly missing the point here :-) was supposedly to be a very simple fix for this issue. Pushing a new commit in a few minutes, just finishing to review commons-fileupload vote.
+","07/Jun/17 07:25;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    Comments added, received some feedback, but would still be useful someone with the last IBM JDK 8 to give it a try and confirm it works for him/her :)
+","07/Jun/17 07:32;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/269
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/11862777/badge)](https://coveralls.io/builds/11862777)
+    
+    Coverage increased (+0.05%) to 95.221% when pulling **c68285bb3392665827595ac408a5fad828b0351f on kinow:LANG-1337** into **551101299da7f75ea5478db1a6bc194963e0ac34 on apache:master**.
+
+","07/Jun/17 07:57;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/269
+",07/Jun/17 07:58;britter;Merged PR. Thank you!
+TypeUtils.toString() doesn't handle primitive and Object arrays correctly,LANG-1311,13043678,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,pascalschumacher,digulla,digulla,16/Feb/17 15:51,12/Jun/17 12:04,08/Jun/19 23:15,17/Feb/17 17:36,3.4,3.5,,,,,3.6,lang.reflect.*,,0,,,,"TypeUtils.toString() doesn't handle primitive and Object arrays correctly.
+
+Specifically, these tests will fail:
+
+{code}
+assertEquals(""int[]"", TypeUtils.toString(int[].class));
+assertEquals(""java.lang.Integer[]"", TypeUtils.toString(Integer[].class));
+{code}
+
+If you declare a field with type {{List<String>[]}}, then you can add this test:
+
+{code}
+assertEquals(""java.util.List<java.lang.String>[]"", TypeUtils.toString(field.getGenericType()));
+{code}
+
+This patch fixes the issue:
+
+{code}
+    private static String classToString(final Class<?> c) {
+// begin patch
+        if (c.isArray()) {
+            return toString(c.getComponentType()) + ""[]"";
+        }
+// end patch 
+       
+        final StringBuilder buf = new StringBuilder();
+{code}",,3600,3600,,0%,3600,3600,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-02-17 17:36:14.801,,,false,,,,,Patch,,,,,,,,9223372036854775807,,,Mon Feb 20 21:35:44 UTC 2017,,,,,,0|i3a6on:,9223372036854775807,,,,,,,,,"17/Feb/17 17:36;pascalschumacher;Patch applied. Thanks!
+
+{code}assertEquals(""java.util.List<java.lang.String>[]"", TypeUtils.toString(field.getGenericType()));{code} worked on current master and most probably on 3.5 (even before applying the patch).","20/Feb/17 20:20;digulla;Thanks.
+
+The generics list worked but I didn't see a unit test for a mix of generics and arrays, so I added one for good measure.",20/Feb/17 21:35;pascalschumacher;Thanks for clarifying! :),,,,,,,,,,,,,
+LocaleUtils#toLocale does not support language followed by UN M.49 numeric-3 area code,LANG-1312,13044319,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,pascalschumacher,pascalschumacher,pascalschumacher,19/Feb/17 19:08,12/Jun/17 12:04,08/Jun/19 23:15,21/Feb/17 20:14,3.5,,,,,,3.6,,,0,,,,"These all work:
+
+{code:java}
+System.out.println(new Locale(""en"", ""001""));
+System.out.println(new Locale(""en"", ""150""));
+System.out.println(new Locale(""ar"", ""001""));
+{code}
+
+but these all fail with an IllegalArgumentException:
+
+{code:java}
+System.out.println(LocaleUtils.toLocale(""en_001""));
+System.out.println(LocaleUtils.toLocale(""en_150""));
+System.out.println(LocaleUtils.toLocale(""ar_001""));
+{code}
+",,,,,,,,,,,LANG-1320,,,,0.0,,,,,,,,,,,,,,,,,,,2017-02-19 19:40:38.994,,,false,,,,,,,,,,,,,9223372036854775807,,,Tue Feb 21 20:14:08 UTC 2017,,,,,,0|i3aafb:,9223372036854775807,,,,,,,,,"19/Feb/17 19:40;githubbot;GitHub user PascalSchumacher opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/239
+
+    LANG-1312: LocaleUtils#toLocale does not support language followed by…
+
+    … UN M.49 numeric-3 area code
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/PascalSchumacher/commons-lang lang_1312_area_code
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/239.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #239
+    
+----
+commit ce3e3e03e4d561dfae565186b431a879a9afa920
+Author: pascalschumacher <pascalschumacher@gmx.net>
+Date:   2017-02-19T19:39:05Z
+
+    LANG-1312: LocaleUtils#toLocale does not support language followed by UN M.49 numeric-3 area code
+
+----
+","19/Feb/17 19:43;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/239
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/10226324/badge)](https://coveralls.io/builds/10226324)
+    
+    Coverage increased (+0.02%) to 94.549% when pulling **ce3e3e03e4d561dfae565186b431a879a9afa920 on PascalSchumacher:lang_1312_area_code** into **954ade4c1ae2adc0aaac3a1dbe800495c519520c on apache:master**.
+
+","19/Feb/17 19:43;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/239
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/10226324/badge)](https://coveralls.io/builds/10226324)
+    
+    Coverage increased (+0.02%) to 94.549% when pulling **ce3e3e03e4d561dfae565186b431a879a9afa920 on PascalSchumacher:lang_1312_area_code** into **954ade4c1ae2adc0aaac3a1dbe800495c519520c on apache:master**.
+
+","20/Feb/17 00:23;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/239
+  
+    Yesterday learned something new about `String.format` via pull request #238, and now learning about [UN M.49](https://en.wikipedia.org/wiki/UN_M.49). Thanks again @PascalSchumacher :-)
+    
+    Code and test look good, checked out locally, all tests passing. +1
+","20/Feb/17 07:59;githubbot;Github user PascalSchumacher commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/239
+  
+    @kinow: Thanks for the review. :-)
+    
+    I also did not know about UN M.49 till yesterday. I just stumbled over this while analyzing commons-lang test failures on java 9 for https://issues.apache.org/jira/browse/LANG-1265
+","21/Feb/17 00:27;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/239
+  
+    Will merge it tomorrow if there's no objection (or feel free to merge it @PascalSchumacher  :-) )
+","21/Feb/17 20:14;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/239
+",,,,,,,,,
+Type implementations in TypeUtils compute hash code that breaks Object.equals() with Sun's OpenJDK,LANG-1323,13065926,Bug,Open,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,,,skilpat,skilpat,21/Apr/17 15:54,24/Apr/17 15:07,08/Jun/19 23:15,,3.2,3.5,,,,,,lang.reflect.*,,0,,,,"{{TypeUtils}} in {{lang.reflect}} provides convenient methods for creating objects of the interface {{Type}}. Those objects are defined by the following classes:
+
+* ParameterizedTypeImpl (implements {{ParameterizedType}})
+* WildcardTypeImpl (implements {{WildcardType}})
+* GenericArrayTypeImpl (implements {{GenericArrayType}})
+
+Similarly, there are corresponding classes, which implement the same interfaces, defined in one's particular JDK. And it's these latter classes that are instantiated when you get objects of type {{Type}} via reflection. Let's call these the ""internal {{Type}} implementations."" In the case of Sun's OpenJDK, [they are defined|http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/reflect/generics/reflectiveObjects] in package {{sun.reflect.generics.reflectiveObjects}}.
+
+Each of the {{TypeUtils}} classes implements {{Object.equals(Object)}} in a general way that's compatible with the internal {{Type}} implementations. For example, if I access a field declared with type {{Map<String, Integer>}} and get its generic type, via {{Field.getGenericType()}}, then that will be equal to the {{TypeUtils}} object returned by:
+{code:java}
+TypeUtils.parameterize(Map.class, String.class, Integer.class)
+{code}
+That's what I'd expect, so that's great.
+
+However, the {{TypeUtils}} classes implement their {{Object.hashCode()}} method in a _different_ way from the corresponding implementations in Sun OpenJDK implementations. That's not so surprising, _but it breaks the contract of {{Object.hashCode()}}_:
+
+bq. If two objects are equal according to the {{equals(Object)}} method, then calling the {{hashCode}} method on each of the two objects must produce the same integer result.
+
+In other words, the two {{Type}} objects above will both consider themselves {{equals}} to each other, but they have different hash codes.
+
+One example of a negative consequence of this problem is a collection class that implements its equality (to other collections) by checking hash codes of its elements, e.g., Guava's immutable collections. If you have {{Type}} objects in those collections, with {{TypeUtils}} {{Type}} objects in {{c1}} and Sun OpenJDK {{Type}} objects in {{c2}}, you will see that {{c1.equals(c2)}} returns {{false}} -- because their elements don't all have the same hash codes -- even though those elements are all considered equal.",Sun OpenJDK,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2017-04-21 17:02:24.57,,,false,,,,,,,,,,,,,9223372036854775807,,,Mon Apr 24 15:07:01 UTC 2017,,,,,,0|i3dxs7:,9223372036854775807,,,,,,,,,"21/Apr/17 15:58;skilpat;Hash code implementation comparisons:
+
+* {{GenericArrayTypeImpl}}: [TypeUtils|https://git-wip-us.apache.org/repos/asf?p=commons-lang.git;a=blob;f=src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java;h=8db6ca47813389708781c5117f3109865c815d2c;hb=HEAD#l134] vs. [OpenJDK|http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/reflect/generics/reflectiveObjects/GenericArrayTypeImpl.java#l89]
+
+* {{ParameterizedTypeImpl}}: [TypeUtils|https://git-wip-us.apache.org/repos/asf?p=commons-lang.git;a=blob;f=src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java;h=8db6ca47813389708781c5117f3109865c815d2c;hb=HEAD#l203] vs. [OpenJDK|http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/reflect/generics/reflectiveObjects/ParameterizedTypeImpl.java#l198]
+
+* {{WildcardTypeImpl}}: [TypeUtils|https://git-wip-us.apache.org/repos/asf?p=commons-lang.git;a=blob;f=src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java;h=8db6ca47813389708781c5117f3109865c815d2c;hb=HEAD#l270] vs. [OpenJDK|http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/reflect/generics/reflectiveObjects/WildcardTypeImpl.java#l224]","21/Apr/17 17:02;sebb;Are you saying that some of the TypeUtils classes have incompatible equals() and hashCode() implementations?
+
+If so, then that is clearly a bug. A test case would be useful.
+
+However it is OK to provide a hashCode() implementation that is different from the 'standard' implementation, so long as it is consistent with the equals() defintion.
+
+For example, if the hashCode() implementation always returns 42.
+It's a terrible hash, but it does not break the hash/equals contract.
+There is no requirement for unequal objects to have different hashes.
+
+Indeed any class that assumes that equal hashCodes mean equal Objects is broken.
+Object.hashCode() can produce equal hashCodes for unequal objects.","21/Apr/17 17:39;skilpat;Here's an example in JUnit:
+
+{code:java}
+    static class OneField {
+        Map<String, Integer> f;
+    }
+
+    @Test
+    public void test() throws NoSuchFieldException
+    {
+        final Type openJdkType = OneField.class.getDeclaredField(""f"").getGenericType();
+        final Type apacheType = TypeUtils.parameterize(Map.class, String.class, Integer.class);
+        Assert.assertTrue(openJdkType.equals(apacheType));
+        Assert.assertTrue(apacheType.equals(openJdkType));
+        Assert.assertFalse(openJdkType.hashCode() == apacheType.hashCode());
+
+        // Example with Guava's ImmutableSet, which for N > 1 uses
+        // hash code for set equality, and Iterables.elementsEqual.
+        final Type other = OneField.class;
+        final ImmutableSet<Type> c1 = ImmutableSet.of(openJdkType, other);
+        final ImmutableSet<Type> c2 = ImmutableSet.of(apacheType, other);
+        Assert.assertFalse(c1.equals(c2));
+        Assert.assertFalse(c2.equals(c1));
+        Assert.assertTrue(c1.size() == c2.size());
+        Assert.assertTrue(Iterables.elementsEqual(c1, c2));
+    }
+{code}
+
+Is this not a violation of the contract on {{Object.hashCode()}} that I quoted above? Here are two objects that are equal according to the {{equals(Object)}} method, but calling the {{hashCode}} method on each of the two objects produces different integer results.","21/Apr/17 20:28;skilpat;[~sebb@apache.org]: Right, the contract does not say anything about two objects that produce equal hash codes. But it does indeed say something about two objects that are equal, i.e., that they must produce the same hash code. So I'm not saying that anything in {{TypeUtils}} is inconsistent _within itself_, but that
+
+# the {{hashCode}} in {{TypeUtils}} is inconsistent with the {{hashCode}} in the OpenJDK and
+# the contract of {{Object.hashCode}} requires that their {{hashCode}}'s be consistent since their {{equals}} are consistent.","21/Apr/17 21:49;sebb;bq. the hashCode in TypeUtils is inconsistent with the hashCode in the OpenJDK and
+
+This is not a requirement
+
+bq. the contract of Object.hashCode requires that their hashCode's be consistent since their equals are consistent.
+
+Agreed.
+
+But the unit test you provided only shows that the ImmutableSet implementation of hashCode/equals is broken.
+It does not say anything about TypeUtils.
+Or if there is a problem with TypeUtils, this needs to be exposed by a unit test that only uses the LANG classes.","21/Apr/17 22:04;skilpat;The Guava stuff was just an _additional example_ of a sneaky manifestation of the bug; it's not crucial to the bug. Sorry to have included more than necessary in that example.
+
+For posterity, here's the example demonstrating the broken contract, without the additional broken use case: (EDIT: rewritten to clarify that an assertion fails, whereas previously it was written such that they pass)
+
+{code:java}
+    static class OneField {
+        Map<String, Integer> f;
+    }
+
+    @Test
+    public void testOfBrokenContract() throws NoSuchFieldException
+    {
+        // An object of class sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl
+        final Type openJdkType = OneField.class.getDeclaredField(""f"").getGenericType();
+
+        // An object of class org.apache.commons.lang3.reflect.TypeUtils.ParameterizedTypeImpl
+        final Type apacheType = TypeUtils.parameterize(Map.class, String.class, Integer.class);
+
+        // These two objects are equal...
+        Assert.assertTrue(openJdkType.equals(apacheType));
+        Assert.assertTrue(apacheType.equals(openJdkType));
+
+        // ... so their hash codes should be the same. But this assertion fails.
+        Assert.assertTrue(openJdkType.hashCode() == apacheType.hashCode());
+    }
+{code}","21/Apr/17 23:27;sebb;I see what you mean now. 
+It seems that there are additional equals/hashCode requirements for instances of the Type interface hierarchy which go beyond the normal equals/hashCode contract.
+Unfortunately the requirements don't appear to be fully documented.
+
+The ParameterizedType Javadoc specifies how the equals() method is to be implemented, but it does not say anything about the hashCode requirements.
+
+The variables to be compared are known, so the equals() method is easily written from the Javadoc.
+
+However there are potentially multiple ways to derive the hashCode.
+I don't see how it's possible to code alternate implementations from the Javadoc alone.
+So it looks to me as though the Javadoc is incomplete.
+If the OpenJDK source were not available it would be impossible to implement an object that conforms to the ParameterizedType Javadoc and the equals/hashCode contract.","24/Apr/17 14:44;skilpat;Yeah, that makes sense. I understand that the Java SE doesn't -- _but should!_ -- define how to implement {{Type.hashCode}}. There seems to be a years-old JDK bug report about this exact issue: https://bugs.openjdk.java.net/browse/JDK-7082069.
+
+Given the size and importance of the OpenJDK, however, would it not make sense to treat that as the canonical definition of {{Type.hashCode()}}, and modify the Commons Lang implementations to adhere to that?","24/Apr/17 15:07;sebb;Thanks for the bug URL, very useful.
+
+There are two difficulties with using the bug text as the definition:
+1) It has not been accepted, and could be modified.
+2) what license covers its use?
+
+AFAICT we cannot use the actual implementation, as that is under the GPL+Classpath exception [1]
+
+[1] http://www.apache.org/legal/resolved.html#category-x",,,,,,,
+Wrong name or result of StringUtils::getJaroWinklerDistance,LANG-1269,13006450,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Won't Fix,pascalschumacher,jmkeil,jmkeil,21/Sep/16 10:19,19/Mar/17 13:28,08/Jun/19 23:15,19/Mar/17 13:28,3.3,3.4,3.5,,,,,,,0,,,,"The name of the method StringUtils::getJaroWinklerDistance is misleading.
+Currently for equal strings {{1}} is returned, for completely different strings {{0}} is returned. That is a measure of similarity, not of a distance. A distance must be {{0}} for equal strings. I read on the issues LANG-591 and LANG-944, that it was decided to have a similar name to StringUtils::getLevenshteinDistance, but that requires also the change of the methods result.
+
+Could you please (1) rename the method to StringUtils::getJaroWinklerSimilarity or (2) change the method to return {{1 - currentResult}}?
+
+First option has the disadvantage to lose the similar naming of the similar methods, second option implies the risk to unnoticed introduce bugs in depending code. So I think it is preferable to use the first option.
+",,,,,,,,,,,,TEXT-9,,,0.0,,,,,,,,,,,,,,,,,,,2016-09-24 10:27:30.941,,,false,,,,,,,,,,,,,9223372036854775807,,,Sun Mar 19 13:28:15 UTC 2017,,,,,,0|i33vy7:,9223372036854775807,,,,,,,,,24/Sep/16 10:27;britter;This probably also affects Commons Text,"12/Oct/16 07:45;kinow;Indeed Benedikt. I'll file a ticket for [text].
+
+If methods like this are going to be deprecated (and maybe removed in the 4.x release?) in [lang], then I'd think we should just add the @deprecated annotation to the method. Other wise, I'd be inclined to leave the method name as-is (so we keep binary compatibility), return 1 - currentResult as suggested by [~jmkeil]; and maybe update the Javadocs as well.
+","22/Oct/16 09:40;pascalschumacher;What about deprecating the current method (letting it stay as it is) and adding renamed copy (getJaroWinklerSimilarity). This ensures that we do not break any existing code. What do you think?
+","22/Oct/16 09:56;githubbot;GitHub user PascalSchumacher opened a pull request:
+
+    https://github.com/apache/commons-lang/pull/198
+
+    LANG-1269: Wrong name or result of StringUtils#getJaroWinklerDistance
+
+    deprecat StringUtils#getJaroWinklerDistance and add StringUtils#getJaroWinklerSimilarity instead
+
+You can merge this pull request into a Git repository by running:
+
+    $ git pull https://github.com/PascalSchumacher/commons-lang jarowinklerdistance_name
+
+Alternatively you can review and apply these changes as the patch at:
+
+    https://github.com/apache/commons-lang/pull/198.patch
+
+To close this pull request, make a commit to your master/trunk branch
+with (at least) the following in the commit message:
+
+    This closes #198
+    
+----
+commit d2e6338a8ec46ebc80156ef9dcdd83dfe63ee8b5
+Author: pascalschumacher <pascalschumacher@gmx.net>
+Date:   2016-10-22T09:55:32Z
+
+    LANG-1269: Wrong name or result of StringUtils#getJaroWinklerDistance
+    
+    deprecat StringUtils#getJaroWinklerDistance and add StringUtils#getJaroWinklerSimilarity instead
+
+----
+","22/Oct/16 10:02;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/198
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8458576/badge)](https://coveralls.io/builds/8458576)
+    
+    Coverage increased (+0.004%) to 93.545% when pulling **d2e6338a8ec46ebc80156ef9dcdd83dfe63ee8b5 on PascalSchumacher:jarowinklerdistance_name** into **91d6bd74fa358fdc8d7cb7681c76c509fd9a8e7d on apache:master**.
+
+","22/Oct/16 12:26;githubbot;Github user kinow commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/198
+  
+    +1
+","22/Oct/16 13:13;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/198
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8459485/badge)](https://coveralls.io/builds/8459485)
+    
+    Coverage increased (+0.02%) to 93.57% when pulling **436d2801899827a2651b8b44d680aaf9e17acca7 on PascalSchumacher:jarowinklerdistance_name** into **8274993e293a79fc75829df398233915a6387a4b on apache:master**.
+
+","22/Oct/16 13:13;githubbot;Github user coveralls commented on the issue:
+
+    https://github.com/apache/commons-lang/pull/198
+  
+    
+    [![Coverage Status](https://coveralls.io/builds/8459485/badge)](https://coveralls.io/builds/8459485)
+    
+    Coverage increased (+0.02%) to 93.57% when pulling **436d2801899827a2651b8b44d680aaf9e17acca7 on PascalSchumacher:jarowinklerdistance_name** into **8274993e293a79fc75829df398233915a6387a4b on apache:master**.
+
+","28/Oct/16 17:22;githubbot;Github user asfgit closed the pull request at:
+
+    https://github.com/apache/commons-lang/pull/198
+",19/Mar/17 13:28;pascalschumacher;I reverted the addition of StringUtils#getJaroWinklerSimilarity in https://github.com/apache/commons-lang/commit/f4ee399e31eb61741f5f2167d6af8f49c0e991b6 because all string distance methods of commons-lang are now deprecated in favor of commons-text.,,,,,,
+FastDateParser_TimeZoneStrategyTest#testTimeZoneStrategyPattern fails on Windows with German Locale,LANG-1133,12827827,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Minor,Fixed,chonton,pascalschumacher,pascalschumacher,06/May/15 21:34,19/Oct/16 07:01,08/Jun/19 23:15,09/May/15 23:48,3.5,,,,,,3.5,lang.time.*,,0,,,,"FastDateParser_TimeZoneStrategyTest#testTimeZoneStrategyPattern() on current master fails:
+
+{quote}java.lang.AssertionError: Französisch:Heure d'Europe de l'Est UTC+3
+	at org.junit.Assert.fail(Assert.java:88)
+	at org.junit.Assert.assertTrue(Assert.java:41)
+	at org.apache.commons.lang3.time.FastDateParser_TimeZoneStrategyTest.testTimeZoneStrategyPattern(FastDateParser_TimeZoneStrategyTest.java:39){quote}
+
+I'm unsure why. I guess it has something to do with my German Locale and maybe Windows too.
+
+","Windows 7, German Locale, Java7",,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2015-05-09 23:48:04.419,,,false,,,,,,,,,,,,,9223372036854775807,,,Sat May 09 23:48:04 UTC 2015,,,,,,0|i2ee1z:,9223372036854775807,,,,,,,,,09/May/15 23:48;chonton;commit 71d7c3264239c55b6e2daf89c44c5685085f26dd,,,,,,,,,,,,,,,
+BooleanUtils javadoc issues,LANG-1278,13014264,Bug,Closed,LANG,Commons Lang,software,issues@commons.apache.org,"<h4>RELEASE PLAN</h4>
+
+<ul>
+<li>Lang 3.8 - Next release from 3.x branch. </li>
+<li>Lang 3.x - Items proposed for a subsequent release; will be backwards compatible with 3.0. </li>
+<li>Lang 4.0 - Items that require binary incompatible changes. Will not be compatible with 3.x.</li>
+</ul>",http://commons.apache.org/lang/,Trivial,Fixed,pascalschumacher,dukeyin,dukeyin,21/Oct/16 15:06,12/Jun/17 12:04,08/Jun/19 23:15,21/Oct/16 19:08,3.1,3.5,,,,,3.6,,,0,documentation,,,"1.  Every instance of {{NOTE: This returns null and will throw a NullPointerException if autoboxed to a boolean.}} needs to be fixed, for example: https://github.com/apache/commons-lang/blob/LANG_3_5/src/main/java/org/apache/commons/lang3/BooleanUtils.java#L51
+
+{{autoboxed}} -> {{unboxed}}
+
+reference: https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html
+
+2.  https://github.com/apache/commons-lang/blob/LANG_3_5/src/main/java/org/apache/commons/lang3/BooleanUtils.java#L1025
+
+The examples are duplicated: lines 1029~1031 are identical to lines 1026~1028.",,,,,,,,,,,,,,,0.0,,,,,,,,,,,,,,,,,,,2016-10-21 19:08:03.985,,,false,,,,,,,,,,,,,9223372036854775807,,,Fri Oct 21 19:08:03 UTC 2016,,,,,,0|i357zb:,9223372036854775807,,,,,,,,,21/Oct/16 19:08;pascalschumacher;Fixed. Thanks for reporting!,,,,,,,,,,,,,,,
