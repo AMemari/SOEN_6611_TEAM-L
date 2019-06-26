@@ -22,7 +22,7 @@ JaCoCo dependency in pom file:
 	   <id>post-unit-test</id>
 	   <phase>test</phase>
 	   <goals>
-	        <goal>report</goal>
+	       <goal>report</goal>
 	   </goals>
 	   <configuration>
 	        <dataFile>target/jacoco.exec</dataFile>
