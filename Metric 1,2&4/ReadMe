@@ -30,4 +30,4 @@ JaCoCo dependency in pom file:
 	  </configuration>
 	  </execution>
 	</executions>
-      </plugin>
+     </plugin>
