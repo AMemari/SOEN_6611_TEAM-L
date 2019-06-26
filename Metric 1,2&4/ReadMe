@@ -15,8 +15,8 @@ JaCoCo dependency in pom file:
 	 <execution>
 	   <id>prepare-agent</id>
 	   <goals>
-		<goal>prepare-agent</goal>
-	    </goals>
+	      <goal>prepare-agent</goal>
+	   </goals>
 	  </execution>
 	  <execution>
 	   <id>post-unit-test</id>
