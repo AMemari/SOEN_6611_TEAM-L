@@ -27,7 +27,7 @@ JaCoCo dependency in pom file:
 	   <configuration>
 	        <dataFile>target/jacoco.exec</dataFile>
 	        <outputDirectory>target/jacoco-ut</outputDirectory>
-	   </configuration>
+	  </configuration>
 	  </execution>
 	</executions>
       </plugin>
