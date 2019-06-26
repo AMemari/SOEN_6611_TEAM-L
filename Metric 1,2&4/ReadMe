@@ -12,7 +12,7 @@ JaCoCo dependency in pom file:
 	<artifactId>jacoco-maven-plugin</artifactId>
 	<version>0.8.4</version>
 	<executions>
-	  <execution>
+	 <execution>
 	    <id>prepare-agent</id>
 	   <goals>
 		<goal>prepare-agent</goal>
