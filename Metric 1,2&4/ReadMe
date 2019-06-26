@@ -25,8 +25,8 @@ JaCoCo dependency in pom file:
 	       <goal>report</goal>
 	   </goals>
 	   <configuration>
-	        <dataFile>target/jacoco.exec</dataFile>
-	        <outputDirectory>target/jacoco-ut</outputDirectory>
+	       <dataFile>target/jacoco.exec</dataFile>
+	       <outputDirectory>target/jacoco-ut</outputDirectory>
 	  </configuration>
 	  </execution>
 	</executions>
