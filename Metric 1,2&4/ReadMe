@@ -7,7 +7,7 @@ Step 3: Add JaCoCo dependency to pom file of the Maven porject.
 Step 4: Run the porject as Maven Install and wait for the JaCoCo report to be generated. Code coverage report is generated in HTML, XML and CSV format.
 
 JaCoCo dependency in pom file:
-      <plugin>
+     <plugin>
 	<groupId>org.jacoco</groupId>
 	<artifactId>jacoco-maven-plugin</artifactId>
 	<version>0.8.4</version>
